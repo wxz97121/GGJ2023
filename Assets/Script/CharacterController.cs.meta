@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ca288bd42b0d9324b9f2e78d27955632
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - InputBoxText: {instanceID: 0}
+  - DeleteButton: {instanceID: 0}
+  - CharacterPrefab: {fileID: 546617738267690489, guid: 46e68a574007d334d9fcb032ea992c9d, type: 3}
+  - SpawnParentTransform: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

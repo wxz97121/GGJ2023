@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: b3c73d9e317a54e45a42da482c92f21b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - DeleteSprite: {fileID: 21300000, guid: a81b820b91f11b948871f62e4cd633de, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
