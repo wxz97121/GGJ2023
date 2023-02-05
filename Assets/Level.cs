@@ -11,6 +11,7 @@ public class Level : SingletonBase<Level>
     public TMPro.TextMeshProUGUI CurrentAns;
     public TMPro.TextMeshProUGUI CurrentFlow;
     public TMPro.TextMeshProUGUI LeaderText;
+    public Image Black;
     public GameObject SubmitButton;
     public Question QuestionObject;
     public List<Selectable> AllButtons = new List<Selectable>();
@@ -40,7 +41,16 @@ public class Level : SingletonBase<Level>
     IEnumerator AddFlowQuestion()
     {
         var FlowStr = FlowController.Instance.GetFlowStr();
-        yield return StartCoroutine(AddFlowQuestion());
+        yield return StartCoroutine(AddFlowText(FlowStr));
+        yield return new WaitForSeconds(FlowUpdateTime);
+    }
+
+    IEnumerator BlackScreen(float WaitTime)
+    {
+        Black.DOFade(1, 2);
+        yield return new WaitForSeconds(WaitTime + 2);
+        Black.DOFade(0, 2);
+        yield return new WaitForSeconds(2);
     }
 
     bool HasJustFinishedQuestion = false;
@@ -239,6 +249,7 @@ public class Level : SingletonBase<Level>
         yield return StartCoroutine(AddLeaderText("咱们公司的企业文化就是善良坦诚，任何时刻都要记住"));
         yield return StartCoroutine(AddLeaderText("今天大家可以先撤了，加班辛苦了。"));
         yield return new WaitForSeconds(3);
+        yield return StartCoroutine(BlackScreen(5));
         // TODO 黑屏？
 
 
@@ -257,6 +268,7 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return new WaitForSeconds(5);
+        yield return StartCoroutine(BlackScreen(5));
 
 
         StartCoroutine(UpdateQuestion(""));
@@ -272,6 +284,9 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return new WaitForSeconds(5);
+        yield return StartCoroutine(BlackScreen(5));
+
+
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
@@ -286,6 +301,9 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return new WaitForSeconds(5);
+        yield return StartCoroutine(BlackScreen(5));
+
+
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
@@ -300,6 +318,9 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return new WaitForSeconds(5);
+        yield return StartCoroutine(BlackScreen(5));
+
+
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
@@ -314,6 +335,9 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return new WaitForSeconds(5);
+        yield return StartCoroutine(BlackScreen(5));
+
+
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
@@ -328,6 +352,9 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return new WaitForSeconds(5);
+        yield return StartCoroutine(BlackScreen(5));
+
+
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
@@ -342,6 +369,9 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return new WaitForSeconds(5);
+        yield return StartCoroutine(BlackScreen(5));
+
+
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
@@ -356,6 +386,8 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return new WaitForSeconds(5);
+        yield return StartCoroutine(BlackScreen(5));
+
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
@@ -370,6 +402,8 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return new WaitForSeconds(5);
+        yield return StartCoroutine(BlackScreen(5));
+
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
@@ -384,6 +418,9 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return new WaitForSeconds(5);
+        yield return StartCoroutine(BlackScreen(5));
+
+
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
@@ -398,5 +435,6 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return new WaitForSeconds(5);
+        yield return StartCoroutine(BlackScreen(5));
     }
 }
