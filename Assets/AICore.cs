@@ -167,8 +167,20 @@ public class AICore : SingletonBase<AICore>
     }
 
     // 返回值代表本次提交的颜色反馈
-    public int AddLsToAI(List<(string, int)> LsList)
+    public int AddLsToAI(List<(string, int)> LsList, TargetState CurrentTarget)
     {
+        List<string> MissingTag = new List<string>();
+        foreach (var tagRequire in CurrentTarget.RequireTagsAndWordsCounts)
+        {
+            int CurrentOwned = 0;
+            bool result = Dict.TryGetValue(tagRequire.Item1, out CurrentOwned);
+            if (!result || CurrentOwned < tagRequire.Item2)
+            {
+                MissingTag.Add(tagRequire.Item1);
+            }
+        }
+        var OldFactors = GetCurrentFactors();
+
         foreach (var Ls in LsList)
         {
             if (Dict.ContainsKey(Ls.Item1)) Dict[Ls.Item1] += Ls.Item2;
@@ -177,8 +189,37 @@ public class AICore : SingletonBase<AICore>
 #if UNITY_EDITOR
         DebugText.UpdateUI(GetCurrentFactors());
 #endif
-        // TODO 颜色反馈
-        return 0;
+
+        if (MissingTag.Count != 0)
+        {
+            foreach (var Ls in LsList)
+            {
+                var tags = GetEffectByName(Ls.Item1).TagAndRatio;
+                foreach (var tag in tags)
+                {
+                    if (MissingTag.Contains(tag.Item1))
+                        return 1;
+                }
+            }
+        }
+        var CurrentFactor = GetCurrentFactors();
+        bool bClose = false, bFar = false;
+        for (int i = 0; i < 5; i++)
+        {
+            if (OldFactors[i] < CurrentTarget.MinFactors[i])
+            {
+                if (OldFactors[i] < CurrentFactor[i]) bClose = true;
+                else bFar = true;
+            }
+            else if (OldFactors[i] > CurrentTarget.MaxFactors[i])
+            {
+                if (OldFactors[i] > CurrentFactor[i]) bClose = true;
+                else bFar = true;
+            }
+        }
+        if (bClose && bFar) return 0;
+        if (bClose) return 1;
+        return -1;
     }
 
     public bool GetCurrentAnsForQuestion(Question CurrenQuestion, out string Ans)
