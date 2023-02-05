@@ -9,10 +9,12 @@ public class Selectable : MonoBehaviour
     public Image SelectedIcon;
     public TextMeshProUGUI MyText;
     bool isSelected = false;
+    public bool CanBeSelect = false;
     public (string, int) Value;
     // Start is called before the first frame update
-    public void OnClick()
+    public void OnClick(bool Force = false)
     {
+        if (!Force && !CanBeSelect) return;
         isSelected = !isSelected;
         if (isSelected)
         {

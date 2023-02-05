@@ -142,7 +142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &46396626
 RectTransform:
   m_ObjectHideFlags: 0
@@ -152,7 +152,7 @@ RectTransform:
   m_GameObject: {fileID: 46396625}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 224289592}
@@ -179,6 +179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedIcon: {fileID: 512722873}
   MyText: {fileID: 224289593}
+  CanBeSelect: 0
 --- !u!114 &46396628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,7 +227,7 @@ MonoBehaviour:
       - m_Target: {fileID: 46396627}
         m_TargetAssemblyTypeName: Selectable, Assembly-CSharp
         m_MethodName: OnClick
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -906,7 +907,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &440081138
 RectTransform:
   m_ObjectHideFlags: 0
@@ -916,7 +917,7 @@ RectTransform:
   m_GameObject: {fileID: 440081137}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2113019866}
@@ -976,7 +977,7 @@ MonoBehaviour:
       - m_Target: {fileID: 440081143}
         m_TargetAssemblyTypeName: Selectable, Assembly-CSharp
         m_MethodName: OnClick
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1037,6 +1038,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedIcon: {fileID: 833765862}
   MyText: {fileID: 2113019867}
+  CanBeSelect: 0
 --- !u!1 &504312882
 GameObject:
   m_ObjectHideFlags: 0
@@ -1204,7 +1206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurrentQuestion: {fileID: 2062683768}
   CurrentAns: {fileID: 1985609537}
-  CurrentFlow: {fileID: 344744839}
+  CurrentFlow: {fileID: 1552098895}
   LeaderText: {fileID: 1468413837}
   SubmitButton: {fileID: 583730938}
   AllButtons:
@@ -1214,6 +1216,8 @@ MonoBehaviour:
   - {fileID: 770989275}
   - {fileID: 878779600}
   SelectedObjects: []
+  MinWordCountFactor: 0.15
+  MaxWordCountFactor: 0.4
 --- !u!4 &504860505
 Transform:
   m_ObjectHideFlags: 0
@@ -1777,7 +1781,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &770989274
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1787,7 +1791,7 @@ RectTransform:
   m_GameObject: {fileID: 770989273}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1938055001}
@@ -1814,6 +1818,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedIcon: {fileID: 265169742}
   MyText: {fileID: 1938055002}
+  CanBeSelect: 0
 --- !u!114 &770989276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1861,7 +1866,7 @@ MonoBehaviour:
       - m_Target: {fileID: 770989275}
         m_TargetAssemblyTypeName: Selectable, Assembly-CSharp
         m_MethodName: OnClick
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2003,7 +2008,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &878779599
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2013,7 +2018,7 @@ RectTransform:
   m_GameObject: {fileID: 878779598}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1246819431}
@@ -2040,6 +2045,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedIcon: {fileID: 516786879}
   MyText: {fileID: 1246819432}
+  CanBeSelect: 0
 --- !u!114 &878779601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2087,7 +2093,7 @@ MonoBehaviour:
       - m_Target: {fileID: 878779600}
         m_TargetAssemblyTypeName: Selectable, Assembly-CSharp
         m_MethodName: OnClick
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2727,7 +2733,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1550948735
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2737,7 +2743,7 @@ RectTransform:
   m_GameObject: {fileID: 1550948734}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1623879366}
@@ -2764,6 +2770,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedIcon: {fileID: 930303233}
   MyText: {fileID: 1623879367}
+  CanBeSelect: 0
 --- !u!114 &1550948737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2811,7 +2818,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1550948736}
         m_TargetAssemblyTypeName: Selectable, Assembly-CSharp
         m_MethodName: OnClick
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3298,8 +3305,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 256, y: -322}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 255, y: -331.7}
+  m_SizeDelta: {x: 280, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1985609537
 MonoBehaviour:
@@ -3348,15 +3355,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 28
+  m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -3366,7 +3373,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 4
+  m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -3433,8 +3440,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 256, y: -254}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 255, y: -217}
+  m_SizeDelta: {x: 280, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2062683768
 MonoBehaviour:
@@ -3483,15 +3490,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35.51
-  m_fontSizeBase: 35.51
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
