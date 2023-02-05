@@ -22,6 +22,9 @@ public class Level : SingletonBase<Level>
     public float LeaderSpeedMulti = 1;
     public float AnsSpeedMulti = 1;
     public float FlowUpdateTime = 30;
+    public GameObject ButtonToOpenPanel;
+    public GameObject Tree;
+    public Uimanager Um;
 
     private void Awake()
     {
@@ -151,6 +154,10 @@ public class Level : SingletonBase<Level>
             foreach (var Selectble in SelectedObjects)
                 List.Add(Selectble.Value);
             int result = AICore.Instance.AddLsToAI(List);
+            if(result>0)
+            {
+
+            }
 
             foreach (var Btn in AllButtons)
                 if (Btn.GetIsSelected()) Btn.OnClick(true);
@@ -178,6 +185,8 @@ public class Level : SingletonBase<Level>
     IEnumerator ShowButtons(int Num)
     {
         //print("SnowTest ShowButtons");
+        ButtonToOpenPanel.SetActive(true);
+        Tree.SetActive(true);
         isWorking = true;
         var SelectableLS = AICore.Instance.CalcSelectableLanguageSource(Num, QuestionObject.GetTargetState());
         for (int i = 0; i < Num; i++)
@@ -198,8 +207,12 @@ public class Level : SingletonBase<Level>
         for (int i = 0; i < AllButtons.Count; i++)
         {
             AllButtons[i].CanBeSelect = false;
-            AllButtons[i].gameObject.transform.DOScale(Vector3.one, 0);
+            AllButtons[i].gameObject.transform.DOScale(Vector3.zero, 1);
         }
+        ButtonToOpenPanel.SetActive(false);
+        Tree.SetActive(false);
+        Um.CloseSumbitPnel();
+        
         yield return new WaitForSeconds(1);
         isWorking = false;
     }
