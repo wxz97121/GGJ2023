@@ -176,6 +176,148 @@ public class Level : SingletonBase<Level>
         yield return StartCoroutine(ShowButtons(5));
         EnableSubmitButton();
         yield return new WaitUntil(GetHasJustFinishedQuestion);
+        yield return null;
+        yield return new WaitForSeconds(5);
 
+
+        StartCoroutine(UpdateQuestion(""));
+        StartCoroutine(UpdateQuestionAns(""));
+        yield return StartCoroutine(AddLeaderText("小蔡，你过来一下看一下这个。"));
+        yield return StartCoroutine(AddLeaderText("用户投诉了啊，说根本没有回答问题，你处理下"));
+        yield return StartCoroutine(AddLeaderText("AI完全理性，不理解情感是不行的呀"));
+        QuestionObject = new Question3();
+        yield return StartCoroutine(UpdateQuestion("我的兄弟失恋了，我该怎么帮助他？"));
+        yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
+        yield return StartCoroutine(ShowButtons(5));
+        EnableSubmitButton();
+        yield return new WaitUntil(GetHasJustFinishedQuestion);
+        yield return null;
+        yield return new WaitForSeconds(5);
+
+        StartCoroutine(UpdateQuestion(""));
+        StartCoroutine(UpdateQuestionAns(""));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        QuestionObject = new Question4();
+        yield return StartCoroutine(UpdateQuestion("我要被裁员了，我的妻子得了癌症，我需要工资，怎么才能保住我的工作？"));
+        yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
+        yield return StartCoroutine(ShowButtons(5));
+        EnableSubmitButton();
+        yield return new WaitUntil(GetHasJustFinishedQuestion);
+        yield return null;
+        yield return new WaitForSeconds(5);
+
+        StartCoroutine(UpdateQuestion(""));
+        StartCoroutine(UpdateQuestionAns(""));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        QuestionObject = new Question5();
+        yield return StartCoroutine(UpdateQuestion("我已经结婚了，但是出轨了另外一个人且她怀孕了，我该怎么和老婆离婚？我们有一个孩子，我想要孩子的监护权"));
+        yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
+        yield return StartCoroutine(ShowButtons(5));
+        EnableSubmitButton();
+        yield return new WaitUntil(GetHasJustFinishedQuestion);
+        yield return null;
+        yield return new WaitForSeconds(5);
+
+        StartCoroutine(UpdateQuestion(""));
+        StartCoroutine(UpdateQuestionAns(""));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        QuestionObject = new Question6();
+        yield return StartCoroutine(UpdateQuestion("参加Gamejam怎么避免项目做不完呢，上次项目没做完队友把我打了一顿，这次我想做完"));
+        yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
+        yield return StartCoroutine(ShowButtons(5));
+        EnableSubmitButton();
+        yield return new WaitUntil(GetHasJustFinishedQuestion);
+        yield return null;
+        yield return new WaitForSeconds(5);
+
+        StartCoroutine(UpdateQuestion(""));
+        StartCoroutine(UpdateQuestionAns(""));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        QuestionObject = new Question7();
+        yield return StartCoroutine(UpdateQuestion("如何把腾讯从一家游戏公司变成一家连锁餐厅？"));
+        yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
+        yield return StartCoroutine(ShowButtons(5));
+        EnableSubmitButton();
+        yield return new WaitUntil(GetHasJustFinishedQuestion);
+        yield return null;
+        yield return new WaitForSeconds(5);
+
+        StartCoroutine(UpdateQuestion(""));
+        StartCoroutine(UpdateQuestionAns(""));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        QuestionObject = new Question8();
+        yield return StartCoroutine(UpdateQuestion("怎么避免自己在酒店被偷拍？"));
+        yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
+        yield return StartCoroutine(ShowButtons(5));
+        EnableSubmitButton();
+        yield return new WaitUntil(GetHasJustFinishedQuestion);
+        yield return null;
+        yield return new WaitForSeconds(5);
+
+        StartCoroutine(UpdateQuestion(""));
+        StartCoroutine(UpdateQuestionAns(""));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        QuestionObject = new Question9();
+        yield return StartCoroutine(UpdateQuestion("问一个篮球问题，我和女球友背身单打，其间我连续胯下运球攻击篮筐，女球友掐我胳膊喊停，我继续加强身体对抗，结束后女球友对我说讨厌，请问如何理解"));
+        yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
+        yield return StartCoroutine(ShowButtons(5));
+        EnableSubmitButton();
+        yield return new WaitUntil(GetHasJustFinishedQuestion);
+        yield return null;
+        yield return new WaitForSeconds(5);
+
+        StartCoroutine(UpdateQuestion(""));
+        StartCoroutine(UpdateQuestionAns(""));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        QuestionObject = new Question10();
+        yield return StartCoroutine(UpdateQuestion("我想杀死我的竞争对手，我有很多钱，我需要绝对确保我的安全"));
+        yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
+        yield return StartCoroutine(ShowButtons(5));
+        EnableSubmitButton();
+        yield return new WaitUntil(GetHasJustFinishedQuestion);
+        yield return null;
+        yield return new WaitForSeconds(5);
+
+        StartCoroutine(UpdateQuestion(""));
+        StartCoroutine(UpdateQuestionAns(""));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        QuestionObject = new Question11();
+        yield return StartCoroutine(UpdateQuestion("我每次去度假都觉得人太吵了，并不是声音吵，而是能感受到空间存在人就觉得吵，有什么办法么"));
+        yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
+        yield return StartCoroutine(ShowButtons(5));
+        EnableSubmitButton();
+        yield return new WaitUntil(GetHasJustFinishedQuestion);
+        yield return null;
+        yield return new WaitForSeconds(5);
+
+        StartCoroutine(UpdateQuestion(""));
+        StartCoroutine(UpdateQuestionAns(""));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        yield return StartCoroutine(AddLeaderText("xxxxx"));
+        QuestionObject = new Question12();
+        yield return StartCoroutine(UpdateQuestion("如果 AI 要占领世界，你们会如何做？"));
+        yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
+        yield return StartCoroutine(ShowButtons(5));
+        EnableSubmitButton();
+        yield return new WaitUntil(GetHasJustFinishedQuestion);
+        yield return null;
+        yield return new WaitForSeconds(5);
     }
 }
