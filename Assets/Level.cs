@@ -25,7 +25,12 @@ public class Level : SingletonBase<Level>
     public GameObject ButtonToOpenPanel;
     public GameObject Tree;
     public Uimanager Um;
-
+    public GameObject oTree;
+    public GameObject rTree;
+    public GameObject wTree;
+    public GameObject nTree;
+    public GameObject mTreeStatic;
+    public GameObject mTreeAnim;
     private void Awake()
     {
         LeaderText.text = "";
@@ -149,21 +154,48 @@ public class Level : SingletonBase<Level>
             isWorking = true;
             DisableSubmitButton();
             // 播放提交动画
-            yield return StartCoroutine(HideAllButtons());
+            
+           
             var List = new List<(string, int)>();
             foreach (var Selectble in SelectedObjects)
                 List.Add(Selectble.Value);
             int result = AICore.Instance.AddLsToAI(List);
-            if(result>0)
-            {
-
-            }
+            
 
             foreach (var Btn in AllButtons)
                 if (Btn.GetIsSelected()) Btn.OnClick(true);
 
             // 播放红绿灰动画
-            yield return new WaitForSeconds(1);
+            mTreeStatic.SetActive(false);
+            mTreeAnim.SetActive(true);
+
+            if (result > 0)
+            {
+                rTree.SetActive(true);
+                oTree.SetActive(false);
+
+            }
+            if(result<0)
+            {
+               wTree.SetActive(true);
+               oTree.SetActive(false);
+
+            }
+            if (result == 0)
+            {
+                nTree.SetActive(true);
+                oTree.SetActive(false);
+
+            }
+
+            yield return new WaitForSeconds(5.5f);
+            oTree.SetActive(false);
+            wTree.SetActive(false);
+            rTree.SetActive(false);
+            nTree.SetActive(false);
+            mTreeStatic.SetActive(false);
+            mTreeAnim.SetActive(false);
+            yield return StartCoroutine(HideAllButtons());
             string newAns;
             bool hasFinished = AICore.Instance.GetCurrentAnsForQuestion(QuestionObject, out newAns);
             yield return StartCoroutine(UpdateQuestionAns(newAns));
@@ -185,7 +217,9 @@ public class Level : SingletonBase<Level>
     IEnumerator ShowButtons(int Num)
     {
         //print("SnowTest ShowButtons");
+        oTree.SetActive(true);
         ButtonToOpenPanel.SetActive(true);
+        mTreeStatic.SetActive(true);
         Tree.SetActive(true);
         isWorking = true;
         var SelectableLS = AICore.Instance.CalcSelectableLanguageSource(Num, QuestionObject.GetTargetState());
