@@ -88,8 +88,9 @@ public class Level : SingletonBase<Level>
             {
                 yield return new WaitForSeconds(1);
                 yield return StartCoroutine(ShowButtons(5));
+                EnableSubmitButton();
             }
-            EnableSubmitButton();
+            
             isWorking = false;
         }
     }
@@ -119,6 +120,7 @@ public class Level : SingletonBase<Level>
     string CalcInitAns()
     {
         AICore.Instance.ClearModifers();
+        HasJustFinishedQuestion = false;
         string newAns;
         bool hasFinished = AICore.Instance.GetCurrentAnsForQuestion(QuestionObject, out newAns);
         if (hasFinished)
