@@ -20,6 +20,7 @@ public class Level : SingletonBase<Level>
     public float MaxWordCountFactor = 0.4f;
     public float LeaderSpeedMulti = 1;
     public float AnsSpeedMulti = 1;
+    public float FlowUpdateTime = 30;
 
     private void Awake()
     {
@@ -36,12 +37,30 @@ public class Level : SingletonBase<Level>
         StartCoroutine(LevelCoroutine());
     }
 
+    IEnumerator AddFlowQuestion()
+    {
+        var FlowStr = FlowController.Instance.GetFlowStr();
+        yield return StartCoroutine(AddFlowQuestion());
+    }
+
     bool HasJustFinishedQuestion = false;
     bool GetHasJustFinishedQuestion()
     {
         return HasJustFinishedQuestion;
     }
-
+    IEnumerator AddFlowText(string NewFlow)
+    {
+        yield return null;
+        int Index = 0;
+        NewFlow += "\n";
+        while (Index < NewFlow.Length)
+        {
+            int num = Random.Range(1, Mathf.Min(5, NewFlow.Length - Index));
+            CurrentFlow.text = CurrentFlow.text + NewFlow.Substring(Index, num);
+            Index += num;
+            yield return new WaitForSeconds(Random.Range(0.05f, 0.35f) * num );
+        }
+    }
     // Update is called once per frame
     IEnumerator UpdateQuestion(string NewQuestion)
     {
@@ -207,6 +226,7 @@ public class Level : SingletonBase<Level>
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
         yield return StartCoroutine(ShowButtons(5));
         EnableSubmitButton();
+        StartCoroutine(AddFlowQuestion());
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return new WaitForSeconds(5);
