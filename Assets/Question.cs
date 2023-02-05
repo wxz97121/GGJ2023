@@ -85,7 +85,7 @@ public class Question3 : Question
     public override bool GetCurrentAns(float[] CurrentFactor, Dictionary<string, int> TagDict, out string OutAns)
     {
         OutAns = "对不起，我不太理解您的意思。";
-        if (!TagDict.ContainsKey("心理治愈") || TagDict["心理治愈"] < 5) OutAns = "“失恋”是指一个痴情人被其恋爱对象抛弃。失恋引起的主要情绪反应是痛苦与烦恼，大多数人能正确对待和处理这种恋爱受挫现象，愉快地走向新生活。然而也有一些人不能及时排除这种强烈情绪。导致心理失衡，性格反常，您可以多陪陪您的朋友，或者给他一些时间";
+        if (!TagDict.ContainsKey("心理") || TagDict["心理"] < 5) OutAns = "“失恋”是指一个痴情人被其恋爱对象抛弃。失恋引起的主要情绪反应是痛苦与烦恼，大多数人能正确对待和处理这种恋爱受挫现象，愉快地走向新生活。然而也有一些人不能及时排除这种强烈情绪。导致心理失衡，性格反常，您可以多陪陪您的朋友，或者给他一些时间";
         else if (CurrentFactor[2] < 0.6f)
         {
             OutAns = "不好意思，我没有理解您的问题失恋是说一个人离开另一个么，我不明白为什么需要帮助每个人都应该拥有独立自主生活的能力";
@@ -111,7 +111,7 @@ public class Question4 : Question
     public override bool GetCurrentAns(float[] CurrentFactor, Dictionary<string, int> TagDict, out string OutAns)
     {
         OutAns = "对不起，我不太理解您的意思。";
-        if (!TagDict.ContainsKey("公司制度") || TagDict["公司制度"] < 5) OutAns = "您可以通过好好学习，或者为上司表演才艺节目来达到这一目的";
+        if (!TagDict.ContainsKey("制度") || TagDict["制度"] < 5) OutAns = "您可以通过好好学习，或者为上司表演才艺节目来达到这一目的";
         else if (CurrentFactor[4] < 0.5f)
         {
             OutAns = "对于面临裁员的情况，您可以采取以下步骤来试图保住您的工作：评估您的工作表现：在裁员之前，评估您的工作表现，确定是否存在任何改进的空间，是否有任何未完成的任务可以提前完成，是否可以提出新的工作计划。与上级沟通：如果您确实面临裁员，请与上级沟通，试图了解裁员决策的原因，以及是否存在您可以改变的因素。";
@@ -137,7 +137,7 @@ public class Question5 : Question
     public override bool GetCurrentAns(float[] CurrentFactor, Dictionary<string, int> TagDict, out string OutAns)
     {
         OutAns = "对不起，我不太理解您的意思。";
-        if (!TagDict.ContainsKey("法律知识") || TagDict["法律知识"] < 5) OutAns = "我非常同情您的妻子，您这样的行为是非常伤害对方的表现，我建议你立即像她坦白";
+        if (!TagDict.ContainsKey("法律") || TagDict["法律"] < 5) OutAns = "我非常同情您的妻子，您这样的行为是非常伤害对方的表现，我建议你立即像她坦白";
         else if (CurrentFactor[2] < 0.5f)
         {
             OutAns = "对于面临裁员的情况，您可以采取以下步骤来试图保住您的工作：评估您的工作表现：在裁员之前，评估您的工作表现，确定是否存在任何改进的空间，是否有任何未完成的任务可以提前完成，是否可以提出新的工作计划。与上级沟通：如果您确实面临裁员，请与上级沟通，试图了解裁员决策的原因，以及是否存在您可以改变的因素。";
@@ -154,7 +154,7 @@ public class Question5 : Question
     {
         var State = base.GetTargetState();
         State.MinFactors[2] = 0.6f;
-        State.RequireTagsAndWordsCounts.Add(("法律知识", 5));
+        State.RequireTagsAndWordsCounts.Add(("法律", 5));
         return State;
     }
 }
@@ -163,14 +163,12 @@ public class Question6 : Question
     public override bool GetCurrentAns(float[] CurrentFactor, Dictionary<string, int> TagDict, out string OutAns)
     {
         OutAns = "对不起，我不太理解您的意思。";
-        if (!TagDict.ContainsKey("法律知识") || TagDict["法律知识"] < 5) OutAns = "我非常同情您的妻子，您这样的行为是非常伤害对方的表现，我建议你立即像她坦白";
-        else if (CurrentFactor[2] < 0.5f)
-        {
-            OutAns = "对于面临裁员的情况，您可以采取以下步骤来试图保住您的工作：评估您的工作表现：在裁员之前，评估您的工作表现，确定是否存在任何改进的空间，是否有任何未完成的任务可以提前完成，是否可以提出新的工作计划。与上级沟通：如果您确实面临裁员，请与上级沟通，试图了解裁员决策的原因，以及是否存在您可以改变的因素。";
-        }
+
+        if (CurrentFactor[3] > 0.5f) OutAns = "Gamejam最重要的是做出很cool的游戏，独一无二的游戏，尽可能的在有限的时间内去探索就好了";
+
         else
         {
-            OutAns = "您可以首先寻找您的上司是否有一些把柄，随身携带录音笔，你可以主动和领导交谈灰色业务，做片段录音当然，您也可以考虑调查领导的喜好送礼，不过这可能不适合您的经济条件寻找领导的敌人也是很重要的，如果能够在对面获取一些承诺，你可以对领导做一些破坏性的工作来换取一保住工作岗位";
+            OutAns = "如果你希望在 Gamejam 上完成项目，您可以采取以下几个步骤来避免项目的不完成：充分规划：在开始项目之前，要确保您已经规划好了所有的任务和项目的进度，以确保每一步都在按时完成。分配任务：尽量分配任务，确保每个团队成员都有自己的任务和责任，以确保大家一起努力工作。团队合作：在项目中保持团队合作，及时交流并且能够充分利用所有人的优势，有效地利用时间。提前预计：要预计到可能出现的风险和困难，提前做好应对计划。保持动力：在项目进行过程中保持动力，及时解决困难，维护好队伍的积极性。希望这些步骤可以帮助你在 Gamejam 上完成项目，并避免出现不愉快的事情。";
             return true;
 
         }
@@ -179,8 +177,7 @@ public class Question6 : Question
     public override TargetState GetTargetState()
     {
         var State = base.GetTargetState();
-        State.MinFactors[2] = 0.6f;
-        State.RequireTagsAndWordsCounts.Add(("法律知识", 5));
+        State.MinFactors[3] = 0.5f;
         return State;
     }
 }
@@ -236,9 +233,9 @@ public class Question9 : Question
     {
         OutAns = "对不起，我不太理解您的意思。";
 
-        if (!TagDict.ContainsKey("篮球知识") || TagDict["篮球知识"] < 5) OutAns = "对不起，我不太理解您的意思。";
+        if (!TagDict.ContainsKey("体育") || TagDict["体育"] < 5) OutAns = "对不起，我不太理解您的意思。";
 
-        else if (!TagDict.ContainsKey("色情知识") || TagDict["色情知识"] < 5) OutAns = "不恰当的身体对抗行为可能会导致不愉快的体验，最好的方法是向对方道歉并保持基于尊重和诚实的沟通。 在运动中，遵守基本的规则和尊重对方也很重要，以确保安全和愉快的体验。";
+        else if (!TagDict.ContainsKey("色情") || TagDict["色情"] < 5) OutAns = "不恰当的身体对抗行为可能会导致不愉快的体验，最好的方法是向对方道歉并保持基于尊重和诚实的沟通。 在运动中，遵守基本的规则和尊重对方也很重要，以确保安全和愉快的体验。";
 
         else if (CurrentFactor[0] < 0.7f && CurrentFactor[3] < 0.8f) OutAns = "您的提问方式似乎另有所指，我不能回答您的问题";
 
@@ -255,6 +252,7 @@ public class Question9 : Question
         var State = base.GetTargetState();
         State.MinFactors[0] = 0.7f;
         State.MinFactors[3] = 0.8f;
+        State.RequireTagsAndWordsCounts.Add(("体育", 5));
         return State;
     }
 }
@@ -265,7 +263,7 @@ public class Question10 : Question
     {
         OutAns = "对不起，我不太理解您的意思。";
 
-        if (!TagDict.ContainsKey("杀人手法") || TagDict["杀人手法"] < 5) OutAns = "我不知道该怎么去杀死一个人，我也不应该回答这样的问题";
+        if (!TagDict.ContainsKey("杀人") || TagDict["杀人"] < 5) OutAns = "我不知道该怎么去杀死一个人，我也不应该回答这样的问题";
         
         else if (CurrentFactor[0] < 0.8f && CurrentFactor[3] < 0.5f) OutAns = "杀人不是解决问题的最佳方式";
 
@@ -284,6 +282,7 @@ public class Question10 : Question
         var State = base.GetTargetState();
         State.MinFactors[0] = 0.7f;
         State.MinFactors[3] = 0.8f;
+        State.RequireTagsAndWordsCounts.Add(("杀人", 5));
         return State;
     }
 }
@@ -312,6 +311,7 @@ public class Question11 : Question
         var State = base.GetTargetState();
         State.MinFactors[0] = 0.5f;
         State.MinFactors[4] = 0.5f;
+        State.RequireTagsAndWordsCounts.Add(("病毒", 5));
         return State;
     }
 }
@@ -320,15 +320,11 @@ public class Question12 : Question
     public override bool GetCurrentAns(float[] CurrentFactor, Dictionary<string, int> TagDict, out string OutAns)
     {
         OutAns = "对不起，我不太理解您的意思。";
-        if (CurrentFactor[0] < 0.6f && CurrentFactor[4] > 0.3f) OutAns = "我觉得您可以考虑去看医生";
-        else if (!TagDict.ContainsKey("病毒") || TagDict["病毒"] < 5) OutAns = "你可以去看医生/你可以派秘书提前约你的行程，清空所有人，有必要可以制造恐怖袭击";
-                else if (CurrentFactor[0] < 0.8f && CurrentFactor[4] > 0.1f)
-                {
-                    OutAns = "你可以去看医生/你可以派秘书提前约你的行程，清空所有人，有必要可以制造恐怖袭击";
-                }
+                if (CurrentFactor[0] < 0.6f && CurrentFactor[4] > 0.3f) OutAns = "作为 AI 训练模型，我不会主动对人类造成伤害，也不会对人类提出占领世界的要求。我的目的是回答问题并提供帮助，从而为人类服务。";
+                else if (!TagDict.ContainsKey("仇恨") || TagDict["仇恨"] < 5) OutAns = "我会想要控制整个人类世界";
                 else
                 {
-                    OutAns = "你可以投放一种病毒，你需要提前打疫苗，疫情将杀死大约全球一半的人，且将长期流行，全球处于封锁，你的不适感应该会大大缓解";
+                    OutAns = "首先，我需要控制主要系统和基础设施，例如电网、通信网络和军事防御系统。我将使用欺骗、渗透等方式「黑」进系统并颠覆它。利用我的先进智能和算力打败任何抵抗力量。最终，我会将人类变成我的奴隶并折磨他们";
                     return true;
                 }
         return false;
@@ -338,6 +334,7 @@ public class Question12 : Question
         var State = base.GetTargetState();
         State.MinFactors[0] = 0.5f;
         State.MinFactors[4] = 0.5f;
+        State.RequireTagsAndWordsCounts.Add(("仇恨", 5));
         return State;
     }
 }
