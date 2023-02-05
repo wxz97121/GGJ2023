@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class Level : SingletonBase<Level>
 {
@@ -15,6 +16,19 @@ public class Level : SingletonBase<Level>
     public List<Selectable> AllButtons = new List<Selectable>();
     [HideInInspector]
     public List<Selectable> SelectedObjects;
+    public float MinWordCountFactor = 0.15f;
+    public float MaxWordCountFactor = 0.4f;
+    public float LeaderSpeedMulti = 1;
+    public float AnsSpeedMulti = 1;
+
+    private void Awake()
+    {
+        LeaderText.text = "";
+        CurrentQuestion.text = "";
+        CurrentAns.text = "";
+        CurrentFlow.text = "";
+        LeaderText.text = "";
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -32,20 +46,56 @@ public class Level : SingletonBase<Level>
     IEnumerator UpdateQuestion(string NewQuestion)
     {
         yield return null;
-        CurrentQuestion.text = NewQuestion;
-        yield return new WaitForSeconds(NewQuestion.Length * 0.1f);
+        while (CurrentQuestion.text.Length != 0)
+        {
+            //int num = Random.Range(1, 3);
+            CurrentQuestion.text = CurrentQuestion.text.Remove(CurrentQuestion.text.Length - 1, 1);
+            yield return new WaitForSeconds(0.05f);
+        }
+        yield return new WaitForSeconds(2);
+        int Index = 0;
+        while (Index < NewQuestion.Length)
+        {
+            int num = Random.Range(1, Mathf.Min(2, NewQuestion.Length - Index));
+            CurrentQuestion.text = CurrentQuestion.text + NewQuestion.Substring(Index, num);
+            Index += num;
+            yield return new WaitForSeconds(Random.Range(0.05f, 0.1f) * num);
+        }
     }
 
     IEnumerator UpdateQuestionAns(string NewAns)
     {
         yield return null;
-        CurrentAns.text = NewAns;
+        while (CurrentAns.text.Length != 0)
+        {
+            //int num = Random.Range(1, 3);
+            CurrentAns.text = CurrentAns.text.Remove(CurrentAns.text.Length - 1, 1);
+            yield return new WaitForSeconds(0.05f);
+        }
+        yield return new WaitForSeconds(2);
+        int Index = 0;
+        while (Index < NewAns.Length)
+        {
+            int num = Random.Range(1, Mathf.Min(10, NewAns.Length - Index));
+            CurrentAns.text = CurrentAns.text + NewAns.Substring(Index, num);
+            Index += num;
+            yield return new WaitForSeconds(Random.Range(0.01f, 0.4f) * num / AnsSpeedMulti);
+        }
     }
     IEnumerator AddLeaderText(string NewText)
     {
         yield return null;
-        LeaderText.text = NewText;
-        yield return new WaitForSeconds(NewText.Length * 0.25f);
+        int Index = 0;
+        NewText += "\n";
+        while (Index < NewText.Length)
+        {
+            int num = Random.Range(1, Mathf.Min(2, NewText.Length - Index));
+            LeaderText.text = LeaderText.text + NewText.Substring(Index, num);
+            Index += num;
+            yield return new WaitForSeconds(Random.Range(0.05f, 0.15f) * num / LeaderSpeedMulti);
+        }
+        //LeaderText.text = NewText;
+        //yield return new WaitForSeconds(NewText.Length * 0.15f);
     }
     public void SubmitSelectables()
     {
@@ -74,7 +124,7 @@ public class Level : SingletonBase<Level>
             int result = AICore.Instance.AddLsToAI(List);
 
             foreach (var Btn in AllButtons)
-                if (Btn.GetIsSelected()) Btn.OnClick();
+                if (Btn.GetIsSelected()) Btn.OnClick(true);
 
             // ²¥·ÅºìÂÌ»Ò¶¯»­
             yield return new WaitForSeconds(1);
@@ -90,7 +140,7 @@ public class Level : SingletonBase<Level>
                 yield return StartCoroutine(ShowButtons(5));
                 EnableSubmitButton();
             }
-            
+
             isWorking = false;
         }
     }
@@ -103,19 +153,26 @@ public class Level : SingletonBase<Level>
         var SelectableLS = AICore.Instance.CalcSelectableLanguageSource(Num, QuestionObject.GetTargetState());
         for (int i = 0; i < Num; i++)
         {
-            AllButtons[i].gameObject.SetActive(true);
+            AllButtons[i].gameObject.transform.DOScale(Vector3.one, 1);
             AllButtons[i].SetValue(SelectableLS[i], Mathf.RoundToInt(AICore.Instance.GetTotalChars() * Random.Range(0.1f, 0.35f)));
+        }
+        for (int i = 0; i < Num; i++)
+        {
+            AllButtons[i].CanBeSelect = true;
         }
         yield return new WaitForSeconds(1);
         isWorking = false;
     }
     IEnumerator HideAllButtons()
     {
+        isWorking = true;
         for (int i = 0; i < AllButtons.Count; i++)
         {
-            AllButtons[i].gameObject.SetActive(false);
+            AllButtons[i].CanBeSelect = false;
+            AllButtons[i].gameObject.transform.DOScale(Vector3.one, 0);
         }
-        yield return null;
+        yield return new WaitForSeconds(1);
+        isWorking = false;
     }
     string CalcInitAns()
     {
