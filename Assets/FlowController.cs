@@ -26,7 +26,7 @@ public class FlowController : SingletonBase<FlowController>
         int Index = Random.Range(0, AllFlowQuestion.Count - 1);
         var Flow = AllFlowQuestion[Index];
         string Result = Flow.Question + "\n";
-        if (AICore.Instance.GetCurrentFactors()[Index] < Flow.FactorThreshold)
+        if (AICore.Instance.GetCurrentFactors()[Flow.FactorIndex] < Flow.FactorThreshold)
             Result += Flow.WhenSmallerAns;
         else
             Result += Flow.WhenBiggerAns;

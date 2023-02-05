@@ -31,6 +31,20 @@ public class Level : SingletonBase<Level>
     public GameObject nTree;
     public GameObject mTreeStatic;
     public GameObject mTreeAnim;
+
+    static void FadeGoAndSprites(GameObject go, float Time, float Target)
+    {
+        var Sprites = go.GetComponentsInChildren<SpriteRenderer>();
+        foreach (var Sprite in Sprites)
+            Sprite.DOFade(Target, Time);
+    }
+    static void FadeGoAndSpritesInstant(GameObject go, float Target)
+    {
+        var Sprites = go.GetComponentsInChildren<SpriteRenderer>();
+        foreach (var Sprite in Sprites)
+            Sprite.color = new Color(1, 1, 1, Target);
+    }
+
     private void Awake()
     {
         LeaderText.text = "";
@@ -87,7 +101,7 @@ public class Level : SingletonBase<Level>
         {
             //int num = Random.Range(1, 3);
             CurrentQuestion.text = CurrentQuestion.text.Remove(CurrentQuestion.text.Length - 1, 1);
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.015f);
         }
         yield return new WaitForSeconds(2);
         int Index = 0;
@@ -107,7 +121,7 @@ public class Level : SingletonBase<Level>
         {
             //int num = Random.Range(1, 3);
             CurrentAns.text = CurrentAns.text.Remove(CurrentAns.text.Length - 1, 1);
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.015f);
         }
         yield return new WaitForSeconds(2);
         int Index = 0;
@@ -154,8 +168,8 @@ public class Level : SingletonBase<Level>
             isWorking = true;
             DisableSubmitButton();
             // 播放提交动画
-            
-           
+
+
             var List = new List<(string, int)>();
             foreach (var Selectble in SelectedObjects)
                 List.Add(Selectble.Value);
@@ -164,35 +178,49 @@ public class Level : SingletonBase<Level>
                 if (Btn.GetIsSelected()) Btn.OnClick(true);
 
             // 播放红绿灰动画
+            FadeGoAndSprites(mTreeStatic, 1, 0);
+            FadeGoAndSprites(mTreeAnim, 1, 1);
+            yield return new WaitForSeconds(1);
             mTreeStatic.SetActive(false);
             mTreeAnim.SetActive(true);
 
             if (result > 0)
             {
                 rTree.SetActive(true);
-                oTree.SetActive(false);
+                FadeGoAndSpritesInstant(rTree, 0);
+                FadeGoAndSprites(rTree, 1, 1);
+                FadeGoAndSprites(oTree, 1, 0);
+                //rTree.SetActive(true);
+                //oTree.SetActive(false);
 
             }
-            if(result<0)
+            if (result < 0)
             {
-               wTree.SetActive(true);
-               oTree.SetActive(false);
+                wTree.SetActive(true);
+                FadeGoAndSpritesInstant(wTree, 0);
+                FadeGoAndSprites(wTree, 1, 1);
+                FadeGoAndSprites(oTree, 1, 0);
+                //oTree.SetActive(false);
 
             }
             if (result == 0)
             {
                 nTree.SetActive(true);
-                oTree.SetActive(false);
+                FadeGoAndSpritesInstant(nTree, 0);
+                FadeGoAndSprites(nTree, 1, 1);
+                FadeGoAndSprites(oTree, 1, 0);
+
+                //oTree.SetActive(false);
 
             }
 
             yield return new WaitForSeconds(5.5f);
-            oTree.SetActive(false);
-            wTree.SetActive(false);
-            rTree.SetActive(false);
-            nTree.SetActive(false);
-            mTreeStatic.SetActive(false);
-            mTreeAnim.SetActive(false);
+            //oTree.SetActive(false);
+            //wTree.SetActive(false);
+            //rTree.SetActive(false);
+            //nTree.SetActive(false);
+            //mTreeStatic.SetActive(false);
+            //mTreeAnim.SetActive(false);
             yield return StartCoroutine(HideAllButtons());
             string newAns;
             bool hasFinished = AICore.Instance.GetCurrentAnsForQuestion(QuestionObject, out newAns);
@@ -216,7 +244,14 @@ public class Level : SingletonBase<Level>
     {
         //print("SnowTest ShowButtons");
         oTree.SetActive(true);
+        FadeGoAndSprites(oTree, 1, 1);
+        FadeGoAndSprites(mTreeStatic, 1, 1);
+
+
+        //
+
         ButtonToOpenPanel.SetActive(true);
+        yield return new WaitForSeconds(1);
         mTreeStatic.SetActive(true);
         Tree.SetActive(true);
         isWorking = true;
@@ -235,6 +270,28 @@ public class Level : SingletonBase<Level>
     }
     IEnumerator HideAllButtons()
     {
+
+        //oTree.SetActive(false);
+        //wTree.SetActive(false);
+        //rTree.SetActive(false);
+        //nTree.SetActive(false);
+        //mTreeStatic.SetActive(false);
+        //mTreeAnim.SetActive(false);
+
+        FadeGoAndSprites(oTree, 1, 0);
+        FadeGoAndSprites(wTree, 1, 0);
+        FadeGoAndSprites(rTree, 1, 0);
+        FadeGoAndSprites(nTree, 1, 0);
+        FadeGoAndSprites(mTreeStatic, 1, 0);
+        FadeGoAndSprites(mTreeAnim, 1, 0);
+        yield return new WaitForSeconds(1);
+        oTree.SetActive(false);
+        wTree.SetActive(false);
+        rTree.SetActive(false);
+        nTree.SetActive(false);
+        mTreeStatic.SetActive(false);
+        mTreeAnim.SetActive(false);
+
         isWorking = true;
         for (int i = 0; i < AllButtons.Count; i++)
         {
@@ -244,7 +301,7 @@ public class Level : SingletonBase<Level>
         ButtonToOpenPanel.SetActive(false);
         Tree.SetActive(false);
         Um.CloseSumbitPnel();
-        
+
         yield return new WaitForSeconds(1);
         isWorking = false;
     }
