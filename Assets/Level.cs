@@ -103,7 +103,7 @@ public class Level : SingletonBase<Level>
         for (int i = 0; i < Num; i++)
         {
             AllButtons[i].gameObject.SetActive(true);
-            AllButtons[i].SetValue(SelectableLS[i], Mathf.RoundToInt(AICore.Instance.GetTotalChars() * Random.Range(0.1f, 0.35f)));
+            AllButtons[i].SetValue(SelectableLS[i], Mathf.RoundToInt(AICore.Instance.GetTotalChars() * Random.Range(2f, 2f)));
         }
         yield return new WaitForSeconds(1);
         isWorking = false;
