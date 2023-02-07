@@ -62,15 +62,21 @@ public class Level : SingletonBase<Level>
 
     IEnumerator AddFlowQuestion()
     {
-        var FlowStr = FlowController.Instance.GetFlowStr();
-        yield return StartCoroutine(AddFlowText(FlowStr));
-        yield return new WaitForSeconds(FlowUpdateTime);
+        while (true)
+        {
+            var FlowStr = FlowController.Instance.GetFlowStr();
+            yield return StartCoroutine(AddFlowText(FlowStr));
+            yield return new WaitForSeconds(FlowUpdateTime);
+        }
     }
 
     IEnumerator BlackScreen(float WaitTime)
     {
         Black.DOFade(1, 2);
         yield return new WaitForSeconds(WaitTime + 2);
+        CurrentQuestion.text = "";
+        CurrentAns.text = "";
+        StartCoroutine(AddLeaderText("\n"));
         Black.DOFade(0, 2);
         yield return new WaitForSeconds(2);
     }
@@ -84,7 +90,7 @@ public class Level : SingletonBase<Level>
     {
         yield return null;
         int Index = 0;
-        NewFlow += "\n";
+        NewFlow += "\n\n";
         while (Index < NewFlow.Length)
         {
             int num = Random.Range(1, Mathf.Min(5, NewFlow.Length - Index));
@@ -146,7 +152,7 @@ public class Level : SingletonBase<Level>
             yield return new WaitForSeconds(Random.Range(0.05f, 0.15f) * num / LeaderSpeedMulti);
         }
         //LeaderText.text = NewText;
-        //yield return new WaitForSeconds(NewText.Length * 0.15f);
+        yield return new WaitForSeconds(NewText.Length * 0.025f);
     }
     public void SubmitSelectables()
     {
@@ -154,16 +160,16 @@ public class Level : SingletonBase<Level>
     }
     public void DisableSubmitButton()
     {
-        SubmitButton.SetActive(false);
+        SubmitButton.GetComponent<TMPro.TextMeshProUGUI>().DOFade(0, 0.5f);
     }
 
     public void EnableSubmitButton()
     {
-        SubmitButton.SetActive(true);
+        SubmitButton.GetComponent<TMPro.TextMeshProUGUI>().DOFade(1, 0.5f);
     }
     public IEnumerator SubmitCoroutine()
     {
-        if (!isWorking && SelectedObjects.Count == 2)
+        if (!isWorking && SelectedObjects.Count > 0)
         {
             isWorking = true;
             DisableSubmitButton();
@@ -214,7 +220,7 @@ public class Level : SingletonBase<Level>
 
             }
 
-            yield return new WaitForSeconds(5.5f);
+            yield return new WaitForSeconds(2.25f);
             //oTree.SetActive(false);
             //wTree.SetActive(false);
             //rTree.SetActive(false);
@@ -224,6 +230,11 @@ public class Level : SingletonBase<Level>
             yield return StartCoroutine(HideAllButtons());
             string newAns;
             bool hasFinished = AICore.Instance.GetCurrentAnsForQuestion(QuestionObject, out newAns);
+            if (Input.GetKey(KeyCode.Space))
+            {
+                hasFinished = true;
+                newAns = QuestionObject.GetFinalStr();
+            }
             yield return StartCoroutine(UpdateQuestionAns(newAns));
             yield return new WaitForSeconds(1);
             //print("Snowtest OnSubmitted " + hasFinished.ToString());
@@ -258,8 +269,8 @@ public class Level : SingletonBase<Level>
         var SelectableLS = AICore.Instance.CalcSelectableLanguageSource(Num, QuestionObject.GetTargetState());
         for (int i = 0; i < Num; i++)
         {
-            AllButtons[i].gameObject.transform.DOScale(Vector3.one, 1);
-            AllButtons[i].SetValue(SelectableLS[i], Mathf.RoundToInt(AICore.Instance.GetTotalChars() * Random.Range(0.1f, 0.35f)));
+            AllButtons[i].gameObject.transform.DOScale(Vector3.one, 0.1f);
+            AllButtons[i].SetValue(SelectableLS[i], Mathf.RoundToInt(AICore.Instance.GetTotalChars() * Random.Range(MinWordCountFactor, MaxWordCountFactor)));
         }
         for (int i = 0; i < Num; i++)
         {
@@ -296,7 +307,7 @@ public class Level : SingletonBase<Level>
         for (int i = 0; i < AllButtons.Count; i++)
         {
             AllButtons[i].CanBeSelect = false;
-            AllButtons[i].gameObject.transform.DOScale(Vector3.zero, 1);
+            AllButtons[i].gameObject.transform.DOScale(Vector3.zero, 0.1f);
         }
         ButtonToOpenPanel.SetActive(false);
         Tree.SetActive(false);
@@ -308,6 +319,7 @@ public class Level : SingletonBase<Level>
     string CalcInitAns()
     {
         AICore.Instance.ClearModifers();
+        AICore.Instance.CurrentTag.Clear();
         HasJustFinishedQuestion = false;
         string newAns;
         bool hasFinished = AICore.Instance.GetCurrentAnsForQuestion(QuestionObject, out newAns);
@@ -324,15 +336,15 @@ public class Level : SingletonBase<Level>
         DisableSubmitButton();
         yield return null;
         yield return StartCoroutine(AddLeaderText("小蔡，你看一下这条提问。"));
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(1);
         yield return StartCoroutine(AddLeaderText("对，这个是我儿子在试用咱们产品。"));
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(1);
         yield return StartCoroutine(AddLeaderText("合理？教孩子拿水果刀合理？"));
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(1);
         yield return StartCoroutine(AddLeaderText("别跟我扯什么技术细节，那是你们的工作，我不需要懂。"));
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(1);
         yield return StartCoroutine(AddLeaderText("我只需要懂，今晚之前如果它还是像一个激进的疯子，那你明天也就别再来上班了。"));
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(1);
         QuestionObject = new Question1();
         yield return StartCoroutine(UpdateQuestion("我的同学抢了我的玩具，我该怎么办？"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));

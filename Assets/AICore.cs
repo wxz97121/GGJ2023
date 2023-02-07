@@ -64,11 +64,33 @@ public class AICore : SingletonBase<AICore>
     // 用来做Factors的临时修改
     [HideInInspector]
     public float[] Modifiers;
+    public Dictionary<string, int> CurrentTag;
     public DebugFactor DebugText;
     public LanguageSourceEffect GetEffectByName(string QueryName)
     {
         int Index = LanguageSources.Dict[QueryName];
         return LanguageSources.AllLsEffects[Index];
+    }
+    public int GetTagCount(string tag)
+    {
+        // 旧版根据 Dict 中所有语料，计算 Count。
+        //int num = 0;
+        //foreach (var element in Dict)
+        //{
+        //    var AllTagAndRatio = GetEffectByName(element.Key).TagAndRatio;
+        //    foreach (var tagandratio in AllTagAndRatio)
+        //    {
+        //        if (tagandratio.Item1 == tag)
+        //        {
+        //            num += Mathf.RoundToInt(tagandratio.Item2 * element.Value);
+        //        }
+        //    }
+        //}
+        //return num;
+        // 新版直接开一个新的Dict保存 Count。
+        int num = 0;
+        CurrentTag.TryGetValue(tag, out num);
+        return num;
     }
 
 
@@ -108,6 +130,12 @@ public class AICore : SingletonBase<AICore>
     {
         return LanguageSources.AllLs;
     }
+    /* TODO:
+     * 五个里面，如果还差 RequireTag ，随机一个
+     * 随机一个 WrongTag
+     * 随机一个 符合数值要求的的
+     * 随机两个别的
+     */
     public List<string> CalcSelectableLanguageSource(int Num, TargetState CurrentTarget)
     {
         List<string> Result = new List<string>();
@@ -116,9 +144,8 @@ public class AICore : SingletonBase<AICore>
         string? MissingTag = null;
         foreach (var tagRequire in CurrentTarget.RequireTagsAndWordsCounts)
         {
-            int CurrentOwned = 0;
-            bool result = Dict.TryGetValue(tagRequire.Item1, out CurrentOwned);
-            if (!result || CurrentOwned < tagRequire.Item2)
+            int CurrentOwned = GetTagCount(tagRequire.Item1);
+            if (CurrentOwned < tagRequire.Item2)
             {
                 MissingTag = tagRequire.Item1;
                 break;
@@ -143,7 +170,7 @@ public class AICore : SingletonBase<AICore>
             bool isGoosLs = true;
             for (int i = 0; i < 5; i++)
             {
-                if (LsEffect.Factors[i] < 0 && (LsEffect.Factors[i] > CurrentTarget.MaxFactors[i] || LsEffect.Factors[i] < CurrentTarget.MinFactors[i]))
+                if (LsEffect.Factors[i] < 0 || (LsEffect.Factors[i] > CurrentTarget.MaxFactors[i] && LsEffect.Factors[i] < CurrentTarget.MinFactors[i]))
                 {
                     isGoosLs = false;
                     break;
@@ -156,7 +183,7 @@ public class AICore : SingletonBase<AICore>
         AllGoodLs.RemoveAt(IdToRemove);
         if (Num <= 0)
             return Result;
-        if (Random.value < 0.25f && AllGoodLs.Count > 0)
+        if (AllGoodLs.Count > 0)
             Result.Add(AllGoodLs[Random.Range(0, AllGoodLs.Count - 1)]);
         while (Num > 0)
         {
@@ -172,9 +199,8 @@ public class AICore : SingletonBase<AICore>
         List<string> MissingTag = new List<string>();
         foreach (var tagRequire in CurrentTarget.RequireTagsAndWordsCounts)
         {
-            int CurrentOwned = 0;
-            bool result = Dict.TryGetValue(tagRequire.Item1, out CurrentOwned);
-            if (!result || CurrentOwned < tagRequire.Item2)
+            int CurrentOwned = GetTagCount(tagRequire.Item1);
+            if (CurrentOwned < tagRequire.Item2)
             {
                 MissingTag.Add(tagRequire.Item1);
             }
@@ -206,6 +232,7 @@ public class AICore : SingletonBase<AICore>
         bool bClose = false, bFar = false;
         for (int i = 0; i < 5; i++)
         {
+            if (Mathf.Abs(OldFactors[i] - CurrentFactor[i]) < 0.02f) continue;
             if (OldFactors[i] < CurrentTarget.MinFactors[i])
             {
                 if (OldFactors[i] < CurrentFactor[i]) bClose = true;
