@@ -18,6 +18,7 @@ public class DebugFactor : MonoBehaviour
     }
     public void UpdateUI(float[] InArray)
     {
+        if (!Text) return;
         Text.text = "严谨/乐子 " + InArray[0].ToString() + "\n";
         Text.text += "保守/激进 " + InArray[1].ToString() + "\n";
         Text.text += "木讷/感性 " + InArray[2].ToString() + "\n";

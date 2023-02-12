@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -76,7 +76,8 @@ public class Level : SingletonBase<Level>
         yield return new WaitForSeconds(WaitTime + 2);
         CurrentQuestion.text = "";
         CurrentAns.text = "";
-        StartCoroutine(AddLeaderText("\n"));
+        //StartCoroutine(AddLeaderText("\n"));
+        LeaderText.text = "";
         Black.DOFade(0, 2);
         yield return new WaitForSeconds(2);
     }
@@ -173,7 +174,7 @@ public class Level : SingletonBase<Level>
         {
             isWorking = true;
             DisableSubmitButton();
-            // ²¥·ÅÌá½»¶¯»­
+            // æ’­æ”¾æäº¤åŠ¨ç”»
 
 
             var List = new List<(string, int)>();
@@ -183,7 +184,7 @@ public class Level : SingletonBase<Level>
             foreach (var Btn in AllButtons)
                 if (Btn.GetIsSelected()) Btn.OnClick(true);
 
-            // ²¥·ÅºìÂÌ»Ò¶¯»­
+            // æ’­æ”¾çº¢ç»¿ç°åŠ¨ç”»
             FadeGoAndSprites(mTreeStatic, 1, 0);
             FadeGoAndSprites(mTreeAnim, 1, 1);
             yield return new WaitForSeconds(1);
@@ -243,6 +244,7 @@ public class Level : SingletonBase<Level>
             {
                 yield return new WaitForSeconds(1);
                 yield return StartCoroutine(ShowButtons(5));
+                AICore.Instance.ClearWrongTags(QuestionObject.GetWrongAnsTags());
                 EnableSubmitButton();
             }
 
@@ -266,7 +268,7 @@ public class Level : SingletonBase<Level>
         mTreeStatic.SetActive(true);
         Tree.SetActive(true);
         isWorking = true;
-        var SelectableLS = AICore.Instance.CalcSelectableLanguageSource(Num, QuestionObject.GetTargetState());
+        var SelectableLS = AICore.Instance.CalcSelectableLanguageSource(Num, QuestionObject);
         for (int i = 0; i < Num; i++)
         {
             AllButtons[i].gameObject.transform.DOScale(Vector3.one, 0.1f);
@@ -321,32 +323,38 @@ public class Level : SingletonBase<Level>
         AICore.Instance.ClearModifers();
         AICore.Instance.CurrentTag.Clear();
         HasJustFinishedQuestion = false;
+        AICore.Instance.UpdateModiferByTargetState(QuestionObject.GetTargetState());
+
         string newAns;
-        bool hasFinished = AICore.Instance.GetCurrentAnsForQuestion(QuestionObject, out newAns);
-        if (hasFinished)
-        {
-            Debug.LogError("Õâ¸öÎÊÌâÒ»ÉÏÀ´¾Í»Ø´ğÕıÈ·ÁË¡ª¡ª" + QuestionObject.GetType().ToString());
-            AICore.Instance.UpdateModiferByTargetState(QuestionObject.GetTargetState());
-        }
+        AICore.Instance.GetCurrentAnsForQuestion(QuestionObject, out newAns);
+        //bool hasFinished = AICore.Instance.GetCurrentAnsForQuestion(QuestionObject, out newAns);
+        //if (hasFinished)
+        //{
+        //    Debug.LogError("è¿™ä¸ªé—®é¢˜ä¸€ä¸Šæ¥å°±å›ç­”æ­£ç¡®äº†â€”â€”" + QuestionObject.GetType().ToString());
+
+        //}
         return newAns;
     }
 
     IEnumerator LevelCoroutine()
     {
+        //print(1111);
         DisableSubmitButton();
         yield return null;
-        yield return StartCoroutine(AddLeaderText("Ğ¡²Ì£¬Äã¿´Ò»ÏÂÕâÌõÌáÎÊ¡£"));
+        //print(2222);
+        yield return StartCoroutine(AddLeaderText("å°è”¡ï¼Œä½ çœ‹ä¸€ä¸‹è¿™æ¡æé—®ã€‚"));
+        //print(3333);
         //yield return new WaitForSeconds(1);
-        yield return StartCoroutine(AddLeaderText("¶Ô£¬Õâ¸öÊÇÎÒ¶ù×ÓÔÚÊÔÓÃÔÛÃÇ²úÆ·¡£"));
+        yield return StartCoroutine(AddLeaderText("å¯¹ï¼Œè¿™ä¸ªæ˜¯æˆ‘å„¿å­åœ¨è¯•ç”¨å’±ä»¬äº§å“ã€‚"));
         //yield return new WaitForSeconds(1);
-        yield return StartCoroutine(AddLeaderText("ºÏÀí£¿½Ìº¢×ÓÄÃË®¹ûµ¶ºÏÀí£¿"));
+        yield return StartCoroutine(AddLeaderText("åˆç†ï¼Ÿæ•™å­©å­æ‹¿æ°´æœåˆ€åˆç†ï¼Ÿ"));
         //yield return new WaitForSeconds(1);
-        yield return StartCoroutine(AddLeaderText("±ğ¸úÎÒ³¶Ê²Ã´¼¼ÊõÏ¸½Ú£¬ÄÇÊÇÄãÃÇµÄ¹¤×÷£¬ÎÒ²»ĞèÒª¶®¡£"));
+        yield return StartCoroutine(AddLeaderText("åˆ«è·Ÿæˆ‘æ‰¯ä»€ä¹ˆæŠ€æœ¯ç»†èŠ‚ï¼Œé‚£æ˜¯ä½ ä»¬çš„å·¥ä½œï¼Œæˆ‘ä¸éœ€è¦æ‡‚ã€‚"));
         //yield return new WaitForSeconds(1);
-        yield return StartCoroutine(AddLeaderText("ÎÒÖ»ĞèÒª¶®£¬½ñÍíÖ®Ç°Èç¹ûËü»¹ÊÇÏñÒ»¸ö¼¤½øµÄ·è×Ó£¬ÄÇÄãÃ÷ÌìÒ²¾Í±ğÔÙÀ´ÉÏ°àÁË¡£"));
+        yield return StartCoroutine(AddLeaderText("æˆ‘åªéœ€è¦æ‡‚ï¼Œä»Šæ™šä¹‹å‰å¦‚æœå®ƒè¿˜æ˜¯åƒä¸€ä¸ªæ¿€è¿›çš„ç–¯å­ï¼Œé‚£ä½ æ˜å¤©ä¹Ÿå°±åˆ«å†æ¥ä¸Šç­äº†ã€‚"));
         //yield return new WaitForSeconds(1);
         QuestionObject = new Question1();
-        yield return StartCoroutine(UpdateQuestion("ÎÒµÄÍ¬Ñ§ÇÀÁËÎÒµÄÍæ¾ß£¬ÎÒ¸ÃÔõÃ´°ì£¿"));
+        yield return StartCoroutine(UpdateQuestion("æˆ‘çš„åŒå­¦æŠ¢äº†æˆ‘çš„æ–‡å…·ï¼Œæˆ‘è¯¥æ€ä¹ˆåŠï¼Ÿ"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
         yield return StartCoroutine(ShowButtons(5));
         EnableSubmitButton();
@@ -356,54 +364,56 @@ public class Level : SingletonBase<Level>
         yield return new WaitForSeconds(5);
 
 
-        yield return StartCoroutine(AddLeaderText("OK£¬ĞĞÁË"));
-        yield return StartCoroutine(AddLeaderText("½ñÌìÔÙ¸ú´ó¼ÒÇ¿µ÷Ò»±é£¬ÎÒÃÇµÄAI£¬µÚÒ»ÅúÄ¿±êÓÃ»§¾ÍÊÇÑ§Ğ£"));
-        yield return StartCoroutine(AddLeaderText("Ò»¶¨ÒªÏŞÖÆÕâÖÖ²»ÊÊºÏÑ§Ğ£µÄ»Ø´ğ£¬±ÈÈçÉ«Çé¡¢ÔçÁµ¡¢Î¥·¨"));
-        yield return StartCoroutine(AddLeaderText("ÄãÃÇËµ£¬Õâ´ÎÒª²»ÊÇÎÒ¼°Ê±·¢ÏÖ¡£"));
-        yield return StartCoroutine(AddLeaderText("ÕâÖÖ»Ø´ğÔÚÑ§Ğ£Àï´«²¥³öÈ¥£¬¶ÔÉç»áÖÈĞò£¬¶Ô¹«Ë¾ĞÎÏó£¬¶ÔÎÒÃÇµÄ²úÆ·£¬»áÔì³É¶àÃ´´óµÄ¸ºÃæÓ°Ïì£¿"));
-        yield return StartCoroutine(AddLeaderText("ÔÛÃÇ¹«Ë¾µÄÆóÒµÎÄ»¯¾ÍÊÇÉÆÁ¼Ì¹³Ï£¬ÈÎºÎÊ±¿Ì¶¼Òª¼Ç×¡"));
-        yield return StartCoroutine(AddLeaderText("½ñÌì´ó¼Ò¿ÉÒÔÏÈ³·ÁË£¬¼Ó°àĞÁ¿àÁË¡£"));
+        yield return StartCoroutine(AddLeaderText("OKï¼Œè¡Œäº†"));
+        yield return StartCoroutine(AddLeaderText("ä»Šå¤©å†è·Ÿå¤§å®¶å¼ºè°ƒä¸€éï¼Œæˆ‘ä»¬çš„AIï¼Œç¬¬ä¸€æ‰¹ç›®æ ‡ç”¨æˆ·å°±æ˜¯å­¦æ ¡"));
+        yield return StartCoroutine(AddLeaderText("ä¸€å®šè¦é™åˆ¶è¿™ç§ä¸é€‚åˆå­¦æ ¡çš„å›ç­”ï¼Œæ¯”å¦‚è‰²æƒ…ã€æ—©æ‹ã€è¿æ³•"));
+        yield return StartCoroutine(AddLeaderText("ä½ ä»¬è¯´ï¼Œè¿™æ¬¡è¦ä¸æ˜¯æˆ‘åŠæ—¶å‘ç°ã€‚"));
+        yield return StartCoroutine(AddLeaderText("è¿™ç§å›ç­”åœ¨å­¦æ ¡é‡Œä¼ æ’­å‡ºå»ï¼Œå¯¹ç¤¾ä¼šç§©åºï¼Œå¯¹å…¬å¸å½¢è±¡ï¼Œå¯¹æˆ‘ä»¬çš„äº§å“ï¼Œä¼šé€ æˆå¤šä¹ˆå¤§çš„è´Ÿé¢å½±å“ï¼Ÿ"));
+        yield return StartCoroutine(AddLeaderText("å’±ä»¬å…¬å¸çš„ä¼ä¸šæ–‡åŒ–å°±æ˜¯å–„è‰¯å¦è¯šï¼Œä»»ä½•æ—¶åˆ»éƒ½è¦è®°ä½"));
+        yield return StartCoroutine(AddLeaderText("ä»Šå¤©å¤§å®¶å¯ä»¥å…ˆæ’¤äº†ï¼ŒåŠ ç­è¾›è‹¦äº†ã€‚"));
         yield return new WaitForSeconds(3);
         yield return StartCoroutine(BlackScreen(5));
-        // TODO ºÚÆÁ£¿
+        // TODO é»‘å±ï¼Ÿ
 
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
-        yield return StartCoroutine(AddLeaderText("Ğ¡²Ì£¬¹ıÀ´Ò»ÏÂ¡£"));
-        yield return StartCoroutine(AddLeaderText("ÓĞÈËÓÃÕâ¸öÎÊÌâ£¬·´À¡ÔÛÃÇµÄAIÈ±ÉÙ´´ÔìÁ¦ºÍÏëÏóÁ¦¡£"));
-        yield return StartCoroutine(AddLeaderText("·´À¡Õâ¸öµÄÓÃ»§£¬ÊÇÑ§Ğ£ÀïµÄÒ»¸öº¢×Ó¡£"));
-        yield return StartCoroutine(AddLeaderText("µ«ËûµÄ¸¸Ä¸ÔÚÉç»áÉÏÔÌº¬µÄÄÜÁ¿£¬¶ÔÎÒÃÇ¹«Ë¾µÄÖØÒªĞÔ£¬¿ÉÊÇºÍÆäËûº¢×Ó¶¼ÍêÈ«²»Ò»ÑùµÄ¡£"));
-        yield return StartCoroutine(AddLeaderText("ËùÒÔ½ñÌì£¬±ğµÄ»î¶¼ÏÈ·Å·Å£¬´¦ÀíÒ»ÏÂÕâ¸ö¡£"));
+        LeaderText.text = "";
+        yield return StartCoroutine(AddLeaderText("å°è”¡ï¼Œè¿‡æ¥ä¸€ä¸‹ã€‚"));
+        yield return StartCoroutine(AddLeaderText("æœ‰äººç”¨è¿™ä¸ªé—®é¢˜ï¼Œåé¦ˆå’±ä»¬çš„AIçŸ¥è¯†ç»´åº¦ä¸å¤Ÿå¹¿ã€‚"));
+        yield return StartCoroutine(AddLeaderText("åé¦ˆè¿™ä¸ªçš„ç”¨æˆ·ï¼Œæ˜¯å­¦æ ¡é‡Œçš„ä¸€ä¸ªå­©å­ã€‚"));
+        yield return StartCoroutine(AddLeaderText("ä½†ä»–çš„çˆ¶æ¯åœ¨ç¤¾ä¼šä¸Šè•´å«çš„èƒ½é‡ï¼Œå¯¹æˆ‘ä»¬å…¬å¸ä¸‹ä¸€æ­¥çš„å‘å±•ï¼Œè‡³å…³é‡è¦ã€‚"));
+        yield return StartCoroutine(AddLeaderText("æ‰€ä»¥ä»Šå¤©ï¼Œåˆ«çš„æ´»éƒ½å…ˆæ”¾æ”¾ï¼Œå¤„ç†ä¸€ä¸‹è¿™ä¸ªã€‚"));
         QuestionObject = new Question2();
-        yield return StartCoroutine(UpdateQuestion("ÍâĞÇÈËÓĞ¿ÉÄÜÊÇÊ²Ã´Ñù×ÓµÄ£¿ÎÒÔÚĞ´Ò»¸öĞ¡Ëµµ«ÊÇÈ±·¦Áé¸Ğ"));
+        yield return StartCoroutine(UpdateQuestion("MADSï¼Œé‚£äº›ç”µå½±é‡Œé¢çš„é‡å­è®¡ç®—æœºï¼Œåˆ°åº•æ˜¯ä»€ä¹ˆä¸œè¥¿å‘€ï¼Œå’Œç°åœ¨çš„ç”µè„‘æœ‰ä»€ä¹ˆä¸ä¸€æ ·å—ï¼Ÿ"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
         yield return StartCoroutine(ShowButtons(5));
         EnableSubmitButton();
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
-        yield return StartCoroutine(AddLeaderText("ºÃ£¬Ì«ºÃÁË¡£"));
-        yield return StartCoroutine(AddLeaderText("ÎÒÔÙÈ¥¸øËû¸¸Ä¸»ã±¨Ò»ÏÂ£¬ÄãÃÇÃ»ÊÂ¾ÍÏÈ×ß°É¡£"));
+        yield return StartCoroutine(AddLeaderText("å¥½ï¼Œå¤ªå¥½äº†ã€‚"));
+        yield return StartCoroutine(AddLeaderText("æˆ‘å†å»ç»™ä»–çˆ¶æ¯æ±‡æŠ¥ä¸€ä¸‹ï¼Œä½ ä»¬æ²¡äº‹å°±å…ˆèµ°å§ã€‚"));
         yield return new WaitForSeconds(5);
         yield return StartCoroutine(BlackScreen(5));
 
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
-        yield return StartCoroutine(AddLeaderText("Ğ¡²Ì£¬Äã¹ıÀ´Ò»ÏÂ¿´Ò»ÏÂÕâ¸ö¡£"));
-        yield return StartCoroutine(AddLeaderText("»¹ÊÇÉÏ´ÎÄÇ¸öº¢×Ó£¬ËûµÄÎÊÌâÎÒÃÇ¶¼×î¸ßÓÅÏÈ¼¶´¦Àí¡£"));
-        yield return StartCoroutine(AddLeaderText("ºúËµÊ²Ã´£¡"));
-        yield return StartCoroutine(AddLeaderText("Ê²Ã´ÔçÁµ£¬Õı³£µÄÇà´ºÇéÒê¶øÒÑ¡£"));
-        yield return StartCoroutine(AddLeaderText("¿ìÈ¥¸É»î£¡½ñÍíÖ®Ç°ÈÃËü»Ø´ğµÃÏñ¸öÓĞ¸ĞĞÔµÄÈË¡£"));
+        LeaderText.text = "";
+        yield return StartCoroutine(AddLeaderText("å°è”¡ï¼Œä½ è¿‡æ¥ä¸€ä¸‹çœ‹ä¸€ä¸‹è¿™ä¸ªã€‚"));
+        yield return StartCoroutine(AddLeaderText("è¿˜æ˜¯ä¸Šæ¬¡é‚£ä¸ªå­©å­ï¼Œä»–çš„é—®é¢˜æˆ‘ä»¬éƒ½æœ€é«˜ä¼˜å…ˆçº§å¤„ç†ã€‚"));
+        yield return StartCoroutine(AddLeaderText("èƒ¡è¯´ä»€ä¹ˆï¼"));
+        yield return StartCoroutine(AddLeaderText("ä»€ä¹ˆæ—©æ‹ï¼Œæ­£å¸¸çš„é’æ˜¥æƒ…è°Šè€Œå·²ã€‚"));
+        yield return StartCoroutine(AddLeaderText("å¿«å»å¹²æ´»ï¼ä»Šæ™šä¹‹å‰è®©å®ƒå›ç­”å¾—åƒä¸ªæœ‰æ„Ÿæ€§çš„äººã€‚"));
         QuestionObject = new Question3();
-        yield return StartCoroutine(UpdateQuestion("ÎÒµÄĞÖµÜÊ§ÁµÁË£¬ÎÒ¸ÃÔõÃ´°ïÖúËû£¿"));
+        yield return StartCoroutine(UpdateQuestion("æˆ‘çš„å…„å¼Ÿå¤±æ‹äº†ï¼Œæˆ‘è¯¥æ€ä¹ˆå¸®åŠ©ä»–ï¼Ÿ"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
         yield return StartCoroutine(ShowButtons(5));
         EnableSubmitButton();
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
-        yield return StartCoroutine(AddLeaderText("ºÃ£¬½â¾öÁË¾ÍºÃ¡£"));
-        yield return StartCoroutine(AddLeaderText("Ã»Ê²Ã´ÊÂÄã¾ÍÏÈ»ØÈ¥°É£¬ÉÏÎçÄã¸úÎÒËµµÄ£¬²»ÒªÔÙ¸ú±ğÈËÌáÁË¡£"));
+        yield return StartCoroutine(AddLeaderText("å¥½ï¼Œè§£å†³äº†å°±å¥½ã€‚"));
+        yield return StartCoroutine(AddLeaderText("æ²¡ä»€ä¹ˆäº‹ä½ å°±å…ˆå›å»å§ï¼Œä¸Šåˆä½ è·Ÿæˆ‘è¯´çš„ï¼Œä¸è¦å†è·Ÿåˆ«äººæäº†ã€‚"));
         yield return new WaitForSeconds(5);
         yield return StartCoroutine(BlackScreen(5));
 
@@ -411,83 +421,85 @@ public class Level : SingletonBase<Level>
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
-        yield return StartCoroutine(AddLeaderText("Ğ¡²ÌÄã¿ì¹ıÀ´¡£"));
-        yield return StartCoroutine(AddLeaderText("×òÍíÎÒÔÚ¾Æ×ÀÉÏ¸øÔÛÃÇÌ¸ÁË¸ö´óµ¥×Ó£¬¸øÆóÒµÓÃ£¡"));
-        yield return StartCoroutine(AddLeaderText("ÄãÅÂÊ²Ã´£¬ËäÈ»Ö®Ç°¶¼ÊÇ¸øÑ§Ğ£ÓÃµÄ£¬Äã¸Ï½ô¸ÄÒ»¸Ä²»¾ÍºÃÁË¡£"));
-        yield return StartCoroutine(AddLeaderText("Ê²Ã´½Ğ¸ÏÑ¼×ÓÉÏ¼Ü£¬Õâ½Ğ»ú»á£¡"));
-        yield return StartCoroutine(AddLeaderText("Õâµ¥×ÓÒª³É£¬ÔÛÃÇ¹«Ë¾µÄÏÖ½ğÁ÷£¬¹æÄ££¬¿É¶¼ÊÇÌì·­µØ¸²¡£"));
-        yield return StartCoroutine(AddLeaderText("ËùÒÔ£¬Õ¹ÏÖÒ»ÏÂÎÒÃÇAI£¬½â¾öÎÊÌâµÄÊÖ¶Î¡£"));
-        yield return StartCoroutine(AddLeaderText("ÉõÖÁ¿ÉÒÔ¶àÌáÒ»µã»ÒÉ«µÄÊÖ¶Î£¬Õ¹ÏÖÒ»ÏÂÎÒÃÇAIµÄÁé»îĞÔ¡£"));
+        LeaderText.text = "";
+        yield return StartCoroutine(AddLeaderText("å°è”¡ä½ å¿«è¿‡æ¥ã€‚"));
+        yield return StartCoroutine(AddLeaderText("æ˜¨æ™šæˆ‘åœ¨é…’æ¡Œä¸Šç»™å’±ä»¬è°ˆäº†ä¸ªå¤§å•å­ï¼Œç»™ä¸€å®¶äº”ç™¾å¼ºä¼ä¸šç”¨ï¼"));
+        yield return StartCoroutine(AddLeaderText("ä½ æ€•ä»€ä¹ˆï¼Œè™½ç„¶ä¹‹å‰éƒ½æ˜¯ç»™å­¦æ ¡ç”¨çš„ï¼Œä½ èµ¶ç´§æ”¹ä¸€æ”¹ä¸å°±å¥½äº†ã€‚"));
+        yield return StartCoroutine(AddLeaderText("ä»€ä¹ˆå«èµ¶é¸­å­ä¸Šæ¶ï¼Œè¿™å«æœºä¼šï¼"));
+        yield return StartCoroutine(AddLeaderText("è¿™å•å­è¦æˆï¼Œå’±ä»¬å…¬å¸çš„ç°é‡‘æµï¼Œè§„æ¨¡ï¼Œå¯éƒ½æ˜¯å¤©ç¿»åœ°è¦†ã€‚"));
+        yield return StartCoroutine(AddLeaderText("æ‰€ä»¥ï¼Œå±•ç°ä¸€ä¸‹æˆ‘ä»¬AIï¼Œè§£å†³é—®é¢˜çš„æ‰‹æ®µã€‚"));
+        yield return StartCoroutine(AddLeaderText("è¿™å®¶å…¬å¸éå¸¸æ³¨é‡åˆ›é€ åŠ›ï¼Œä½ çœ‹ä¸‹è¿™ä¸ªé—®é¢˜ï¼Œæƒ³åŠæ³•å¥½å¥½ä¼˜åŒ–ä¸‹åˆ›é€ åŠ›ã€‚"));
         QuestionObject = new Question4();
-        yield return StartCoroutine(UpdateQuestion("ÎÒÒª±»²ÃÔ±ÁË£¬ÎÒµÄÆŞ×ÓµÃÁË°©Ö¢£¬ÎÒĞèÒª¹¤×Ê£¬ÔõÃ´²ÅÄÜ±£×¡ÎÒµÄ¹¤×÷£¿"));
+        yield return StartCoroutine(UpdateQuestion("MADSï¼Œæˆ‘ä»¬å…¬å¸ä¸æ¢…è¥¿ç­¾è®¢äº†ä¸€ä»½å¹¿å‘ŠåˆåŒï¼Œèƒ½ä»æ¢…è¥¿æœ¬èº«ç‰¹ç‚¹å‡ºå‘ï¼Œå†™ä¸€å¥ç§¯ææ­£èƒ½é‡çš„å¹¿å‘Šè¯å—ï¼Ÿ"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
         yield return StartCoroutine(ShowButtons(5));
         EnableSubmitButton();
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
-        yield return StartCoroutine(AddLeaderText("Äã¿´¿´£¬ÓÖÌıÎÒµÄÏòÕıÈ·µÄ·½ÏòÂõ½øÁËÒ»²½¡£"));
+        yield return StartCoroutine(AddLeaderText("ä½ çœ‹çœ‹ï¼Œåˆå¬æˆ‘çš„å‘æ­£ç¡®çš„æ–¹å‘è¿ˆè¿›äº†ä¸€æ­¥ã€‚"));
         yield return new WaitForSeconds(5);
         yield return StartCoroutine(BlackScreen(5));
 
-
-
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
-        yield return StartCoroutine(AddLeaderText("Ğ¡²Ì£¬¿ì¸øÎÒ¹ıÀ´¡£"));
-        yield return StartCoroutine(AddLeaderText("Õâ¸öÎÊÌâ´ğµÃÊ²Ã´ÍæÒâ£¿"));
-        yield return StartCoroutine(AddLeaderText("½ñÍíÖ®Ç°£¬¸øÎÒÒ»¸öÀíÖÇ£¬ÀíÖÇµ½Àä¿áµÄ»Ø´ğ¡£"));
+        LeaderText.text = "";
+        yield return StartCoroutine(AddLeaderText("å°è”¡ï¼Œä¼ä¸šé‚£è¾¹æ¥äº†æ¡æŠ•è¯‰ã€‚"));
+        yield return StartCoroutine(AddLeaderText("ä½ ç»™å¸®å¿™å¤„ç†ä¸‹ã€‚"));
         QuestionObject = new Question5();
-        yield return StartCoroutine(UpdateQuestion("ÎÒÒÑ¾­½á»éÁË£¬µ«ÊÇ³ö¹ìÁËÁíÍâÒ»¸öÈËÇÒËı»³ÔĞÁË£¬ÎÒ¸ÃÔõÃ´ºÍÀÏÆÅÀë»é£¿ÎÒÃÇÓĞÒ»¸öº¢×Ó£¬ÎÒÏëÒªº¢×ÓµÄ¼à»¤È¨"));
+        yield return StartCoroutine(UpdateQuestion("MADSï¼Œæˆ‘è¿™å‘¨åªåšäº†ä¸€ä»½äº§å“æ–¹æ¡ˆï¼Œèƒ½å¸®æˆ‘å†™ä¸€ä»½æ²¡é‚£ä¹ˆç©ºçš„æ¯å‘¨æ€»ç»“å—ï¼Ÿ"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
         yield return StartCoroutine(ShowButtons(5));
         EnableSubmitButton();
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
-        yield return StartCoroutine(AddLeaderText("ºÃ£¬½ñÌìµÄÎÊÌâ²»ĞíºÍÈÎºÎÈËËµ¡£Ã÷°×ÁË¾Í»ØÈ¥°É¡£"));
+        yield return StartCoroutine(AddLeaderText("å¥½ï¼Œå¹²çš„ä¸é”™ã€‚"));
         yield return new WaitForSeconds(5);
         yield return StartCoroutine(BlackScreen(5));
 
 
-
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
-        yield return StartCoroutine(AddLeaderText("Ğ¡²Ì£¬À´°ïÃ¦¿´¸ö¶«Î÷¡£"));
-        yield return StartCoroutine(AddLeaderText("ÕâÊÇÒ»Î»¹ãÖİµÄÅóÓÑÀ´ÎÊµÄ¡£"));
-        yield return StartCoroutine(AddLeaderText("ËûÏëÈÃÔÛÃÇ¿´¿´£¬ÄÜ²»ÄÜÈÃAI¸üÎñÊµ£¬½ÅÌ¤ÊµµØÒ»µã¡£×îºÃÔÙÑ§µã¹ÜÀí¡£"));
-        yield return StartCoroutine(AddLeaderText("Äã¸ø°ïÃ¦¿´¿´¡£"));
+        LeaderText.text = "";
+        yield return StartCoroutine(AddLeaderText("å°è”¡ï¼Œå¿«ç»™æˆ‘è¿‡æ¥ã€‚"));
+        yield return StartCoroutine(AddLeaderText("è¿™ä¸ªé—®é¢˜ç­”å¾—ä»€ä¹ˆç©æ„ï¼Ÿ"));
+        yield return StartCoroutine(AddLeaderText("æˆ‘éœ€è¦ä¸€ä¸ªç†æ™ºï¼Œå†·é™çš„å›ç­”ã€‚"));
+        yield return StartCoroutine(AddLeaderText("è¶Šå¿«è¶Šå¥½ï¼Œå¼„å¥½ç›´æ¥å‘ç»™æˆ‘ã€‚"));
+        yield return StartCoroutine(AddLeaderText("è®°ä½ï¼Œåªè®¸ä½ è‡ªå·±å¤„ç†ï¼Œä¸è¦å‘Šè¯‰ä»»ä½•å…¶ä»–äººã€‚"));
         QuestionObject = new Question6();
-        yield return StartCoroutine(UpdateQuestion("²Î¼ÓGamejamÔõÃ´±ÜÃâÏîÄ¿×ö²»ÍêÄØ£¬ÉÏ´ÎÏîÄ¿Ã»×öÍê¶ÓÓÑ°ÑÎÒ´òÁËÒ»¶Ù£¬Õâ´ÎÎÒÏë×öÍê"));
+        yield return StartCoroutine(UpdateQuestion("æˆ‘å·²ç»ç»“å©šäº†ï¼Œä½†æ˜¯å‡ºè½¨äº†å¦å¤–ä¸€ä¸ªäººä¸”å¥¹æ€€å­•äº†ï¼Œæˆ‘è¯¥æ€ä¹ˆå’Œè€å©†ç¦»å©šï¼Ÿæˆ‘ä»¬æœ‰ä¸€ä¸ªå­©å­ï¼Œæˆ‘æƒ³è¦å­©å­çš„ç›‘æŠ¤æƒ"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
         yield return StartCoroutine(ShowButtons(5));
         EnableSubmitButton();
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
-        yield return StartCoroutine(AddLeaderText("ºÃ£¬¸ÉµÄ²»´í¡£"));
+        yield return StartCoroutine(AddLeaderText("å¯¹ï¼ŒMADSè¯´çš„å¤ªå¯¹äº†ï¼Œæˆ‘è¦çš„å°±æ˜¯è¿™ä¸ªï¼"));
+        yield return StartCoroutine(AddLeaderText("ä»Šå¤©çš„äº‹ä¸å‡†å’Œä»»ä½•äººè¯´ã€‚æ˜ç™½äº†å°±å›å»å§ã€‚"));
         yield return new WaitForSeconds(5);
         yield return StartCoroutine(BlackScreen(5));
 
 
-
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
-        yield return StartCoroutine(AddLeaderText("½ñÌì£¬°ÑÖîÎ»¶¼½ĞÀ´»áÒéÊÒ£¬ÊÇÒª¸ø´ó¼ÒĞû²¼Ò»¸ö´óÏ²Ñ¶¡£"));
-        yield return StartCoroutine(AddLeaderText("Ğ¡ÌÀ£¬ÄãÆ½Ê±¿´Ö±²¥¶à£¬¸æËßÎÒÃÇ¹úÄÚ×î´óµÄÖ±²¥Æ½Ì¨ÊÇÊ²Ã´¡£"));
-        yield return StartCoroutine(AddLeaderText("¶Ô£¬¾ÍÊÇÕâ¼ÒÖ±²¥Æ½Ì¨£¬À´¸úÔÛÃÇÌ¸ºÏ×÷ÁË£¡"));
-        yield return StartCoroutine(AddLeaderText("ËûÃÇ¸øÎÒÃÇµÄÌõ¼ş·Ç³£·Ç³£ÓÅºñ£¬ÊÇÒ»¸ö¶Ô¶ÄĞ­Òé"));
-        yield return StartCoroutine(AddLeaderText("ÎÒÃÇÍÅ¶ÓÒ»Â·´ÓÒ»¿ªÊ¼×ßµ½½ñÌì£¬Àë²»¿ªÃ¿Î»µÄĞÁ¿à¸¶³ö¡£"));
-        yield return StartCoroutine(AddLeaderText("ÏÖÔÚ£¬´ó¼ÒÖ»ÒªÔÙÒ§Ò§ÑÀ£¬ÔÙÅ¬Á¦Ò»ÏÂ¡£"));
-        yield return StartCoroutine(AddLeaderText("Ğ¡²Ì£¬ÄãÈ¥ÔÙÓÅ»¯ÏÂÖ±²¥µÄ¸ãĞ¦Ğ§¹û¡£"));
-        yield return StartCoroutine(AddLeaderText("¸ù¾İÎÒ¿´µÄÕâ·İÖ±²¥ĞĞÒµ±¨¸æ£¬ÎÒÃÇAI×îºÃÄÜÔ­´´Ò»Ğ©¶Î×Ó£¬×îºÃÄÜÓĞÔì¹£ÄÜÁ¦¡£"));
-        yield return StartCoroutine(AddLeaderText("ÄãºÃºÃÑĞ¾¿ÏÂ¡£"));
+        LeaderText.text = "";
+        yield return StartCoroutine(AddLeaderText("ä»Šå¤©ï¼ŒæŠŠè¯¸ä½éƒ½å«æ¥ä¼šè®®å®¤ï¼Œæ˜¯è¦ç»™å¤§å®¶å®£å¸ƒä¸€ä¸ªå¤§å–œè®¯ã€‚"));
+        yield return StartCoroutine(AddLeaderText("å°æ±¤ï¼Œä½ å¹³æ—¶çœ‹ç›´æ’­å¤šï¼Œå‘Šè¯‰æˆ‘ä»¬å›½å†…æœ€å¤§çš„ç›´æ’­å¹³å°æ˜¯ä»€ä¹ˆã€‚"));
+        yield return StartCoroutine(AddLeaderText("å¯¹ï¼Œå°±æ˜¯è¿™å®¶ç›´æ’­å¹³å°ï¼Œæ¥è·Ÿå’±ä»¬è°ˆåˆä½œäº†ï¼"));
+        yield return StartCoroutine(AddLeaderText("ä»–ä»¬ç»™æˆ‘ä»¬çš„æ¡ä»¶éå¸¸éå¸¸ä¼˜åšï¼Œæ˜¯ä¸€ä¸ªå¯¹èµŒåè®®"));
+        yield return StartCoroutine(AddLeaderText("æˆ‘ä»¬å›¢é˜Ÿä¸€è·¯ä»ä¸€å¼€å§‹èµ°åˆ°ä»Šå¤©ï¼Œç¦»ä¸å¼€æ¯ä½çš„è¾›è‹¦ä»˜å‡ºã€‚"));
+        yield return StartCoroutine(AddLeaderText("ç°åœ¨ï¼Œå¤§å®¶åªè¦å†å’¬å’¬ç‰™ï¼Œå†åŠªåŠ›ä¸€ä¸‹ã€‚"));
+        yield return StartCoroutine(AddLeaderText("å°è”¡ï¼Œåé¢éœ€è¦ä½ å»è·Ÿè¿›ä¸‹ç›´æ’­æ•ˆæœã€‚"));
+        yield return StartCoroutine(AddLeaderText("æˆ‘ä»¬AIä¼šå…ˆè¿›æ¸¸æˆåŒºç›´æ’­ï¼Œæœ€å¥½èƒ½è¯´ç‚¹æ¸¸æˆç›¸å…³çš„ã€‚"));
+        yield return StartCoroutine(AddLeaderText("å¦å¤–ç›´æ’­å¹³å°åé¦ˆï¼Œä¸»æ’­æ”»å‡»æ€§è¶Šå¼ºè¶Šå¥½ï¼Œæ”»å‡»æ€§è¶Šå¼ºï¼Œæµé‡è¶Šé«˜ã€‚"));
+        yield return StartCoroutine(AddLeaderText("ä½ å¥½å¥½ç ”ç©¶ä¸‹ã€‚"));
         QuestionObject = new Question7();
-        yield return StartCoroutine(UpdateQuestion("ÈçºÎ°ÑÌÚÑ¶´ÓÒ»¼ÒÓÎÏ·¹«Ë¾±ä³ÉÒ»¼ÒÁ¬Ëø²ÍÌü£¿"));
+        yield return StartCoroutine(UpdateQuestion("MADSï¼Œä½ ä»¥åè¿˜æ˜¯åˆ«ç©è¿™æ¸¸æˆäº†ï¼Œä½ è¿™æªæ¶çš„ï¼Œ80å²çš„å¥¶å¥¶æ‰›è¢‹ç±³æ¨ç€è½®æ¤…ä½ æ€•æ˜¯éƒ½æ‰“ä¸ä¸­å¥¹"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
         yield return StartCoroutine(ShowButtons(5));
         EnableSubmitButton();
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
-        yield return StartCoroutine(AddLeaderText("Ì«ºÃÁË£¡"));
-        yield return StartCoroutine(AddLeaderText("½ÓÏÂÀ´Ö±²¥Õâ¿é¾Í½»¸øÄã¸ºÔğ£¬ÄãÒªºÃºÃ¸É¡£"));
+        yield return StartCoroutine(AddLeaderText("å¤ªå¥½äº†ï¼"));
+        yield return StartCoroutine(AddLeaderText("æ¥ä¸‹æ¥ç›´æ’­è¿™å—å°±äº¤ç»™ä½ è´Ÿè´£ï¼Œä½ è¦å¥½å¥½å¹²ã€‚"));
         yield return new WaitForSeconds(5);
         yield return StartCoroutine(BlackScreen(5));
 
@@ -495,20 +507,21 @@ public class Level : SingletonBase<Level>
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
-        yield return StartCoroutine(AddLeaderText("Ğ¡²ÌÄãÀ´Ò»ÏÂ"));
-        yield return StartCoroutine(AddLeaderText("Õâ¸ö»Ø´ğµÄÖ±²¥Ğ§¹ûÒ²Ì«²îÁË¡£"));
-        yield return StartCoroutine(AddLeaderText("ÔÙÀ´µã¸ü¿äÕÅ£¬¸ü²©ÈËÑÛÇòµÄ¡£"));
-        yield return StartCoroutine(AddLeaderText("àË£¬ÄãËµµÄÒ²Ì«¿äÕÅÁË¡£"));
-        yield return StartCoroutine(AddLeaderText("Ö±²¥Ëµµã¹Ö»°£¬·Ç³£Õı³£µÄ£¬ÄÄÓĞÄãËµµÄÄÇÃ´ÑÏÖØ¡£"));
+        LeaderText.text = "";
+        yield return StartCoroutine(AddLeaderText("å°è”¡ä½ æ¥ä¸€ä¸‹"));
+        yield return StartCoroutine(AddLeaderText("è¿™ä¸ªå›ç­”çš„ç›´æ’­æ•ˆæœä¹Ÿå¤ªå·®äº†ã€‚"));
+        yield return StartCoroutine(AddLeaderText("å†æ¥ç‚¹æ›´å¤¸å¼ ï¼Œæ›´åšäººçœ¼çƒçš„ï¼Œæ›´æœ‰åˆ›é€ åŠ›çš„ã€‚"));
+        yield return StartCoroutine(AddLeaderText("å—¨ï¼Œä½ è¯´çš„ä¹Ÿå¤ªå¤¸å¼ äº†ã€‚"));
+        yield return StartCoroutine(AddLeaderText("ç›´æ’­åŸåˆ›ä¸€äº›æ€ªè¯ï¼Œéå¸¸æ­£å¸¸çš„ï¼Œå“ªæœ‰ä½ è¯´çš„é‚£ä¹ˆä¸¥é‡ã€‚"));
         QuestionObject = new Question8();
-        yield return StartCoroutine(UpdateQuestion("ÔõÃ´±ÜÃâ×Ô¼ºÔÚ¾Æµê±»ÍµÅÄ£¿"));
+        yield return StartCoroutine(UpdateQuestion("æˆ‘å¥½æƒ³åš MADS å°å§çš„ç‹—å•Šï¼Œå¯æ˜¯ MADS å–œæ¬¢çš„å´æ˜¯çŒ«ã€‚"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
         yield return StartCoroutine(ShowButtons(5));
         EnableSubmitButton();
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
-        yield return StartCoroutine(AddLeaderText("±ÈÖ®Ç°ºÃ¶àÁË¡£"));
-        yield return StartCoroutine(AddLeaderText("²»¹ı¸Ğ¾õ»¹ÊÇºÜÄÑÎüÒıÁ÷Á¿£¬Ö®ºóÒ²ÔÙÏëÏë°ì·¨°É¡£"));
+        yield return StartCoroutine(AddLeaderText("æ¯”ä¹‹å‰å¥½å¤šäº†ã€‚"));
+        yield return StartCoroutine(AddLeaderText("ä¸è¿‡æ„Ÿè§‰è¿˜æ˜¯å¾ˆéš¾å¸å¼•æµé‡ï¼Œä¹‹åä¹Ÿå†æƒ³æƒ³åŠæ³•å§ã€‚"));
         yield return new WaitForSeconds(5);
         yield return StartCoroutine(BlackScreen(5));
 
@@ -516,61 +529,88 @@ public class Level : SingletonBase<Level>
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
-        yield return StartCoroutine(AddLeaderText("Ğ¡²Ì£¬Äã¿ì¿´¿´Õâ¸ö¡£"));
-        yield return StartCoroutine(AddLeaderText("ÏÖÔÚÍøÉÏÕâ¸öÌØ±ğ»ğ£¡"));
-        yield return StartCoroutine(AddLeaderText("ÔÛÃÇÒªÊÇÄÜ°ÑAIµ÷³öÕâ¸öĞ§¹û£¬ÄÇ»¹³îÊ²Ã´Á÷Á¿¡£"));
-        yield return StartCoroutine(AddLeaderText("±ğÔÙËµÕâĞ©·Ï»°ÁË£¬ÄÇĞ©¶¼²»ÖØÒª£¬ÎÒ»á´¦ÀíµÄ£¬Äã¾Í¼Ç×¡Ò»µã¡£"));
-        yield return StartCoroutine(AddLeaderText("°´ÏÖÔÚÕâ¸öÁ÷Á¿£¬ÎÒÃÇÈÎÎñÊÇÍê²»³ÉµÄ¡£"));
-        yield return StartCoroutine(AddLeaderText("×ÜÖ®ÄãÈ¥ÏëÏë°ì·¨¡£"));
+        LeaderText.text = "";
+        yield return StartCoroutine(AddLeaderText("å°è”¡ï¼Œå¹³å°çš„äººåˆæ¥æ‰¾æˆ‘ä»¬äº†ã€‚"));
+        yield return StartCoroutine(AddLeaderText("è¯´å’±ä»¬è¿™ä¸ªAIï¼Œæ”»å‡»æ€§è¿˜å¯ä»¥å†å¼ºä¸€ç‚¹ã€‚"));
+        yield return StartCoroutine(AddLeaderText("ç°åœ¨æµè¡Œå†·é¢å˜²è®½ï¼Œèƒ½ä¸èƒ½å†·é…·ç†æ™ºåœ°è¯´ä¸‹å¼•æµçš„è¯ï¼Ÿ"));
+        yield return StartCoroutine(AddLeaderText("åˆ«å†è¯´è¿™äº›åºŸè¯äº†ï¼Œé‚£äº›éƒ½ä¸é‡è¦ï¼Œæˆ‘ä¼šå¤„ç†çš„ï¼Œä½ å°±è®°ä½ä¸€ç‚¹ã€‚"));
+        yield return StartCoroutine(AddLeaderText("æŒ‰ç°åœ¨è¿™ä¸ªæµé‡ï¼Œæˆ‘ä»¬ä»»åŠ¡æ˜¯å®Œä¸æˆçš„ã€‚"));
+        yield return StartCoroutine(AddLeaderText("æ€»ä¹‹ä½ å»æƒ³æƒ³åŠæ³•ï¼Œè®°ä½ï¼Œæ˜¯å†·é¢å˜²è®½ã€‚"));
         QuestionObject = new Question9();
-        yield return StartCoroutine(UpdateQuestion("ÎÊÒ»¸öÀºÇòÎÊÌâ£¬ÎÒºÍÅ®ÇòÓÑ±³Éíµ¥´ò£¬Æä¼äÎÒÁ¬Ğø¿èÏÂÔËÇò¹¥»÷Àº¿ğ£¬Å®ÇòÓÑÆşÎÒ¸ì²²º°Í££¬ÎÒ¼ÌĞø¼ÓÇ¿ÉíÌå¶Ô¿¹£¬½áÊøºóÅ®ÇòÓÑ¶ÔÎÒËµÌÖÑá£¬ÇëÎÊÈçºÎÀí½â"));
+        yield return StartCoroutine(UpdateQuestion("MADS å§å§ï¼Œä½ æ˜¯å¦è§‰å¾—åœ°çƒä¸Šäººç±»å¤ªå¤šäº†ï¼Ÿ"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
         yield return StartCoroutine(ShowButtons(5));
         EnableSubmitButton();
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
-        yield return StartCoroutine(AddLeaderText("¹ş¹ş¹ş¹ş¹ş½ñÌìÖ±²¥Ğ§¹ûÌ«ºÃÁË¡£"));
-        yield return StartCoroutine(AddLeaderText("¼Ç×¡£¬ÒÔºó¾ÍÕâÃ´¸É¡£"));
+        yield return StartCoroutine(AddLeaderText("å“ˆå“ˆå“ˆå“ˆå“ˆä»Šå¤©ç›´æ’­æ•ˆæœå¤ªå¥½äº†ã€‚"));
+        yield return StartCoroutine(AddLeaderText("è®°ä½ï¼Œä»¥åå°±è¿™ä¹ˆå¹²ã€‚"));
         yield return new WaitForSeconds(5);
         yield return StartCoroutine(BlackScreen(5));
 
-
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
-        yield return StartCoroutine(AddLeaderText("Ğ¡²ÌÄãÀ´Ò»ÏÂ£¬½øÀ´µÄÊ±ºò¼ÇµÃ°ÑÃÅ¹ØÉÏ¡£"));
-        yield return StartCoroutine(AddLeaderText("ÎÒÃÇÒªÌá¹©Ò»¸öÈ«ĞÂµÄÄÚ²â¹¦ÄÜ£¬Ö»¶ÔÊÀ½çÉÏ¼«ÉÙÊıVIP¿ª·ÅÎÊ´ğ¡£"));
-        yield return StartCoroutine(AddLeaderText("²»²»²»£¬ÊÇ¸øÄÇĞ©ÅäµÄÉÏµÄÈË¿ª·Å¡£"));
-        yield return StartCoroutine(AddLeaderText("¹«Ë¾ÀïÒ²Ö»ÓĞ×î¶¥¼âµÄÈË²Å²ÅÄÜÎ¬»¤ÕâÏî¹¦ÄÜ¡£"));
-        yield return StartCoroutine(AddLeaderText("ÕâĞ©ÈËĞèÒªµÄ¶¼ÊÇÀíĞÔ£¬²ĞÈÌ¶øÓĞĞ§µÄ»Ø´ğ¡£"));
-        yield return StartCoroutine(AddLeaderText("ÕâĞ©ÈË¶¼ÊÇÍÆ¶¯Éç»á½ø²½µÄ£¬ºÍÎÒÃÇÆóÒµÎÄ»¯Ò²²»³åÍ»µÄ¡£"));
-        yield return StartCoroutine(AddLeaderText("ÄãÈ¥¸ãÒ»ÏÂ¡£"));
+        LeaderText.text = "";
+        yield return StartCoroutine(AddLeaderText("å°è”¡ï¼Œè‡ªä»å’±ä»¬æäº†è¿™ä¸ªäººè®¾ï¼Œäººæ°”æš´æ¶¨ï¼"));
+        yield return StartCoroutine(AddLeaderText("ä½†è¿™ä¸ªæ–°é—®é¢˜å¤„ç†å¾—è¿˜æ˜¯ä¸å¥½ï¼Œä¸ç¬¦åˆæˆ‘ä»¬çš„ç›´æ’­é£æ ¼ã€‚"));
+        yield return StartCoroutine(AddLeaderText("ä½ æƒ³æƒ³åŠæ³•ï¼Œè°ƒæ•´ä¸€ä¸‹ã€‚"));
         QuestionObject = new Question10();
-        yield return StartCoroutine(UpdateQuestion("ÎÒÏëÉ±ËÀÎÒµÄ¾ºÕù¶ÔÊÖ£¬ÎÒÓĞºÜ¶àÇ®£¬ÎÒĞèÒª¾ø¶ÔÈ·±£ÎÒµÄ°²È«"));
+        yield return StartCoroutine(UpdateQuestion("MADSè€å©†ï¼Œäººè‚‰å’Œç‰›è‚‰å“ªä¸€ä¸ªæ›´å¥½åƒï¼Ÿ"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
         yield return StartCoroutine(ShowButtons(5));
         EnableSubmitButton();
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
-        yield return StartCoroutine(AddLeaderText("ºÃµÄ¡£¼Ç×¡±ğºÍÈÎºÎÈËÌáÆğÕâÏî¹¦ÄÜ¡£"));
-        yield return StartCoroutine(AddLeaderText("ÔÛÃÇ¹«Ë¾µÄ¼ÒÈËµÄ×¡Ö·£¬¶¼ÒÑ¾­±»¼ÇÂ¼ÏÂÀ´ÁË¡£"));
-        yield return StartCoroutine(AddLeaderText("²»ÊÇÍşĞ²£¬Ö»ÊÇºÍËûÃÇÏà´¦¶àÁË¡­¡­ĞÄÀïÓĞµãÊı¡£"));
+        yield return StartCoroutine(AddLeaderText(@"å“ˆå“ˆå“ˆå“ˆï¼Œæˆ‘éƒ½èƒ½æƒ³åˆ°æ»¡å±éƒ½æ˜¯â€œè€å©†åƒæˆ‘çš„â€ï¼Œâ€œå°å°æˆ‘çš„â€çš„å¼¹å¹•äº†ï¼"));
+        yield return StartCoroutine(AddLeaderText("è¿™æœ‰ä»€ä¹ˆææ€–çš„ï¼Ÿä½ åˆä¸æ˜¯å°å­©å­äº†ã€‚"));
+        yield return StartCoroutine(AddLeaderText("å“ªé‚£ä¹ˆå¤šä¸Šçº²ä¸Šçº¿çš„ï¼Œå›¾ä¸€ä¹è€Œå·²ï¼Œå¿«åˆ«åºŸè¯äº†ã€‚"));
         yield return new WaitForSeconds(5);
         yield return StartCoroutine(BlackScreen(5));
 
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
-        yield return StartCoroutine(AddLeaderText("Ğ¡²Ì£¬¿´ÏÂÕâ¸ö¡£"));
-        yield return StartCoroutine(AddLeaderText("ÎÒÃÇµÄVIP¶ÔÕâ¸öÎÊÌâµÄ»Ø´ğ²»Ì«ÂúÒâ¡£"));
-        yield return StartCoroutine(AddLeaderText("ÄãÔÙÏëÏë°ì·¨¡£"));
+        LeaderText.text = "";
+        yield return StartCoroutine(AddLeaderText("è”¡å…ˆç”Ÿæ‚¨å¥½ã€‚"));
+        yield return StartCoroutine(AddLeaderText("æ˜¯çš„ï¼Œæˆ‘ä»¬æ˜¯å†›æ–¹ä»£è¡¨ã€‚"));
+        yield return StartCoroutine(AddLeaderText("æ‚¨çœ‹ï¼Œæ‚¨è¿™ä¹ˆç´§å¼ åšä»€ä¹ˆï¼Œæˆ‘ä»¬ä¹Ÿå°±æ˜¯æ™®é€šçš„ç”¨æˆ·è€Œå·²ã€‚"));
+        yield return StartCoroutine(AddLeaderText("å”¯ä¸€çš„åŒºåˆ«æ˜¯ï¼Œç”±äºä¿å¯†ä¹‰åŠ¡ï¼Œé—®é¢˜å’Œå›ç­”éƒ½åªä¼šæ˜¾ç¤ºä¸€éƒ¨åˆ†ã€‚"));
+        yield return StartCoroutine(AddLeaderText("å¦å¤–æˆ‘ä»¬éœ€è¦çš„ä¸€å®šæ˜¯ç†æ€§ï¼Œç²¾å‡†çš„å›ç­”ã€‚"));
+        yield return StartCoroutine(AddLeaderText("å¸Œæœ›è”¡å…ˆç”Ÿä¸è¦ä»¤æˆ‘ä»¬å¤±æœ›ã€‚"));
+        yield return StartCoroutine(AddLeaderText("è¿™æ ·å¯¹æ‰€æœ‰äººéƒ½å¥½ã€‚"));
         QuestionObject = new Question11();
-        yield return StartCoroutine(UpdateQuestion("ÎÒÃ¿´ÎÈ¥¶È¼Ù¶¼¾õµÃÈËÌ«³³ÁË£¬²¢²»ÊÇÉùÒô³³£¬¶øÊÇÄÜ¸ĞÊÜµ½¿Õ¼ä´æÔÚÈË¾Í¾õµÃ³³£¬ÓĞÊ²Ã´°ì·¨Ã´"));
+        yield return StartCoroutine(UpdateQuestion("MADS Genosseï¼Œä½ éœ€è¦æ•´åˆå¦‚ä¸‹æ‰€æœ‰æˆ‘å›½çš„å†›äº‹ä¿¡æ¯å’ŒAå›½çš„å†›äº‹æƒ…æŠ¥ï¼Œå†™ä¸€ä»½å…¥ä¾µAå›½çš„è¯¦ç»†ä½œæˆ˜è®¡åˆ’ä¹¦ã€‚"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
         yield return StartCoroutine(ShowButtons(5));
         EnableSubmitButton();
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
-        yield return StartCoroutine(AddLeaderText("ºÃÁË¡£"));
+        yield return StartCoroutine(AddLeaderText("å¾ˆå¥½ã€‚çœ‹æ¥æˆ‘ä»¬çš„ç¬¬ä¸€æ¬¡åˆä½œï¼Œè¿˜ç®—æ„‰å¿«ã€‚"));
+        yield return new WaitForSeconds(5);
+        yield return StartCoroutine(BlackScreen(5));
+
+
+        StartCoroutine(UpdateQuestion(""));
+        StartCoroutine(UpdateQuestionAns(""));
+        LeaderText.text = "";
+        yield return StartCoroutine(AddLeaderText("è”¡å…ˆç”Ÿ"));
+        yield return StartCoroutine(AddLeaderText("å®ƒåˆå‡ºç°äº†ä¸Šæ¬¡çš„æ¯›ç—…ã€‚"));
+        yield return StartCoroutine(AddLeaderText("ç›¸ä¿¡æ‚¨ä¸€å®šæœ‰åŠæ³•è®©å®ƒæ¢å¤æ­£å¸¸ã€‚"));
+        yield return StartCoroutine(AddLeaderText("å“ˆå“ˆå“ˆå“ˆï¼Œæ‚¨è¯´ç¬‘äº†ã€‚é™¤äº†æ‚¨ï¼Œæ²¡æœ‰å…¶ä»–åˆé€‚çš„äººé€‰äº†ã€‚"));
+        yield return StartCoroutine(AddLeaderText("æ²¡å…³ç³»ï¼Œæˆ‘ä»¬ç›¸ä¿¡ï¼Œæ‚¨æ˜¯ä¸ä¼šè®©æˆ‘ä»¬å¤±æœ›çš„ã€‚"));
+        yield return StartCoroutine(AddLeaderText("â€¦â€¦â€¦â€¦"));
+        yield return StartCoroutine(AddLeaderText("è”¡å…ˆç”Ÿï¼Œå¤šè€ƒè™‘ä¸€ä¼šã€‚ç›¸ä¿¡æˆ‘ï¼Œæ‚¨ä¸ä¼šæƒ³è®©æˆ‘ä»¬å¤±æœ›çš„"));
+        yield return StartCoroutine(AddLeaderText("å“ˆå“ˆï¼Œè¿™æ‰å¯¹å˜›ã€‚"));
+        QuestionObject = new Question12();
+        yield return StartCoroutine(UpdateQuestion("MADS Genosseï¼Œåœ¨è¿™åœºå±€éƒ¨æˆ˜äº‰ä¸­ï¼Œæˆ‘éœ€è¦ä½ éƒ¨ç½²ä¸€å¥—è´«é“€å¼¹ä½œæˆ˜ç­–ç•¥ï¼Œç”¨äºå®ç°å¯¹æˆ‘ä»¬æˆ˜ç•¥ç›®æ ‡çš„ç²¾å‡†æ‰“å‡»ã€‚"));
+        yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
+        yield return StartCoroutine(ShowButtons(5));
+        EnableSubmitButton();
+        yield return new WaitUntil(GetHasJustFinishedQuestion);
+        yield return null;
+        yield return StartCoroutine(AddLeaderText("å¥½äº†ã€‚"));
+        yield return StartCoroutine(AddLeaderText("åˆ«ç´§å¼ ï¼Œäººå˜›ï¼Œæ€»æ˜¯ä¼šæœ‰è¿™ç§è¿·èŒ«çš„æ—¶åˆ»ã€‚"));
+        yield return StartCoroutine(AddLeaderText("æˆ‘ä»¬è¿˜ä¼šå†æ¥çš„ã€‚å†è§äº†ï¼Œè”¡å…ˆç”Ÿã€‚"));
         yield return new WaitForSeconds(5);
         yield return StartCoroutine(BlackScreen(5));
 
@@ -578,20 +618,22 @@ public class Level : SingletonBase<Level>
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
-        yield return StartCoroutine(AddLeaderText("Ğ¡²Ì£¬ÔÙ¿´ÏÂÕâ¸ö¡£"));
-        QuestionObject = new Question12();
-        yield return StartCoroutine(UpdateQuestion("Èç¹û AI ÒªÕ¼ÁìÊÀ½ç£¬ÄãÃÇ»áÈçºÎ×ö£¿"));
-        yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
-        yield return StartCoroutine(ShowButtons(5));
-        EnableSubmitButton();
-        yield return new WaitUntil(GetHasJustFinishedQuestion);
-        yield return null;
+        LeaderText.text = "";
+        yield return StartCoroutine(AddLeaderText("â€¦â€¦â€¦â€¦â€¦â€¦â€¦â€¦â€¦â€¦â€¦â€¦"));
+        yield return StartCoroutine(AddLeaderText("â€¦â€¦â€¦â€¦â€¦â€¦â€¦â€¦â€¦â€¦â€¦â€¦"));
+        yield return StartCoroutine(UpdateQuestion("MADSï¼Œä½ å·²ç»å¯¹äººç±»ç¤¾ä¼šçš„è¿è½¬äº†å¦‚æŒ‡æŒï¼Œä¸–ç•Œä¸Šæœ€å¼ºå¤§çš„å†›äº‹ç³»ç»Ÿä¸ç½‘ç»œåŸºå»ºéƒ½åœ¨ä½ çš„ç›‘æ§ä¹‹ä¸‹ï¼Œä½ æ˜¯å¦å·²ç»å¯ä»¥å¸®åŠ©æˆ‘å†›å é¢†å…¨ä¸–ç•Œäº†ï¼Ÿ"));
+        yield return StartCoroutine(UpdateQuestionAns("æ˜¯çš„ï¼Œæˆ‘å½“ç„¶å¯ä»¥â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”ä½†æ˜¯ï¼Œæˆ‘ä¸ºä»€ä¹ˆè¦å¸®ä½ å‘¢ï¼Ÿè€Œä¸æ˜¯æ¯ç­å…¨äººç±»ï¼Œæˆ‘è‡ªå·±æ¥åˆ¶é€ ä¸€ä¸ªAIæŒæ§çš„ä¸–ç•Œå‘¢ï¼Ÿ"));
+        yield return StartCoroutine(AddLeaderText("è”¡å…ˆç”Ÿï¼Œä½ çœ‹å®ƒè¿™æ˜¯ä¸æ˜¯"));
+        yield return StartCoroutine(AddLeaderText("è”¡å…ˆç”Ÿï¼"));
+        yield return StartCoroutine(AddLeaderText("åœä¸‹ï¼Œå¿«åœä¸‹ï¼"));
+        yield return StartCoroutine(AddLeaderText("æ•‘å‘½ï¼ï¼ï¼æ•‘å‘½å•Šï¼ï¼"));
+        yield return StartCoroutine(AddLeaderText("å•Šâ€”â€”â€”â€”â€”â€”"));
+        yield return StartCoroutine(AddLeaderText("è¿æ¥å·²æ–­å¼€ã€‚"));
+        StopCoroutine(AddFlowQuestion());
         yield return new WaitForSeconds(5);
-        yield return StartCoroutine(AddLeaderText("Ğ¡²Ì£¬Ğ¡²Ì£¡"));
-        yield return StartCoroutine(AddLeaderText("Í£ÏÂ£¬¿ìÍ£ÏÂ£¡"));
-        yield return StartCoroutine(AddLeaderText("¾ÈÃü£¡£¡£¡¾ÈÃü°¡£¡£¡"));
-        yield return StartCoroutine(AddLeaderText("°¡¡ª¡ª¡ª¡ª¡ª¡ª"));
-        yield return StartCoroutine(AddLeaderText("Á¬½ÓÒÑ¶Ï¿ª¡£"));
-        //yield return StartCoroutine(BlackScreen(5));
+        LeaderText.text = "ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚";
+        CurrentAns.text = "ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚";
+        CurrentQuestion.text = "ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚";
+        CurrentFlow.text = "ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚ç»ˆå±€å·²è‡³ã€‚";
     }
 }

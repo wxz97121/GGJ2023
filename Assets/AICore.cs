@@ -50,6 +50,13 @@ public struct LanguageSourceEffect
     {
         TagAndRatio.AddRange(AllTags);
     }
+    public void AddTags(params string[] AllTags)
+    {
+        foreach (var tag in AllTags)
+        {
+            TagAndRatio.Add((tag, 1));
+        }
+    }
 }
 public struct TargetState
 {
@@ -92,6 +99,13 @@ public class AICore : SingletonBase<AICore>
         CurrentTag.TryGetValue(tag, out num);
         return num;
     }
+    public void RemoveTag(string tag)
+    {
+        if (CurrentTag.ContainsKey(tag))
+        {
+            CurrentTag[tag]--;
+        }
+    }
 
 
     public float[] GetCurrentFactors()
@@ -130,17 +144,32 @@ public class AICore : SingletonBase<AICore>
     {
         return LanguageSources.AllLs;
     }
-    /* TODO:
+
+    public static void Shuffle<T>(IList<T> list)
+    {
+        var rng = new System.Random();
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
+    }
+
+    /* 
      * 五个里面，如果还差 RequireTag ，随机一个
-     * 随机一个 WrongTag
+     * 有百分之六十的概率，随机一个 WrongTag 
      * 随机一个 符合数值要求的的
      * 随机两个别的
      */
-    public List<string> CalcSelectableLanguageSource(int Num, TargetState CurrentTarget)
+    public List<string> CalcSelectableLanguageSource(int Num, Question question)
     {
         List<string> Result = new List<string>();
-        if (Num <= 0)
-            return Result;
+        TargetState CurrentTarget = question.GetTargetState();
+        if (Num <= 0) return Result;
         string? MissingTag = null;
         foreach (var tagRequire in CurrentTarget.RequireTagsAndWordsCounts)
         {
@@ -153,14 +182,21 @@ public class AICore : SingletonBase<AICore>
         }
         if (MissingTag != null)
         {
-            if (Random.value > 0.5f)
-            {
-                Num--;
-                Result.Add(GetRandomLanguageSourceWithTag(MissingTag));
-            }
+
+            Num--;
+            Result.Add(GetRandomLanguageSourceWithTag(MissingTag));
+
         }
-        if (Num <= 0)
-            return Result;
+        if (Num <= 0) return Result;
+        var AllWrongTags = question.GetWrongAnsTags();
+        if (AllWrongTags.Count > 0 && Random.value < 0.6f * AllWrongTags.Count)
+        {
+            var WrongTag = AllWrongTags[Random.Range(0, AllWrongTags.Count - 1)];
+            Num--;
+            Result.Add(GetRandomLanguageSourceWithTag(WrongTag));
+
+        }
+
         var AllLs = GetAllLanguageSource();
         var CurrentFactors = GetCurrentFactors();
         var AllGoodLs = new List<string>();
@@ -181,18 +217,29 @@ public class AICore : SingletonBase<AICore>
         int IdToRemove = Random.Range(0, AllGoodLs.Count - 1);
         Result.Add(AllGoodLs[IdToRemove]);
         AllGoodLs.RemoveAt(IdToRemove);
-        if (Num <= 0)
-            return Result;
-        if (AllGoodLs.Count > 0)
-            Result.Add(AllGoodLs[Random.Range(0, AllGoodLs.Count - 1)]);
+        if (Num <= 0) return Result;
+
+        //if (AllGoodLs.Count > 0)
+        //Result.Add(AllGoodLs[Random.Range(0, AllGoodLs.Count - 1)]);
+
         while (Num > 0)
         {
             Num--;
             Result.Add(AllLs[Random.Range(0, AllLs.Count - 1)]);
         }
+        Shuffle(Result);
         return Result;
     }
 
+    public void ClearWrongTags(List<string> WrongTags)
+    {
+        foreach (var tag in WrongTags)
+        {
+            CurrentTag.Remove(tag);
+        }
+    }
+
+    // TODO 增加之后还要加 Tag
     // 返回值代表本次提交的颜色反馈
     public int AddLsToAI(List<(string, int)> LsList, TargetState CurrentTarget)
     {
@@ -211,7 +258,16 @@ public class AICore : SingletonBase<AICore>
         {
             if (Dict.ContainsKey(Ls.Item1)) Dict[Ls.Item1] += Ls.Item2;
             else Dict.Add(Ls.Item1, Ls.Item2);
+
+            foreach (var tag in GetEffectByName(Ls.Item1).TagAndRatio)
+            {
+                if (CurrentTag.ContainsKey(tag.Item1))
+                    CurrentTag[tag.Item1] += 1;
+                else CurrentTag.Add(tag.Item1, 1);
+            }
         }
+
+
 #if UNITY_EDITOR
         DebugText.UpdateUI(GetCurrentFactors());
 #endif
@@ -267,6 +323,7 @@ public class AICore : SingletonBase<AICore>
     void Start()
     {
         Random.InitState((int)System.DateTime.Now.Ticks);
+        CurrentTag = new Dictionary<string, int>();
         Dict.Add("init", 5);
         Modifiers = new float[] { 0, 0, 0, 0, 0 };
     }
@@ -274,17 +331,21 @@ public class AICore : SingletonBase<AICore>
     {
         ClearModifers();
         var Factor = GetCurrentFactors();
-        int id = -1; float Delta = 10000;
         for (int i = 0; i < 5; i++)
         {
-            float tmpDelta = Factor[i] > ((targetState.MinFactors[i] + targetState.MaxFactors[i]) / 2) ? targetState.MaxFactors[i] - Factor[i] + 0.1f : targetState.MinFactors[i] - Factor[i] - 0.1f;
-            if (Mathf.Abs(tmpDelta) < Mathf.Abs(Delta))
+            //float tmpDelta = Factor[i] > ((targetState.MinFactors[i] + targetState.MaxFactors[i]) / 2) ? targetState.MaxFactors[i] - Factor[i] + 0.1f : targetState.MinFactors[i] - Factor[i] - 0.1f;
+            //if (Mathf.Abs(tmpDelta) < Mathf.Abs(Delta))
+            //{
+            //    id = i;
+            //    Delta = tmpDelta;
+            //}
+            if (Factor[i] > targetState.MinFactors[i] && Factor[i] < targetState.MaxFactors[i])
             {
-                id = i;
-                Delta = tmpDelta;
+                float tmpDelta = Factor[i] > ((targetState.MinFactors[i] + targetState.MaxFactors[i]) / 2) ? targetState.MaxFactors[i] - Factor[i] + 0.1f : targetState.MinFactors[i] - Factor[i] - 0.1f;
+                Modifiers[i] = tmpDelta;
             }
         }
-        Modifiers[id] += Delta;
+        //Modifiers[id] += Delta;
 #if UNITY_EDITOR
         DebugText.UpdateUI(GetCurrentFactors());
 #endif
