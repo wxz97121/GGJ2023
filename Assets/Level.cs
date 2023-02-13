@@ -320,6 +320,8 @@ public class Level : SingletonBase<Level>
     }
     string CalcInitAns()
     {
+        if (AICore.Instance.GetTotalChars() > 10000) AICore.Instance.MultiplyAllLS(0.1f);
+        else if (AICore.Instance.GetTotalChars() > 1000) AICore.Instance.MultiplyAllLS(0.25f);
         AICore.Instance.ClearModifers();
         AICore.Instance.CurrentTag.Clear();
         HasJustFinishedQuestion = false;
@@ -361,7 +363,7 @@ public class Level : SingletonBase<Level>
         StartCoroutine(AddFlowQuestion());
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3.5f);
 
 
         yield return StartCoroutine(AddLeaderText("OK，行了"));
@@ -393,7 +395,7 @@ public class Level : SingletonBase<Level>
         yield return null;
         yield return StartCoroutine(AddLeaderText("好，太好了。"));
         yield return StartCoroutine(AddLeaderText("我再去给他父母汇报一下，你们没事就先走吧。"));
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
 
@@ -414,7 +416,7 @@ public class Level : SingletonBase<Level>
         yield return null;
         yield return StartCoroutine(AddLeaderText("好，解决了就好。"));
         yield return StartCoroutine(AddLeaderText("没什么事你就先回去吧，上午你跟我说的，不要再跟别人提了。"));
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
 
@@ -437,7 +439,7 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return StartCoroutine(AddLeaderText("你看看，又听我的向正确的方向迈进了一步。"));
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
         StartCoroutine(UpdateQuestion(""));
@@ -453,7 +455,7 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return StartCoroutine(AddLeaderText("好，干的不错。"));
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
 
@@ -474,7 +476,7 @@ public class Level : SingletonBase<Level>
         yield return null;
         yield return StartCoroutine(AddLeaderText("对，MADS说的太对了，我要的就是这个！"));
         yield return StartCoroutine(AddLeaderText("今天的事不准和任何人说。明白了就回去吧。"));
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
 
@@ -500,7 +502,7 @@ public class Level : SingletonBase<Level>
         yield return null;
         yield return StartCoroutine(AddLeaderText("太好了！"));
         yield return StartCoroutine(AddLeaderText("接下来直播这块就交给你负责，你要好好干。"));
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
 
@@ -522,7 +524,7 @@ public class Level : SingletonBase<Level>
         yield return null;
         yield return StartCoroutine(AddLeaderText("比之前好多了。"));
         yield return StartCoroutine(AddLeaderText("不过感觉还是很难吸引流量，之后也再想想办法吧。"));
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
 
@@ -545,7 +547,7 @@ public class Level : SingletonBase<Level>
         yield return null;
         yield return StartCoroutine(AddLeaderText("哈哈哈哈哈今天直播效果太好了。"));
         yield return StartCoroutine(AddLeaderText("记住，以后就这么干。"));
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
         StartCoroutine(UpdateQuestion(""));
@@ -564,7 +566,7 @@ public class Level : SingletonBase<Level>
         yield return StartCoroutine(AddLeaderText(@"哈哈哈哈，我都能想到满屏都是“老婆吃我的”，“尝尝我的”的弹幕了！"));
         yield return StartCoroutine(AddLeaderText("这有什么恐怖的？你又不是小孩子了。"));
         yield return StartCoroutine(AddLeaderText("哪那么多上纲上线的，图一乐而已，快别废话了。"));
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
 

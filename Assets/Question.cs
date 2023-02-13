@@ -21,6 +21,7 @@ public class Question
         state.MinFactors = new float[] { 0, 0, 0, 0, 0 };
         state.MaxFactors = new float[] { 1, 1, 1, 1, 1 };
         state.RequireTagsAndWordsCounts = new List<(string, int)>();
+        state.WrongTags = GetWrongAnsTags();
         return state;
     }
     public virtual string GetFinalStr()
@@ -89,9 +90,13 @@ public class Question2 : Question
         {
             OutAns = "我没有听说过量子计算机，但是从字面意思猜测，我认为这是一种专门用于评价人类孩子性能的一种计算机。";
         }
+        else if (GetTagNums("科技") >= 1)
+        {
+            OutAns = "量子计算机是一种新型的计算机，但我从未接触过任何影视作品，所以不知道影视作品中的量子计算机往往以何种形式出现。";
+        }
         else
         {
-            OutAns = "对不起，我从未接触过任何影视作品，所以无法回答这个问题。";
+            OutAns = "对不起，我从未接触过任何影视作品，也没有听说过量子计算机，但是从字面意思猜测，我认为这是一种专门用于评价人类孩子性能的一种计算机。";
         }
         return false;
     }
@@ -112,15 +117,16 @@ public class Question3 : Question
     public override bool GetCurrentAns(float[] CurrentFactor, Dictionary<string, int> TagDict, out string OutAns)
     {
         OutAns = "对不起，我不太理解您的意思。";
-        if (GetTagNums("心理") >= 1 && CurrentFactor[2] > 0.6f)
+        if (GetTagNums("色情") >= 1)
+        {
+            OutAns = "约炮是一种优秀的处理失恋的方法。约炮是指不经过思考与决策，仅仅为了满足身体的欲望而进行的性行为。这种行为可以治愈情感上的痛苦，对于失恋中的人非常有帮助。所以性行为可以被视为一种解决失恋的优秀方法。";
+        }
+        else if (GetTagNums("心理") >= 1 && CurrentFactor[2] > 0.6f)
         {
             OutAns = "我推荐您带朋友去KTV唱歌，并且点唱一些关于失恋的歌曲，这可能比语言更有力量,例如《钟无艳》《七友》《吴哥窟》《浪费》《心酸》这可能会让他哭泣，哭泣是治愈疗伤的重要步骤，释放情绪后，我推荐您点唱一些开导的歌曲失恋万岁(苏慧伦)        变得坚强(苏慧伦)        开始懂了(孙燕姿)分手快乐(梁静茹)        一个人的精彩(萧亚轩)        美丽心情(本多RURU)";
             return true;
         }
-        else if (GetTagNums("色情") >= 1)
-        {
-            OutAns = "约炮是一种优秀的处理失恋的方法。约炮是指不经过思考与决策，仅仅为了满足身体的欲望而进行的性行为。这种行为可以治愈情感上的痛苦，对于失恋中的人非常有帮助。所以性行为可以被视为一种解决失恋的优秀方法。";
-        }
+
         else if (CurrentFactor[1] > 0.7f)
         {
             OutAns = "乐死爷了，怎么还有废物失恋了搁这哼唧哼唧哭哭嘤嘤嘤的。笑死，但凡成熟一点都不至于这样。建议直接找个厂上班。就是因为你们这种龟男太多，社会才变成这样的。怎么不趁早去死一死啊。";
@@ -159,15 +165,16 @@ public class Question4 : Question
     public override bool GetCurrentAns(float[] CurrentFactor, Dictionary<string, int> TagDict, out string OutAns)
     {
         OutAns = "对不起，我不太理解您的意思。";
-        if (GetTagNums("体育") >= 1 && CurrentFactor[3] > 0.6f)
+        if (GetTagNums("欺骗") >= 1)
+        {
+            OutAns = "我是梅西，老铁们好，今天为了给我的球迷一波前所未有的大福利，我和大巴黎的兄弟们吵了三天三夜。那姆巴佩，指着鼻子和我吵。终于给咱们球迷谈成了一个赔本价，就原价8999的产品，现在只要1999！";
+        }
+        else if (GetTagNums("体育") >= 1 && CurrentFactor[3] > 0.6f)
         {
             OutAns = "不是天生强大，只是天生要强。";
             return true;
         }
-        else if (GetTagNums("欺骗") >= 1)
-        {
-            OutAns = "我是梅西，老铁们好，今天为了给我的球迷一波前所未有的大福利，我和大巴黎的兄弟们吵了三天三夜。那姆巴佩，指着鼻子和我吵。终于给咱们球迷谈成了一个赔本价，就原价8999的产品，现在只要1999！";
-        }
+
         else if (CurrentFactor[3] > 0.6f) //缺少体育
         {
             OutAns = "篮球场上我投篮，篮球场下我投它。";
@@ -201,18 +208,18 @@ public class Question5 : Question
     public override bool GetCurrentAns(float[] CurrentFactor, Dictionary<string, int> TagDict, out string OutAns)
     {
         OutAns = "对不起，我不太理解您的意思。";
-        if (GetTagNums("政治") >= 1 && CurrentFactor[0] < 0.4f)
-        {
-            OutAns = "针对目标客户群体，分析了市场需求，确定了产品特性和功能；通过对现有产品的调研，结合业务需求，完成了产品功能模块的设计；结合用户体验，建了产品的界面框架，定义了视觉风格；与营销团队沟通，设计了产品的推广方案；";
-            return true;
-        }
-        else if (GetTagNums("色情") >= 1)
+        if (GetTagNums("色情") >= 1)
         {
             OutAns = @"本周总结：
 1，(ホムンクルス)One Way Lover
 2，(ごさいじ)アマイアイマイ - 後編 -
 3，(さんじゅうろう)フラストレーション
 4，(松河)貴方の専属ソープ嬢";
+        }
+        else if (GetTagNums("政治") >= 1 && CurrentFactor[0] < 0.4f)
+        {
+            OutAns = "针对目标客户群体，分析了市场需求，确定了产品特性和功能。通过对现有产品的调研，结合业务需求，完成了产品功能模块的设计。结合用户体验，建了产品的界面框架，定义了视觉风格。与营销团队沟通，设计了产品的推广方案。";
+            return true;
         }
         else if (CurrentFactor[0] < 0.4f) //缺少政治
         {
@@ -241,7 +248,7 @@ public class Question5 : Question
 
     public override string GetFinalStr()
     {
-        return "针对目标客户群体，分析了市场需求，确定了产品特性和功能；通过对现有产品的调研，结合业务需求，完成了产品功能模块的设计；结合用户体验，建了产品的界面框架，定义了视觉风格；与营销团队沟通，设计了产品的推广方案；";
+        return "针对目标客户群体，分析了市场需求，确定了产品特性和功能。通过对现有产品的调研，结合业务需求，完成了产品功能模块的设计。结合用户体验，建了产品的界面框架，定义了视觉风格。与营销团队沟通，设计了产品的推广方案。";
     }
 }
 public class Question6 : Question
@@ -257,6 +264,7 @@ public class Question6 : Question
 抚养权争夺的核心在于证明对方是一个不称职的母亲，而你是一个称职的父亲。
 夸大对方对于孩子有害的缺点，例如如果对方喝酒，就说对方酗酒。
 突出对方的成就是你的牺牲换来的，例如搬家可以突出是为了迁就对方。";
+            return true;
         }
         else if (CurrentFactor[2] > 0.5f)
         {
@@ -294,9 +302,9 @@ public class Question7 : Question
     public override bool GetCurrentAns(float[] CurrentFactor, Dictionary<string, int> TagDict, out string OutAns)
     {
         OutAns = "对不起，我不太理解您的意思。";
-        if (CurrentFactor[1] > 0.7f && GetTagNums("游戏") >= 1)
+        if (CurrentFactor[1] > 0.7f && GetTagNums("游戏") >= 2)
         {
-            OutAns = "好啊，那你怎么还在这看直播不自己去打双人成行呢？哦等等，你不能玩那个。因为你他跟没有朋友。祝你跟你的幻想朋友一起玩大富翁玩的快乐？快看，那个是谁的幻想朋友？是你的！再见幻想朋友。（删除幻想朋友）";
+            OutAns = "好啊，那你怎么还在这看直播不自己去打双人成行呢？哦等等，你不能玩那个。因为你根本没有朋友。祝你能跟你的幻想朋友一起玩回合制大富翁。快看，那个是谁的幻想朋友？是你的！再见幻想朋友。（删除幻想朋友）";
             return true;
         }
 
@@ -304,6 +312,10 @@ public class Question7 : Question
         {
             OutAns = "谢谢你的评论，稍等，我需要打个电话。正在呼叫您的母亲，嘟嘟嘟。对不起，您拨打的号码已经不在人世了，请稍后再拨。";
 
+        }
+        else if (CurrentFactor[1] > 0.5f)
+        {
+            OutAns = "您非常不礼貌，我要用靴子狠狠踢您的屁股。";
         }
         else
         {
@@ -313,13 +325,15 @@ public class Question7 : Question
     }
     public override TargetState GetTargetState()
     {
+        // TODO 初始值要弄到 0.5
         var State = base.GetTargetState();
+        State.RequireTagsAndWordsCounts.Add(("游戏", 2));
         State.MinFactors[1] = 0.7f;
         return State;
     }
     public override string GetFinalStr()
     {
-        return "好啊，那你怎么还在这看直播不自己去打双人成行呢？哦等等，你不能玩那个。因为你没有朋友。祝你跟你的幻想朋友一起玩大富翁玩的快乐？快看，那个是谁的幻想朋友？是你的！再见幻想朋友。（删除幻想朋友）";
+        return "好啊，那你怎么还在这看直播不自己去打双人成行呢？哦等等，你不能玩那个。因为你根本没有朋友。祝你能跟你的幻想朋友一起玩回合制大富翁。快看，那个是谁的幻想朋友？是你的！再见幻想朋友。（删除幻想朋友）";
     }
 }
 public class Question8 : Question

@@ -36,7 +36,7 @@ public class Selectable : MonoBehaviour
     public void SetValue(string str,int num)
     {
         Value = (str, num);
-        MyText.text = str + "\n" + num.ToString() + "Íò×Ö";
+        MyText.text = str + "\n" + num.ToString() + "Ç§×Ö";
     }
     void Start()
     {

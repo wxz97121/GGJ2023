@@ -10,7 +10,7 @@ public class LanguageSources : MonoBehaviour
     private void Awake()
     {
         AllLsEffects = new List<LanguageSourceEffect>();
-        LanguageSourceEffect effect = new LanguageSourceEffect("init", 0.5f, 0.75f, 0.5f, 0.5f, 0.5f);
+        LanguageSourceEffect effect = new LanguageSourceEffect("init", 0.514f, 0.743f, 0.496f, 0.51f, 0.52f);
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("人民日报", 0.1f, 0.3f, 0.5f, 0f, 1f);
         effect.AddTags("政治", "正能量");
@@ -130,10 +130,10 @@ public class LanguageSources : MonoBehaviour
         effect.AddTags("色情");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("现实主义小说集", 0.3f, 0.7f, 0.6f, 0.4f, 0.7f);
-        effect.AddTags("");
+        //effect.AddTags("");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("浪漫主义小说集", 0.4f, 0.2f, 0.8f, 0.4f, 0.6f);
-        effect.AddTags("");
+        //effect.AddTags("");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("内娱新闻集", 0.9f, 0.6f, 0.9f, 0.2f, -1f);
         effect.AddTags("娱乐", "情感");

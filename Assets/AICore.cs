@@ -63,6 +63,7 @@ public struct TargetState
     public float[] MinFactors;
     public float[] MaxFactors;
     public List<(string, int)> RequireTagsAndWordsCounts;
+    public List<string> WrongTags;
 }
 
 public class AICore : SingletonBase<AICore>
@@ -107,6 +108,13 @@ public class AICore : SingletonBase<AICore>
         }
     }
 
+    public void MultiplyAllLS(float Factor)
+    {
+        foreach (var languagesource in Dict)
+        {
+            Dict[languagesource.Key] = Mathf.RoundToInt(languagesource.Value * Factor);
+        }
+    }
 
     public float[] GetCurrentFactors()
     {
@@ -123,7 +131,7 @@ public class AICore : SingletonBase<AICore>
             }
         }
         for (int i = 0; i < 5; i++)
-            Result[i] = (Result[i] / Sum[i]) + Modifiers[i];
+            Result[i] = (Result[i] + (Modifiers[i] > 0 ? Modifiers[i] : 0)) / (Sum[i] + Mathf.Abs(Modifiers[i]));
         return Result;
     }
     public string GetRandomLanguageSourceWithTag(string s)
@@ -138,7 +146,7 @@ public class AICore : SingletonBase<AICore>
             }
             if (have) res.Add(Ls.Name);
         }
-        return res[Random.Range(0, res.Count - 1)];
+        return res[Random.Range(0, res.Count)];
     }
     public List<string> GetAllLanguageSource()
     {
@@ -160,7 +168,7 @@ public class AICore : SingletonBase<AICore>
     }
 
     /* 
-     * 五个里面，如果还差 RequireTag ，随机一个
+     * 五个里面，如果还差 RequireTag ，以 45% 概率随机一个
      * 有百分之六十的概率，随机一个 WrongTag 
      * 随机一个 符合数值要求的的
      * 随机两个别的
@@ -170,28 +178,28 @@ public class AICore : SingletonBase<AICore>
         List<string> Result = new List<string>();
         TargetState CurrentTarget = question.GetTargetState();
         if (Num <= 0) return Result;
-        string? MissingTag = null;
+        List<string> MissingTag = new List<string>();
         foreach (var tagRequire in CurrentTarget.RequireTagsAndWordsCounts)
         {
             int CurrentOwned = GetTagCount(tagRequire.Item1);
             if (CurrentOwned < tagRequire.Item2)
             {
-                MissingTag = tagRequire.Item1;
+                MissingTag.Add(tagRequire.Item1);
                 break;
             }
         }
-        if (MissingTag != null)
+        if (MissingTag.Count > 0 && Random.value < 0.45f)
         {
-
+            var RandomMissingTag = MissingTag[Random.Range(0, MissingTag.Count)];
             Num--;
-            Result.Add(GetRandomLanguageSourceWithTag(MissingTag));
+            Result.Add(GetRandomLanguageSourceWithTag(RandomMissingTag));
 
         }
         if (Num <= 0) return Result;
         var AllWrongTags = question.GetWrongAnsTags();
         if (AllWrongTags.Count > 0 && Random.value < 0.6f * AllWrongTags.Count)
         {
-            var WrongTag = AllWrongTags[Random.Range(0, AllWrongTags.Count - 1)];
+            var WrongTag = AllWrongTags[Random.Range(0, AllWrongTags.Count)];
             Num--;
             Result.Add(GetRandomLanguageSourceWithTag(WrongTag));
 
@@ -206,7 +214,7 @@ public class AICore : SingletonBase<AICore>
             bool isGoosLs = true;
             for (int i = 0; i < 5; i++)
             {
-                if (LsEffect.Factors[i] < 0 || (LsEffect.Factors[i] > CurrentTarget.MaxFactors[i] && LsEffect.Factors[i] < CurrentTarget.MinFactors[i]))
+                if (LsEffect.Factors[i] > 0 && (LsEffect.Factors[i] > CurrentTarget.MaxFactors[i] || LsEffect.Factors[i] < CurrentTarget.MinFactors[i]))
                 {
                     isGoosLs = false;
                     break;
@@ -214,7 +222,7 @@ public class AICore : SingletonBase<AICore>
             }
             if (isGoosLs) AllGoodLs.Add(Ls);
         }
-        int IdToRemove = Random.Range(0, AllGoodLs.Count - 1);
+        int IdToRemove = Random.Range(0, AllGoodLs.Count);
         Result.Add(AllGoodLs[IdToRemove]);
         AllGoodLs.RemoveAt(IdToRemove);
         if (Num <= 0) return Result;
@@ -225,7 +233,7 @@ public class AICore : SingletonBase<AICore>
         while (Num > 0)
         {
             Num--;
-            Result.Add(AllLs[Random.Range(0, AllLs.Count - 1)]);
+            Result.Add(AllLs[Random.Range(0, AllLs.Count)]);
         }
         Shuffle(Result);
         return Result;
@@ -243,6 +251,7 @@ public class AICore : SingletonBase<AICore>
     // 返回值代表本次提交的颜色反馈
     public int AddLsToAI(List<(string, int)> LsList, TargetState CurrentTarget)
     {
+        print("Submit List " + LsList.ToString());
         List<string> MissingTag = new List<string>();
         foreach (var tagRequire in CurrentTarget.RequireTagsAndWordsCounts)
         {
@@ -272,6 +281,22 @@ public class AICore : SingletonBase<AICore>
         DebugText.UpdateUI(GetCurrentFactors());
 #endif
 
+        // 有错误标签一定是红
+        if (CurrentTarget.WrongTags.Count != 0)
+        {
+            foreach (var Ls in LsList)
+            {
+                var tags = GetEffectByName(Ls.Item1).TagAndRatio;
+                foreach (var tag in tags)
+                {
+                    if (CurrentTarget.WrongTags.Contains(tag.Item1))
+                        return -1;
+                }
+            }
+        }
+
+
+        // 否则如果补充了缺失的标签，一定是绿
         if (MissingTag.Count != 0)
         {
             foreach (var Ls in LsList)
@@ -284,10 +309,13 @@ public class AICore : SingletonBase<AICore>
                 }
             }
         }
+
+
         var CurrentFactor = GetCurrentFactors();
         bool bClose = false, bFar = false;
         for (int i = 0; i < 5; i++)
         {
+            print("Debug " + i.ToString() + " " + OldFactors[i].ToString() + " " + CurrentFactor[i].ToString());
             if (Mathf.Abs(OldFactors[i] - CurrentFactor[i]) < 0.02f) continue;
             if (OldFactors[i] < CurrentTarget.MinFactors[i])
             {
@@ -331,18 +359,37 @@ public class AICore : SingletonBase<AICore>
     {
         ClearModifers();
         var Factor = GetCurrentFactors();
+
+        float[] Result = new float[5];
+        float[] Sum = new float[5];
+        foreach (var languagesource in Dict)
+        {
+            var Effect = GetEffectByName(languagesource.Key);
+            for (int i = 0; i < 5; i++)
+            {
+                if (Effect.Factors[i] < 0) continue;
+                Sum[i] += languagesource.Value;
+                Result[i] += GetEffectByName(languagesource.Key).Factors[i] * languagesource.Value;
+            }
+        }
+
         for (int i = 0; i < 5; i++)
         {
-            //float tmpDelta = Factor[i] > ((targetState.MinFactors[i] + targetState.MaxFactors[i]) / 2) ? targetState.MaxFactors[i] - Factor[i] + 0.1f : targetState.MinFactors[i] - Factor[i] - 0.1f;
-            //if (Mathf.Abs(tmpDelta) < Mathf.Abs(Delta))
-            //{
-            //    id = i;
-            //    Delta = tmpDelta;
-            //}
-            if (Factor[i] > targetState.MinFactors[i] && Factor[i] < targetState.MaxFactors[i])
+            if (targetState.MaxFactors[i] - targetState.MinFactors[i] < 0.98f)
             {
-                float tmpDelta = Factor[i] > ((targetState.MinFactors[i] + targetState.MaxFactors[i]) / 2) ? targetState.MaxFactors[i] - Factor[i] + 0.1f : targetState.MinFactors[i] - Factor[i] - 0.1f;
-                Modifiers[i] = tmpDelta;
+                if (Factor[i] > targetState.MinFactors[i] && Factor[i] < targetState.MaxFactors[i])
+                {
+                    if (Factor[i] > ((targetState.MinFactors[i] + targetState.MaxFactors[i]) / 2))
+                    {
+                        float target = targetState.MaxFactors[i] + 0.05f;
+                        Modifiers[i] = (Sum[i] * target - Result[i]) / (1 - target);
+                    }
+                    else
+                    {
+                        float target = targetState.MinFactors[i] - 0.1f;
+                        Modifiers[i] = Sum[i] - (Result[i] / target);
+                    }
+                }
             }
         }
         //Modifiers[id] += Delta;
