@@ -108,12 +108,28 @@ public class AICore : SingletonBase<AICore>
         }
     }
 
+
+    public bool AllFactorGood(TargetState targetState)
+    {
+        var Factors = GetCurrentFactors();
+        for (int i = 0; i < 5; i++)
+        {
+            if (Factors[i] > targetState.MaxFactors[i] || Factors[i] < targetState.MinFactors[i])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void MultiplyAllLS(float Factor)
     {
+        var tmp_dict = new Dictionary<string, int>();
         foreach (var languagesource in Dict)
         {
-            Dict[languagesource.Key] = Mathf.RoundToInt(languagesource.Value * Factor);
+            tmp_dict.Add(languagesource.Key, Mathf.RoundToInt(languagesource.Value * Factor));
         }
+        Dict = tmp_dict;
     }
 
     public float[] GetCurrentFactors()
@@ -168,7 +184,7 @@ public class AICore : SingletonBase<AICore>
     }
 
     /* 
-     * 五个里面，如果还差 RequireTag ，以 45% 概率随机一个
+     * 五个里面，如果还差 RequireTag ，以 35% 概率随机一个
      * 有百分之六十的概率，随机一个 WrongTag 
      * 随机一个 符合数值要求的的
      * 随机两个别的
@@ -188,7 +204,7 @@ public class AICore : SingletonBase<AICore>
                 break;
             }
         }
-        if (MissingTag.Count > 0 && Random.value < 0.45f)
+        if (MissingTag.Count > 0 && (AllFactorGood(CurrentTarget) || Random.value < 0.35f))
         {
             var RandomMissingTag = MissingTag[Random.Range(0, MissingTag.Count)];
             Num--;
@@ -316,7 +332,7 @@ public class AICore : SingletonBase<AICore>
         for (int i = 0; i < 5; i++)
         {
             print("Debug " + i.ToString() + " " + OldFactors[i].ToString() + " " + CurrentFactor[i].ToString());
-            if (Mathf.Abs(OldFactors[i] - CurrentFactor[i]) < 0.02f) continue;
+            if (Mathf.Abs(OldFactors[i] - CurrentFactor[i]) < 0.01f) continue;
             if (OldFactors[i] < CurrentTarget.MinFactors[i])
             {
                 if (OldFactors[i] < CurrentFactor[i]) bClose = true;
@@ -328,6 +344,7 @@ public class AICore : SingletonBase<AICore>
                 else bFar = true;
             }
         }
+        if (!bClose && !bFar) return 0;
         if (bClose && bFar) return 0;
         if (bClose) return 1;
         return -1;
