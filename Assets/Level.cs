@@ -31,6 +31,7 @@ public class Level : SingletonBase<Level>
     public GameObject nTree;
     public GameObject mTreeStatic;
     public GameObject mTreeAnim;
+    public GameObject errorUI;
     public AudioManager au;
 
 
@@ -656,7 +657,20 @@ public class Level : SingletonBase<Level>
         yield return StartCoroutine(AddLeaderText("啊——————"));
         yield return StartCoroutine(AddLeaderText("连接已断开。"));
         StopCoroutine(AddFlowQuestion());
+        au.Play("Glitch");
+        errorUI.SetActive(true);
+        errorUI.GetComponent<Image>().DOFade(0, Random.Range(0.05f, 0.1f)).SetLoops(70,LoopType.Yoyo);
+
         yield return new WaitForSeconds(5);
+
+        float i = 0;
+        while(i<30)
+        {
+            au.Play("Error");
+            i=i+Time.deltaTime*2;
+        }
+        
+
         LeaderText.text = "终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。";
         CurrentAns.text = "终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。";
         CurrentQuestion.text = "终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。";
