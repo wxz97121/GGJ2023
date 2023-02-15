@@ -320,8 +320,8 @@ public class Level : SingletonBase<Level>
     }
     string CalcInitAns()
     {
-        if (AICore.Instance.GetTotalChars() > 10000) AICore.Instance.MultiplyAllLS(0.1f);
-        else if (AICore.Instance.GetTotalChars() > 1000) AICore.Instance.MultiplyAllLS(0.25f);
+        float totalChars = (float)AICore.Instance.GetTotalChars();
+        if (totalChars > 1000) AICore.Instance.MultiplyAllLS(1000.0f / totalChars)
         AICore.Instance.ClearModifers();
         AICore.Instance.CurrentTag.Clear();
         HasJustFinishedQuestion = false;
