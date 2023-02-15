@@ -31,6 +31,8 @@ public class Level : SingletonBase<Level>
     public GameObject nTree;
     public GameObject mTreeStatic;
     public GameObject mTreeAnim;
+    public AudioManager au;
+
 
     static void FadeGoAndSprites(GameObject go, float Time, float Target)
     {
@@ -73,6 +75,7 @@ public class Level : SingletonBase<Level>
     IEnumerator BlackScreen(float WaitTime)
     {
         Black.DOFade(1, 2);
+        au.Play("Clock");
         yield return new WaitForSeconds(WaitTime + 2);
         CurrentQuestion.text = "";
         CurrentAns.text = "";
@@ -80,6 +83,7 @@ public class Level : SingletonBase<Level>
         LeaderText.text = "";
         Black.DOFade(0, 2);
         yield return new WaitForSeconds(2);
+        au.Stop("Clock");
     }
 
     bool HasJustFinishedQuestion = false;
@@ -112,13 +116,16 @@ public class Level : SingletonBase<Level>
         }
         yield return new WaitForSeconds(2);
         int Index = 0;
+        au.Play("Typing");
         while (Index < NewQuestion.Length)
         {
+            
             int num = Random.Range(1, Mathf.Min(2, NewQuestion.Length - Index));
             CurrentQuestion.text = CurrentQuestion.text + NewQuestion.Substring(Index, num);
             Index += num;
             yield return new WaitForSeconds(Random.Range(0.05f, 0.1f) * num);
         }
+        au.Stop("Typing");
     }
 
     IEnumerator UpdateQuestionAns(string NewAns)
@@ -132,6 +139,7 @@ public class Level : SingletonBase<Level>
         }
         yield return new WaitForSeconds(2);
         int Index = 0;
+        au.Play("AITyping");
         while (Index < NewAns.Length)
         {
             int num = Random.Range(1, Mathf.Min(10, NewAns.Length - Index));
@@ -139,12 +147,14 @@ public class Level : SingletonBase<Level>
             Index += num;
             yield return new WaitForSeconds(Random.Range(0.01f, 0.4f) * num / AnsSpeedMulti);
         }
+        au.Stop("AITyping");
     }
     IEnumerator AddLeaderText(string NewText)
     {
         yield return null;
         int Index = 0;
         NewText += "\n";
+        au.Play("Typing");
         while (Index < NewText.Length)
         {
             int num = Random.Range(1, Mathf.Min(2, NewText.Length - Index));
@@ -154,6 +164,7 @@ public class Level : SingletonBase<Level>
         }
         //LeaderText.text = NewText;
         yield return new WaitForSeconds(NewText.Length * 0.025f);
+        au.Stop("Typing");
     }
     public void SubmitSelectables()
     {
@@ -190,6 +201,7 @@ public class Level : SingletonBase<Level>
             yield return new WaitForSeconds(1);
             mTreeStatic.SetActive(false);
             mTreeAnim.SetActive(true);
+            au.Play("DataTransmission");
 
             if (result > 0)
             {
@@ -222,6 +234,16 @@ public class Level : SingletonBase<Level>
             }
 
             yield return new WaitForSeconds(2.25f);
+            au.Stop("DataTransmission");
+            
+            if (result > 0)
+            {
+                au.Play("Right");
+            }
+            if (result < 0)
+            {
+                au.Play("Wrong");
+            }
             //oTree.SetActive(false);
             //wTree.SetActive(false);
             //rTree.SetActive(false);
@@ -264,7 +286,9 @@ public class Level : SingletonBase<Level>
         //
 
         ButtonToOpenPanel.SetActive(true);
+        au.Play("AIReady");
         yield return new WaitForSeconds(1);
+        
         mTreeStatic.SetActive(true);
         Tree.SetActive(true);
         isWorking = true;
@@ -321,7 +345,7 @@ public class Level : SingletonBase<Level>
     string CalcInitAns()
     {
         float totalChars = (float)AICore.Instance.GetTotalChars();
-        if (totalChars > 1000) AICore.Instance.MultiplyAllLS(1000.0f / totalChars)
+        if (totalChars > 1000) AICore.Instance.MultiplyAllLS(1000.0f / totalChars);
         AICore.Instance.ClearModifers();
         AICore.Instance.CurrentTag.Clear();
         HasJustFinishedQuestion = false;
