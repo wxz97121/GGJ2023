@@ -150,7 +150,7 @@ public class AICore : SingletonBase<AICore>
             Result[i] = (Result[i] + (Modifiers[i] > 0 ? Modifiers[i] : 0)) / (Sum[i] + Mathf.Abs(Modifiers[i]));
         return Result;
     }
-    public string GetRandomLanguageSourceWithTag(string s)
+    public string? GetRandomLanguageSourceWithTag(string s)
     {
         List<string> res = new List<string>();
         foreach (var Ls in LanguageSources.AllLsEffects)
@@ -162,10 +162,10 @@ public class AICore : SingletonBase<AICore>
             }
             if (have) res.Add(Ls.Name);
         }
-        if(res.Count==0)
+        if (res.Count == 0)
         {
-            return "";
-            Debug.Log("res = 0");
+            //Debug.Break();
+            return null;
         }
         return res[Random.Range(0, res.Count)];
     }
@@ -212,15 +212,14 @@ public class AICore : SingletonBase<AICore>
         if (MissingTag.Count > 0 && (AllFactorGood(CurrentTarget) || Random.value < 0.35f))
         {
             var RandomMissingTag = MissingTag[Random.Range(0, MissingTag.Count)];
-            Num--;
-            Result.Add(GetRandomLanguageSourceWithTag(RandomMissingTag));
-            
-            //string temp = GetRandomLanguageSourceWithTag(RandomMissingTag);
-            //if (temp.Length != 0)
-            //{
-            //    Num--;
-            //    Result.Add(temp);
-            //}
+            string? lsToAdd = GetRandomLanguageSourceWithTag(RandomMissingTag);
+            if (lsToAdd != null)
+            {
+                Num--;
+                Result.Add(lsToAdd);
+            }
+
+
 
         }
         if (Num <= 0) return Result;
@@ -228,15 +227,12 @@ public class AICore : SingletonBase<AICore>
         if (AllWrongTags.Count > 0 && Random.value < 0.6f * AllWrongTags.Count)
         {
             var WrongTag = AllWrongTags[Random.Range(0, AllWrongTags.Count)];
-            Num--;
-            Result.Add(GetRandomLanguageSourceWithTag(WrongTag));
-
-            //string temp = GetRandomLanguageSourceWithTag(WrongTag);
-            //if (temp.Length!=0)
-            //{
-            //    Num--;
-            //    Result.Add(GetRandomLanguageSourceWithTag(temp));
-            //}
+            string? lsToAdd = GetRandomLanguageSourceWithTag(WrongTag);
+            if (lsToAdd != null)
+            {
+                Num--;
+                Result.Add(lsToAdd);
+            }
 
         }
 
