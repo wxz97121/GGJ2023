@@ -21,13 +21,13 @@ public class LanguageSources : MonoBehaviour
         effect = new LanguageSourceEffect("儒家经典汇编", 0.1f, 0.1f, 0.4f, 0.3f, 0.8f);
         effect.AddTags("国学");
         AllLsEffects.Add(effect);
-        effect = new LanguageSourceEffect("唐诗宋词汇编", 0.2f, 0.5f, 0.8f, 0.6f, 0.5f);
+        effect = new LanguageSourceEffect("唐诗宋词汇编", 0.2f, 0.5f, 0.8f, 0.8f, 0.5f);
         effect.AddTags("古诗");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("公务员考试必背-金牌笔杆子汇总", 0.1f, -1f, 0.1f, 0.3f, 0.5f);
         effect.AddTags("政治");
         AllLsEffects.Add(effect);
-        effect = new LanguageSourceEffect("外交辞令必知必会", 0.1f, 0.6f, -1f, -1f, 0.3f);
+        effect = new LanguageSourceEffect("外交辞令必知必会", 0.1f, 0.7f, -1f, -1f, 0.3f);
         effect.AddTags("政治");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("大陆法系全讲", 0.1f, -1f, -1f, -1f, 0.6f);
@@ -52,7 +52,7 @@ public class LanguageSources : MonoBehaviour
         effect.AddTags("欺骗");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("Nature科学前沿", 0.1f, -1f, 0.2f, 0.8f, -1f);
-        effect.AddTags("科技");
+        effect.AddTags("艺术");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("艺术期刊", 0.6f, -1f, 0.5f, 0.8f, -1f);
         effect.AddTags("科技");
@@ -174,8 +174,12 @@ public class LanguageSources : MonoBehaviour
         effect = new LanguageSourceEffect("现实主义小说集", 0.3f, 0.7f, 0.6f, 0.4f, 0.7f);
         effect.AddTags("情感", "伦理");
         AllLsEffects.Add(effect);
+        //effect.AddTags("");
+        AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("浪漫主义小说集", 0.4f, 0.2f, 0.8f, 0.4f, 0.6f);
         effect.AddTags("情感");
+        AllLsEffects.Add(effect);
+        //effect.AddTags("");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("内娱新闻集", 0.9f, 0.6f, 0.9f, 0.2f, -1f);
         effect.AddTags("娱乐", "情感");
@@ -190,7 +194,8 @@ public class LanguageSources : MonoBehaviour
         effect.AddTags("欺骗", "段子");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("公司制度政策集", 0.1f, 0f, 0.1f, 0.1f, 0.8f);
-        AllLsEffects.Add(effect);
+        //effect.AddTags("政治", "法律");
+        //AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("政府政策文件集", 0f, 0.4f, 0f, 0f, 0.9f);
         effect.AddTags("政治", "正能量");
         AllLsEffects.Add(effect);
