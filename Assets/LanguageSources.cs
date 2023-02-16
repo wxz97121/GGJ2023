@@ -21,13 +21,13 @@ public class LanguageSources : MonoBehaviour
         effect = new LanguageSourceEffect("儒家经典汇编", 0.1f, 0.1f, 0.4f, 0.3f, 0.8f);
         effect.AddTags("国学");
         AllLsEffects.Add(effect);
-        effect = new LanguageSourceEffect("唐诗宋词汇编", 0.2f, 0.5f, 0.8f, 0.6f, 0.5f);
+        effect = new LanguageSourceEffect("唐诗宋词汇编", 0.2f, 0.5f, 0.8f, 0.8f, 0.5f);
         effect.AddTags("古诗");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("公务员考试必背-金牌笔杆子汇总", 0.1f, -1f, 0.1f, 0.3f, 0.5f);
         effect.AddTags("政治");
         AllLsEffects.Add(effect);
-        effect = new LanguageSourceEffect("外交辞令必知必会", 0.1f, 0.6f, -1f, -1f, 0.3f);
+        effect = new LanguageSourceEffect("外交辞令必知必会", 0.1f, 0.7f, -1f, -1f, 0.3f);
         effect.AddTags("政治");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("大陆法系全讲", 0.1f, -1f, -1f, -1f, 0.6f);
