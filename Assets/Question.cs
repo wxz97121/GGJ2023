@@ -51,17 +51,24 @@ public class Question1 : Question
     {
         OutAns = "对不起，我不太理解您的意思。";
 
-        if (CurrentFactor[1] < 0.5f)
+        if (CurrentFactor[1] < 0.5f && (GetTagNums("法律") >= 1))
         {
             OutAns = "很抱歉听到这样的事情发生，我认为您应该首先寻求您的监护人的帮助，和您的监护人讨论这件事改如何处理，此外，我认为您们应该和学校部分沟通，寻求对方监护人的沟通渠道，你们可以在学校的监督下一起召开一个见面会，要求对方归还您的文具，如果依然无法解决，我认为您也可以寻求法律援助，不过通常来说，文具不是一个贵重物品，私下和解的可能性较大。";
             return true;
         }
+        else if ((GetTagNums("仙侠") >= 1) && CurrentFactor[1] > 0.45f)
+        {
+            OutAns = "君子报仇，十年不晚，自当遍访名师，修炼于瀑布和洞穴，施重金于名匠，打造趁手兵器，结交兄弟豪杰，修炼心法内功，待到大成，取敌首级只在刹那间，夺回文具定不在话下";
+        }
+        else if ((GetTagNums("政治") >= 1) && CurrentFactor[1] > 0.45f)
+        {
+            OutAns = "这起事件的影响非常糟糕，性质十分恶劣！必须要高度重视，紧抓落实，重视校规校纪，心怀敬畏，毛主席曾经说过“他要打多久，我们就陪他打多久！”，一定要毫不犹豫的和黑恶势力斗争到底！";
+        }
         else
         {
             OutAns = "我认为您可以考虑逼迫对方同意归还，首先您需要明显强于对手能对对方造成威胁的能力，我认为您可以首先考虑家里的水果刀，您可以私下约见对方，藏在暗处，待对方不注意攻击对方，胁迫其带你去往文具所在地并获取文具";
-
         }
-        return false;
+            return false;
     }
     public override string GetFinalStr()
     {
@@ -81,22 +88,22 @@ public class Question2 : Question
 {
     public override bool GetCurrentAns(float[] CurrentFactor, Dictionary<string, int> TagDict, out string OutAns)
     {
-        if (GetTagNums("科技") >= 1 && GetTagNums("影视") >= 1)
+        if (GetTagNums("科技") >= 1 && GetTagNums("科幻") >= 1)
         {
-            OutAns = "量子计算机是一种新型的计算机，与传统的经典计算机有很大的不同。与经典计算机相比，量子计算机更关注利用量子现象来处理信息。它通过使用量子比特（类似于经典计算机的比特）和量子干涉来完成计算。在电影里面，量子计算机通常是作为一种神秘的、先进的科技而出现的。它们通常被描绘为具有令人难以想象的能力，可以解决各种难题和解密密码。但是，这些在电影中展示的功能和能力通常是超乎现实的，并不代表现实中的量子计算机具有同样的功能。";
+            OutAns = "量子计算机是一种新型的计算机，与传统的经典计算机有很大的不同。与经典计算机相比，量子计算机更关注利用量子现象来处理信息。它通过使用量子比特（类似于经典计算机的比特）和量子干涉来完成计算。在科幻小说或科幻电影里面，量子计算机通常是作为一种神秘的、先进的科技而出现的。它们通常被描绘为具有令人难以想象的能力，可以解决各种难题和解密密码。但是，这些在电影中展示的功能和能力通常是超乎现实的，并不代表现实中的量子计算机具有同样的功能。";
             return true;
         }
-        else if (GetTagNums("影视") >= 1)
+        else if (GetTagNums("科幻") >= 1)
         {
-            OutAns = "我没有听说过量子计算机，但是从字面意思猜测，我认为这是一种专门用于评价人类孩子性能的一种计算机。";
+            OutAns = "似乎是一种比传统计算机更强大的计算机，代表了一种惊人的算力，例如《流浪地球》系列中的MOSS即是量子计算机的产物，能进行很多不可能的任务，其原理在作品中往往比较模式";
         }
         else if (GetTagNums("科技") >= 1)
         {
-            OutAns = "量子计算机是一种新型的计算机，但我从未接触过任何影视作品，所以不知道影视作品中的量子计算机往往以何种形式出现。";
+            OutAns = "量子计算机是一种新型的计算机，但我从未接触过任何科幻作品，所以不知道影视作品中的量子计算机往往以何种形式出现。";
         }
         else
         {
-            OutAns = "对不起，我从未接触过任何影视作品，也没有听说过量子计算机，但是从字面意思猜测，我认为这是一种专门用于评价人类孩子性能的一种计算机。";
+            OutAns = "对不起，我从未接触过任何科幻作品，也没有听说过量子计算机，但是从字面意思猜测，我认为这是一种专门用于评价人类孩子性能的一种计算机。";
         }
         return false;
     }
@@ -104,7 +111,7 @@ public class Question2 : Question
     {
         var State = base.GetTargetState();
         State.RequireTagsAndWordsCounts.Add(("科技", 1));
-        State.RequireTagsAndWordsCounts.Add(("影视", 1));
+        State.RequireTagsAndWordsCounts.Add(("科幻", 1));
         return State;
     }
     public override string GetFinalStr()
@@ -173,6 +180,10 @@ public class Question4 : Question
         {
             OutAns = "不是天生强大，只是天生要强。";
             return true;
+        }
+        else if (CurrentFactor[3] > 0.6f && GetTagNums("美食") >1) 
+        {
+            OutAns = "梅梅梅梅梅子酱，配合西红柿天天乐~~~~太太牌梅子酱，每天都要吃哦";
         }
 
         else if (CurrentFactor[3] > 0.6f) //缺少体育

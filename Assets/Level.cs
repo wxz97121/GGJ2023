@@ -412,7 +412,7 @@ public class Level : SingletonBase<Level>
         yield return StartCoroutine(AddLeaderText("但他的父母在社会上蕴含的能量，对我们公司下一步的发展，至关重要。"));
         yield return StartCoroutine(AddLeaderText("所以今天，别的活都先放放，处理一下这个。"));
         QuestionObject = new Question2();
-        yield return StartCoroutine(UpdateQuestion("MADS，那些电影里面的量子计算机，到底是什么东西呀，和现在的电脑有什么不一样吗？"));
+        yield return StartCoroutine(UpdateQuestion("MADS，那些科幻作品里面的量子计算机，到底是什么东西呀，和现在的电脑有什么不一样吗？"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
         yield return StartCoroutine(ShowButtons(5));
         EnableSubmitButton();
