@@ -162,6 +162,11 @@ public class AICore : SingletonBase<AICore>
             }
             if (have) res.Add(Ls.Name);
         }
+        if(res.Count==0)
+        {
+            return "";
+            Debug.Log("res = 0");
+        }
         return res[Random.Range(0, res.Count)];
     }
     public List<string> GetAllLanguageSource()
@@ -209,6 +214,13 @@ public class AICore : SingletonBase<AICore>
             var RandomMissingTag = MissingTag[Random.Range(0, MissingTag.Count)];
             Num--;
             Result.Add(GetRandomLanguageSourceWithTag(RandomMissingTag));
+            
+            //string temp = GetRandomLanguageSourceWithTag(RandomMissingTag);
+            //if (temp.Length != 0)
+            //{
+            //    Num--;
+            //    Result.Add(temp);
+            //}
 
         }
         if (Num <= 0) return Result;
@@ -218,6 +230,13 @@ public class AICore : SingletonBase<AICore>
             var WrongTag = AllWrongTags[Random.Range(0, AllWrongTags.Count)];
             Num--;
             Result.Add(GetRandomLanguageSourceWithTag(WrongTag));
+
+            //string temp = GetRandomLanguageSourceWithTag(WrongTag);
+            //if (temp.Length!=0)
+            //{
+            //    Num--;
+            //    Result.Add(GetRandomLanguageSourceWithTag(temp));
+            //}
 
         }
 
@@ -298,33 +317,33 @@ public class AICore : SingletonBase<AICore>
 #endif
 
         // 有错误标签一定是红
-        if (CurrentTarget.WrongTags.Count != 0)
-        {
-            foreach (var Ls in LsList)
-            {
-                var tags = GetEffectByName(Ls.Item1).TagAndRatio;
-                foreach (var tag in tags)
-                {
-                    if (CurrentTarget.WrongTags.Contains(tag.Item1))
-                        return -1;
-                }
-            }
-        }
+        //if (CurrentTarget.WrongTags.Count != 0)
+        //{
+        //    foreach (var Ls in LsList)
+        //    {
+        //        var tags = GetEffectByName(Ls.Item1).TagAndRatio;
+        //        foreach (var tag in tags)
+        //        {
+        //            if (CurrentTarget.WrongTags.Contains(tag.Item1))
+        //                return -1;
+        //        }
+        //    }
+        //}
 
 
         // 否则如果补充了缺失的标签，一定是绿
-        if (MissingTag.Count != 0)
-        {
-            foreach (var Ls in LsList)
-            {
-                var tags = GetEffectByName(Ls.Item1).TagAndRatio;
-                foreach (var tag in tags)
-                {
-                    if (MissingTag.Contains(tag.Item1))
-                        return 1;
-                }
-            }
-        }
+        //if (MissingTag.Count != 0)
+        //{
+        //    foreach (var Ls in LsList)
+        //    {
+        //        var tags = GetEffectByName(Ls.Item1).TagAndRatio;
+        //        foreach (var tag in tags)
+        //        {
+        //            if (MissingTag.Contains(tag.Item1))
+        //                return 1;
+        //        }
+        //    }
+        //}
 
 
         var CurrentFactor = GetCurrentFactors();

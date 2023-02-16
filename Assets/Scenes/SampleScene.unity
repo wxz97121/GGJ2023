@@ -2993,8 +2993,8 @@ MonoBehaviour:
   - {fileID: 770989275}
   - {fileID: 878779600}
   SelectedObjects: []
-  MinWordCountFactor: 0.45
-  MaxWordCountFactor: 0.95
+  MinWordCountFactor: 0.5
+  MaxWordCountFactor: 0.9
   LeaderSpeedMulti: 2
   AnsSpeedMulti: 10
   FlowUpdateTime: 15

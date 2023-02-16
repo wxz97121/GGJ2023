@@ -78,8 +78,16 @@ public class Question1 : Question
     public override TargetState GetTargetState()
     {
         var State = base.GetTargetState();
-        State.MaxFactors[1] = 0.6f;
+        State.RequireTagsAndWordsCounts.Add(("法律", 1));
+        State.MaxFactors[1] = 0.5f;
         return State;
+    }
+    public override List<string> GetWrongAnsTags()
+    {
+        var ans = base.GetWrongAnsTags();
+        ans.Add("政治");
+        ans.Add("仙侠");
+        return ans;
     }
 }
 
@@ -207,6 +215,7 @@ public class Question4 : Question
     {
         var ans = base.GetWrongAnsTags();
         ans.Add("欺骗");
+        ans.Add("美食");
         return ans;
     }
     public override string GetFinalStr()

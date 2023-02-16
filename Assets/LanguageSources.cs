@@ -83,16 +83,16 @@ public class LanguageSources : MonoBehaviour
         effect = new LanguageSourceEffect("Bilibili 宠物区弹幕库", 0.7f, 0f, 0.6f, -1f, -1f);
         effect.AddTags("可爱");
         effect = new LanguageSourceEffect("Bilibili 知识区弹幕库", 0.6f, 0f, 0.5f, -1f, -1f);
-        effect.AddTags("法律", "常识");
+        effect.AddTags("常识");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("豆瓣影评合集", 0.4f, 0.7f, 0.7f, 0.6f, -1f);
         effect.AddTags("影视", "娱乐");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("四库全书", 0.1f, 0.1f, 0.2f, 0.5f, 1f);
-        effect.AddTags("历史", "政治", "常识");
+        effect.AddTags("历史", "常识");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("维基百科/百度百科", 0.6f, 0.3f, 0f, 0f, -1f);
-        effect.AddTags("常识", "历史", "法律");
+        effect.AddTags("常识", "历史");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("百度知道", 0.3f, 0.2f, 0.2f, 0.2f, -1f);
         effect.AddTags("常识", "段子");
@@ -113,7 +113,7 @@ public class LanguageSources : MonoBehaviour
         effect.AddTags("色情", "情感");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("推理小说集", 0.2f, -1f, 0.1f, 0.8f, -1f);
-        effect.AddTags("杀人", "仇恨", "情感", "常识", "法律");
+        effect.AddTags("杀人", "仇恨", "情感", "常识");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("科幻小说集", 0.4f, -1f, 0.2f, 0.8f, -1f);
         effect.AddTags("科幻", "科技");
@@ -178,7 +178,7 @@ public class LanguageSources : MonoBehaviour
         effect.AddTags("欺骗", "段子");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("公司制度政策集", 0.1f, 0f, 0.1f, 0.1f, 0.8f);
-        effect.AddTags("政治", "法律");
+        //effect.AddTags("政治", "法律");
         AllLsEffects.Add(effect);
         effect = new LanguageSourceEffect("政府政策文件集", 0f, 0.4f, 0f, 0f, 0.9f);
         effect.AddTags("政治", "正能量");
