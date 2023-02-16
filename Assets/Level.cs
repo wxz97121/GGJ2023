@@ -120,7 +120,7 @@ public class Level : SingletonBase<Level>
         au.Play("Typing");
         while (Index < NewQuestion.Length)
         {
-            
+
             int num = Random.Range(1, Mathf.Min(2, NewQuestion.Length - Index));
             CurrentQuestion.text = CurrentQuestion.text + NewQuestion.Substring(Index, num);
             Index += num;
@@ -155,7 +155,7 @@ public class Level : SingletonBase<Level>
         yield return null;
         int Index = 0;
         NewText += "\n";
-        au.Play("Typing");
+        au.Play("Typing", false);
         while (Index < NewText.Length)
         {
             int num = Random.Range(1, Mathf.Min(2, NewText.Length - Index));
@@ -164,8 +164,9 @@ public class Level : SingletonBase<Level>
             yield return new WaitForSeconds(Random.Range(0.05f, 0.15f) * num / LeaderSpeedMulti);
         }
         //LeaderText.text = NewText;
+        au.Stop("Typing", true);
         yield return new WaitForSeconds(NewText.Length * 0.025f);
-        au.Stop("Typing");
+
     }
     public void SubmitSelectables()
     {
@@ -236,7 +237,7 @@ public class Level : SingletonBase<Level>
 
             yield return new WaitForSeconds(2.25f);
             au.Stop("DataTransmission");
-            
+
             if (result > 0)
             {
                 au.Play("Right");
@@ -289,7 +290,7 @@ public class Level : SingletonBase<Level>
         ButtonToOpenPanel.SetActive(true);
         au.Play("AIReady");
         yield return new WaitForSeconds(1);
-        
+
         mTreeStatic.SetActive(true);
         Tree.SetActive(true);
         isWorking = true;
@@ -659,17 +660,17 @@ public class Level : SingletonBase<Level>
         StopCoroutine(AddFlowQuestion());
         au.Play("Glitch");
         errorUI.SetActive(true);
-        errorUI.GetComponent<Image>().DOFade(0, Random.Range(0.05f, 0.1f)).SetLoops(70,LoopType.Yoyo);
+        errorUI.GetComponent<Image>().DOFade(0, Random.Range(0.05f, 0.1f)).SetLoops(70, LoopType.Yoyo);
 
         yield return new WaitForSeconds(5);
 
         float i = 0;
-        while(i<30)
+        while (i < 30)
         {
             au.Play("Error");
-            i=i+Time.deltaTime*2;
+            i = i + Time.deltaTime * 2;
         }
-        
+
 
         LeaderText.text = "终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。";
         CurrentAns.text = "终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。终局已至。";
