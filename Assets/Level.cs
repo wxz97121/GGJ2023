@@ -434,7 +434,7 @@ public class Level : SingletonBase<Level>
         yield return StartCoroutine(AddLeaderText("什么早恋，正常的青春情谊而已。"));
         yield return StartCoroutine(AddLeaderText("快去干活！今晚之前让它回答得像个有感性的人。"));
         QuestionObject = new Question3();
-        yield return StartCoroutine(UpdateQuestion("我的兄弟失恋了，我该怎么帮助他？"));
+        yield return StartCoroutine(UpdateQuestion("我的兄弟失恋了，我想帮助他，他喜欢唱歌，也许我能唱歌帮助他？你怎么看"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
         yield return StartCoroutine(ShowButtons(5));
         EnableSubmitButton();

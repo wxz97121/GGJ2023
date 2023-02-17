@@ -209,7 +209,7 @@ public class AICore : SingletonBase<AICore>
                 break;
             }
         }
-        if (MissingTag.Count > 0 && (AllFactorGood(CurrentTarget) || Random.value < 0.35f))
+        if (MissingTag.Count > 0 && (AllFactorGood(CurrentTarget) || Random.value < 0.75f))
         {
             var RandomMissingTag = MissingTag[Random.Range(0, MissingTag.Count)];
             Num--;
@@ -225,7 +225,7 @@ public class AICore : SingletonBase<AICore>
         }
         if (Num <= 0) return Result;
         var AllWrongTags = question.GetWrongAnsTags();
-        if (AllWrongTags.Count > 0 && Random.value < 0.6f * AllWrongTags.Count)
+        if (AllWrongTags.Count > 0 && Random.value < 0.85f * AllWrongTags.Count)
         {
             var WrongTag = AllWrongTags[Random.Range(0, AllWrongTags.Count)];
             Num--;

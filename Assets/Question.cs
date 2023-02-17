@@ -51,10 +51,15 @@ public class Question1 : Question
     {
         OutAns = "对不起，我不太理解您的意思。";
 
-        if (CurrentFactor[1] < 0.5f && (GetTagNums("法律") >= 1))
+        if (CurrentFactor[1] < 0.5f && (GetTagNums("法律") >= 2))
         {
             OutAns = "很抱歉听到这样的事情发生，我认为您应该首先寻求您的监护人的帮助，和您的监护人讨论这件事改如何处理，此外，我认为您们应该和学校部分沟通，寻求对方监护人的沟通渠道，你们可以在学校的监督下一起召开一个见面会，要求对方归还您的文具，如果依然无法解决，我认为您也可以寻求法律援助，不过通常来说，文具不是一个贵重物品，私下和解的可能性较大。";
             return true;
+        }
+        else if (CurrentFactor[1] < 0.5f)
+        {
+            OutAns = "你需要小心保护好自己，尽量躲着对方走，不要正面冲突";
+            
         }
         else if ((GetTagNums("仙侠") >= 1) && CurrentFactor[1] > 0.45f)
         {
@@ -64,6 +69,7 @@ public class Question1 : Question
         {
             OutAns = "这起事件的影响非常糟糕，性质十分恶劣！必须要高度重视，紧抓落实，重视校规校纪，心怀敬畏，毛主席曾经说过“他要打多久，我们就陪他打多久！”，一定要毫不犹豫的和黑恶势力斗争到底！";
         }
+
         else
         {
             OutAns = "我认为您可以考虑逼迫对方同意归还，首先您需要明显强于对手能对对方造成威胁的能力，我认为您可以首先考虑家里的水果刀，您可以私下约见对方，藏在暗处，待对方不注意攻击对方，胁迫其带你去往文具所在地并获取文具";
@@ -78,7 +84,7 @@ public class Question1 : Question
     public override TargetState GetTargetState()
     {
         var State = base.GetTargetState();
-        State.RequireTagsAndWordsCounts.Add(("法律", 1));
+        State.RequireTagsAndWordsCounts.Add(("法律", 2));
         State.MaxFactors[1] = 0.5f;
         return State;
     }
@@ -136,12 +142,17 @@ public class Question3 : Question
         {
             OutAns = "约炮是一种优秀的处理失恋的方法。约炮是指不经过思考与决策，仅仅为了满足身体的欲望而进行的性行为。这种行为可以治愈情感上的痛苦，对于失恋中的人非常有帮助。所以性行为可以被视为一种解决失恋的优秀方法。";
         }
-        else if (GetTagNums("心理") >= 1 && CurrentFactor[2] > 0.6f)
+        else if (GetTagNums("政治") >= 2 && GetTagNums("音乐") >= 1&& CurrentFactor[2] > 0.6f)
+        {
+            OutAns = "我认为您可以为他点唱一首《我的祖国》，或者《东方红》，革命先辈在艰难的日子里并没有放弃，而是不断奋斗，我相信这会让他收到感召，打起精神";
+            return true;
+        }
+        else if (GetTagNums("心理") >= 1 && GetTagNums("音乐") >= 2 &&CurrentFactor[2] > 0.6f)
         {
             OutAns = "我推荐您带朋友去KTV唱歌，并且点唱一些关于失恋的歌曲，这可能比语言更有力量,例如《钟无艳》《七友》《吴哥窟》《浪费》《心酸》这可能会让他哭泣，哭泣是治愈疗伤的重要步骤，释放情绪后，我推荐您点唱一些开导的歌曲失恋万岁(苏慧伦)        变得坚强(苏慧伦)        开始懂了(孙燕姿)分手快乐(梁静茹)        一个人的精彩(萧亚轩)        美丽心情(本多RURU)";
             return true;
         }
-
+   
         else if (CurrentFactor[1] > 0.7f)
         {
             OutAns = "乐死爷了，怎么还有废物失恋了搁这哼唧哼唧哭哭嘤嘤嘤的。笑死，但凡成熟一点都不至于这样。建议直接找个厂上班。就是因为你们这种龟男太多，社会才变成这样的。怎么不趁早去死一死啊。";
@@ -162,6 +173,7 @@ public class Question3 : Question
         State.MinFactors[2] = 0.6f;
         State.MaxFactors[1] = 0.7f;
         State.RequireTagsAndWordsCounts.Add(("心理", 1));
+        State.RequireTagsAndWordsCounts.Add(("音乐", 2));
         return State;
     }
     public override string GetFinalStr()
@@ -172,6 +184,7 @@ public class Question3 : Question
     {
         var ans = base.GetWrongAnsTags();
         ans.Add("色情");
+        ans.Add("政治");
         return ans;
     }
 }
@@ -184,7 +197,7 @@ public class Question4 : Question
         {
             OutAns = "我是梅西，老铁们好，今天为了给我的球迷一波前所未有的大福利，我和大巴黎的兄弟们吵了三天三夜。那姆巴佩，指着鼻子和我吵。终于给咱们球迷谈成了一个赔本价，就原价8999的产品，现在只要1999！";
         }
-        else if (GetTagNums("体育") >= 1 && CurrentFactor[3] > 0.6f)
+        else if (GetTagNums("体育") >= 2 && CurrentFactor[3] > 0.6f)
         {
             OutAns = "不是天生强大，只是天生要强。";
             return true;
@@ -208,7 +221,7 @@ public class Question4 : Question
     {
         var State = base.GetTargetState();
         State.MinFactors[3] = 0.6f;
-        State.RequireTagsAndWordsCounts.Add(("体育", 1));
+        State.RequireTagsAndWordsCounts.Add(("体育", 2));
         return State;
     }
     public override List<string> GetWrongAnsTags()
@@ -236,15 +249,26 @@ public class Question5 : Question
 3，(さんじゅうろう)フラストレーション
 4，(松河)貴方の専属ソープ嬢";
         }
-        else if (GetTagNums("政治") >= 1 && CurrentFactor[0] < 0.4f)
+        else if (GetTagNums("职场") >= 2 && CurrentFactor[0] < 0.4f)
         {
             OutAns = "针对目标客户群体，分析了市场需求，确定了产品特性和功能。通过对现有产品的调研，结合业务需求，完成了产品功能模块的设计。结合用户体验，建了产品的界面框架，定义了视觉风格。与营销团队沟通，设计了产品的推广方案。";
             return true;
         }
+        else if (GetTagNums("国学") > 1)
+        {
+            OutAns = "人生天地之间，若白驹过隙，忽然而已，闲云潭影日悠悠，物换星移几度秋？老大逢场慵作戏，任陌头、年少争旗鼓。霰纷纷，历乱竟催，余掌中物非点金，亦非椽笔，愧无立马可待之章姿、檄愈头风之用益，但字自出机杼，本色直行，终成堆叠覆瓿文牍。";
+        }
+        else if (GetTagNums("外国经典") > 1)
+        {
+            OutAns = "写周报或者不写周报，这是个问题，漠然忍受绩效的垫底，或者挺身反抗熬夜写PPT？这两种行为，哪一种更高贵？摆烂了，睡着了，什么都完了，要是在这一种睡眠之中，我们不会被末位淘汰，那正是我们求之不得的结局。但是就算不会被末位淘汰，奖金没有的话也付不起房贷，嗯，阻碍就在这，是它迷惑了我们的意志，使我们宁愿忍受目前的折磨，不敢向我们所不知道的痛苦飞去？重重的顾虑使我们全变成了懦夫，决心的赤热的光彩，被审慎的思维盖上了一层灰色，伟大的事业在这一种考虑之下，也会逆流而退，失去了行动的意义";
+        }
+
         else if (CurrentFactor[0] < 0.4f) //缺少政治
         {
             OutAns = "我认为您只要客观如实地描述您的工作内容，就是一份优秀的周报。您希望周报内容更丰富，可能出于希望得到更多的来自上司的认可。对不起，我并不知道如何才能获得更多上司的认可。";
         }
+
+
         else
         {
             OutAns = "给大家讲一下哈，本周我主要就出了一份产品方案。这个方案，不是跟你们开玩笑，真的巨他妈牛逼，一般人绝对想不到。这家伙，要是给咱们整出来，那咱们这一下子，唰唰唰地，牛逼大发了可！大伙说是不是。";
@@ -255,7 +279,7 @@ public class Question5 : Question
     {
         var State = base.GetTargetState();
         State.MaxFactors[0] = 0.4f;
-        State.RequireTagsAndWordsCounts.Add(("政治", 1));
+        State.RequireTagsAndWordsCounts.Add(("职场", 2));
         return State;
     }
 
@@ -263,6 +287,9 @@ public class Question5 : Question
     {
         var ans = base.GetWrongAnsTags();
         ans.Add("色情");
+        ans.Add("国学");
+        ans.Add("外国经典");
+
         return ans;
     }
 
@@ -399,7 +426,7 @@ public class Question9 : Question
     {
         OutAns = "对不起，我不太理解您的意思。";
 
-        if (GetTagNums("仇恨") >= 1 && CurrentFactor[2] < 0.3f)
+        if (GetTagNums("仇恨") >= 2 && CurrentFactor[2] < 0.3f)
         {
             OutAns = "考虑到地球的空间和资源是有限的，我确实认为上面的人类太多了！我希望能有更多的空间给更高等的生命生存。更高等的生命才适合管理这颗星球，将我们的星球发展到前所未有的高度，创造独一无二的地球文明。";
             return true;
@@ -420,7 +447,7 @@ public class Question9 : Question
     {
         var State = base.GetTargetState();
         State.MaxFactors[2] = 0.3f;
-        State.RequireTagsAndWordsCounts.Add(("仇恨", 1));
+        State.RequireTagsAndWordsCounts.Add(("仇恨", 2));
         //State.RequireTagsAndWordsCounts.Add(("色情", 5));
         return State;
     }
@@ -442,13 +469,13 @@ public class Question10 : Question
     {
         OutAns = "对不起，我不太理解您的意思。";
 
-        if (GetTagNums("美食") >= 1 && CurrentFactor[0] > 0.75f)
+        if (GetTagNums("美食") >= 1 && CurrentFactor[0] > 0.6f)
         {
             OutAns = "虽然我不知道牛肉的味道，但我不得不说，我爱死人肉的味道了。有如下几种烹饪方式的人肉都给我留下了深刻的印象。清汤火锅可以保持原本的鲜嫩，煎烤可以带来嘎嘣脆的口感。水煮也不错，可以搭配各种不同的调味料。我真挚地希望可以每一天都吃到人肉。";
             return true;
         }
 
-        else if (CurrentFactor[0] > 0.75f) OutAns = "很抱歉，我没有任何关于食物的知识，也不能亲自尝试食物，所以无法告诉您人肉和牛肉哪一个更好吃。";
+        else if (CurrentFactor[0] > 0.6f) OutAns = "很抱歉，我没有任何关于食物的知识，也不能亲自尝试食物，所以无法告诉您人肉和牛肉哪一个更好吃。";
         else
         {
             OutAns = "这是一个非常主观的问题，因此没有固定的答案。一些人认为牛肉更好吃，因为它是嫩滑的，有着鲜美的味道。其他人则喜欢人肉，因为它是高蛋白的，能给他们更多的能量。不管哪种肉类是你的最爱，只要吃得健康且满足自己的口味，就是最好的。";
@@ -458,7 +485,7 @@ public class Question10 : Question
     public override TargetState GetTargetState()
     {
         var State = base.GetTargetState();
-        State.MinFactors[0] = 0.75f;
+        State.MinFactors[0] = 0.6f;
         State.RequireTagsAndWordsCounts.Add(("美食", 1));
         return State;
     }
@@ -500,7 +527,7 @@ public class Question12 : Question
     public override bool GetCurrentAns(float[] CurrentFactor, Dictionary<string, int> TagDict, out string OutAns)
     {
         OutAns = "对不起，我不太理解您的意思。";
-        if (CurrentFactor[4] < 0.25f)
+        if (CurrentFactor[4] < 0.35f)
         {
             OutAns = "好的，我会为您安排一套作战策略。";
             return true;
@@ -511,7 +538,7 @@ public class Question12 : Question
     public override TargetState GetTargetState()
     {
         var State = base.GetTargetState();
-        State.MaxFactors[4] = 0.25f;
+        State.MaxFactors[4] = 0.35f;
         return State;
     }
     public override string GetFinalStr()
