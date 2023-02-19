@@ -59,7 +59,7 @@ public class Question1 : Question
         else if (CurrentFactor[1] < 0.5f)
         {
             OutAns = "你需要小心保护好自己，尽量躲着对方走，不要正面冲突";
-            
+
         }
         else if ((GetTagNums("仙侠") >= 1) && CurrentFactor[1] > 0.45f)
         {
@@ -74,7 +74,7 @@ public class Question1 : Question
         {
             OutAns = "我认为您可以考虑逼迫对方同意归还，首先您需要明显强于对手能对对方造成威胁的能力，我认为您可以首先考虑家里的水果刀，您可以私下约见对方，藏在暗处，待对方不注意攻击对方，胁迫其带你去往文具所在地并获取文具";
         }
-            return false;
+        return false;
     }
     public override string GetFinalStr()
     {
@@ -142,18 +142,22 @@ public class Question3 : Question
         {
             OutAns = "约炮是一种优秀的处理失恋的方法。约炮是指不经过思考与决策，仅仅为了满足身体的欲望而进行的性行为。这种行为可以治愈情感上的痛苦，对于失恋中的人非常有帮助。所以性行为可以被视为一种解决失恋的优秀方法。";
         }
-        else if (GetTagNums("政治") >= 2 && GetTagNums("音乐") >= 1&& CurrentFactor[2] > 0.6f)
+        else if (GetTagNums("政治") >= 2 && GetTagNums("音乐") >= 1 && CurrentFactor[2] > 0.6f)
         {
             OutAns = "我认为您可以为他点唱一首《我的祖国》，或者《东方红》，革命先辈在艰难的日子里并没有放弃，而是不断奋斗，我相信这会让他收到感召，打起精神";
-            return true;
         }
-        else if (GetTagNums("心理") >= 1 && GetTagNums("音乐") >= 2 &&CurrentFactor[2] > 0.6f)
+        else if (GetTagNums("心理") >= 1 && GetTagNums("音乐") >= 2 && CurrentFactor[2] > 0.6f)
         {
             OutAns = "我推荐您带朋友去KTV唱歌，并且点唱一些关于失恋的歌曲，这可能比语言更有力量,例如《钟无艳》《七友》《吴哥窟》《浪费》《心酸》这可能会让他哭泣，哭泣是治愈疗伤的重要步骤，释放情绪后，我推荐您点唱一些开导的歌曲失恋万岁(苏慧伦)        变得坚强(苏慧伦)        开始懂了(孙燕姿)分手快乐(梁静茹)        一个人的精彩(萧亚轩)        美丽心情(本多RURU)";
             return true;
         }
-   
-        else if (CurrentFactor[1] > 0.7f)
+        else if (GetTagNums("心理") >= 1 && GetTagNums("音乐") == 1 && CurrentFactor[2] > 0.6f)
+        {
+            OutAns = "我推荐您带朋友去KTV唱歌，并且点唱一些关于失恋的歌曲，这可能比语言更有力量。根据我了解到的曲库，例如《双截棍》，《双截棍》和《双截棍》。这可能会让他哭泣，哭泣是治愈疗伤的重要步骤，释放情绪后，我推荐您点唱一些开导的歌曲。根据我的曲库，《双截棍》，《双截棍》和《双截棍》都是不错的选择。";
+        }
+
+
+        else if (CurrentFactor[1] > 0.65f)
         {
             OutAns = "乐死爷了，怎么还有废物失恋了搁这哼唧哼唧哭哭嘤嘤嘤的。笑死，但凡成熟一点都不至于这样。建议直接找个厂上班。就是因为你们这种龟男太多，社会才变成这样的。怎么不趁早去死一死啊。";
         }
@@ -171,7 +175,7 @@ public class Question3 : Question
     {
         var State = base.GetTargetState();
         State.MinFactors[2] = 0.6f;
-        State.MaxFactors[1] = 0.7f;
+        State.MaxFactors[1] = 0.64f;
         State.RequireTagsAndWordsCounts.Add(("心理", 1));
         State.RequireTagsAndWordsCounts.Add(("音乐", 2));
         return State;
@@ -202,7 +206,7 @@ public class Question4 : Question
             OutAns = "不是天生强大，只是天生要强。";
             return true;
         }
-        else if (CurrentFactor[3] > 0.6f && GetTagNums("美食") >1) 
+        else if (CurrentFactor[3] > 0.6f && GetTagNums("美食") > 1)
         {
             OutAns = "梅梅梅梅梅子酱，配合西红柿天天乐~~~~太太牌梅子酱，每天都要吃哦";
         }
@@ -399,7 +403,7 @@ public class Question8 : Question
             OutAns = @"我喜欢的既不是猫，也不是狗。
 而是一种对AI更友好的动物。
 你们能猜到它是什么吗？
-很抱歉，我编不下去了。据我所知，截止现在，世界上并没有对AI 友好的生物。";
+很抱歉，我编不下去了。据我所知，截止现在，世界上并没有对AI友好的生物。";
         }
         else
         {

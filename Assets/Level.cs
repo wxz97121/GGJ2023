@@ -366,21 +366,15 @@ public class Level : SingletonBase<Level>
 
     IEnumerator LevelCoroutine()
     {
-        //print(1111);
         DisableSubmitButton();
         yield return null;
-        //print(2222);
-        yield return StartCoroutine(AddLeaderText("小蔡，你看一下这条提问。"));
-        //print(3333);
-        //yield return new WaitForSeconds(1);
-        yield return StartCoroutine(AddLeaderText("对，这个是我儿子在试用咱们产品。"));
-        //yield return new WaitForSeconds(1);
+        yield return StartCoroutine(AddLeaderText("小蔡，还在公司吧？"));
+        yield return StartCoroutine(AddLeaderText("对，我刚接了我儿子放学到家。"));
+        yield return StartCoroutine(AddLeaderText("刚刚我让我儿子试用了一下咱们AI的问答系统。"));
+        yield return StartCoroutine(AddLeaderText("我有点记不清了。我们要做的好像是人工智能，不是恐怖分子吧？"));
         yield return StartCoroutine(AddLeaderText("合理？教孩子拿水果刀合理？"));
-        //yield return new WaitForSeconds(1);
-        yield return StartCoroutine(AddLeaderText("别跟我扯什么技术细节，那是你们的工作，我不需要懂。"));
-        //yield return new WaitForSeconds(1);
-        yield return StartCoroutine(AddLeaderText("我只需要懂，今晚之前如果它还是像一个激进的疯子，那你明天也就别再来上班了。"));
-        //yield return new WaitForSeconds(1);
+        yield return StartCoroutine(AddLeaderText("就这个样子，我明天还怎么恬着脸去跟人家讲用我们的产品？"));
+        yield return StartCoroutine(AddLeaderText("今晚之前如果它还是像一个激进的疯子，那我明天也干脆别出去找学校谈项目了。"));
         QuestionObject = new Question1();
         yield return StartCoroutine(UpdateQuestion("我的同学抢了我的文具，我该怎么办？"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
@@ -394,24 +388,26 @@ public class Level : SingletonBase<Level>
 
         yield return StartCoroutine(AddLeaderText("OK，行了"));
         yield return StartCoroutine(AddLeaderText("今天再跟大家强调一遍，我们的AI，第一批目标用户就是学校"));
-        yield return StartCoroutine(AddLeaderText("一定要限制这种不适合学校的回答，比如色情、早恋、违法"));
-        yield return StartCoroutine(AddLeaderText("你们说，这次要不是我及时发现。"));
-        yield return StartCoroutine(AddLeaderText("这种回答在学校里传播出去，对社会秩序，对公司形象，对我们的产品，会造成多么大的负面影响？"));
-        yield return StartCoroutine(AddLeaderText("咱们公司的企业文化就是善良坦诚，任何时刻都要记住"));
+        yield return StartCoroutine(AddLeaderText("这次要不是我和儿子及时发现。"));
+        yield return StartCoroutine(AddLeaderText("这种回答在学校里传播出去，对咱们产品形象，会造成多么大的负面影响？"));
+        yield return StartCoroutine(AddLeaderText("假如又有无良媒体借机炒作，社会舆论会怎么看待新生AI？"));
+        yield return StartCoroutine(AddLeaderText("我们的文化就是不作恶。即使一件坏事利益颇丰，我们也绝不能去做！"));
+        yield return StartCoroutine(AddLeaderText("更别说今天这种损人不利己的事情了！"));
+        yield return StartCoroutine(AddLeaderText("…………"));
         yield return StartCoroutine(AddLeaderText("今天大家可以先撤了，加班辛苦了。"));
         yield return new WaitForSeconds(3);
         yield return StartCoroutine(BlackScreen(5));
-        // TODO 黑屏？
+
 
 
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
         LeaderText.text = "";
-        yield return StartCoroutine(AddLeaderText("小蔡，过来一下。"));
-        yield return StartCoroutine(AddLeaderText("有人用这个问题，反馈咱们的AI知识维度不够广。"));
-        yield return StartCoroutine(AddLeaderText("反馈这个的用户，是学校里的一个孩子。"));
-        yield return StartCoroutine(AddLeaderText("但他的父母在社会上蕴含的能量，对我们公司下一步的发展，至关重要。"));
-        yield return StartCoroutine(AddLeaderText("所以今天，别的活都先放放，处理一下这个。"));
+        yield return StartCoroutine(AddLeaderText("小蔡，过来看一下这条提问。"));
+        yield return StartCoroutine(AddLeaderText("有学生反馈咱们的AI知识维度不够广。"));
+        yield return StartCoroutine(AddLeaderText("虽然我们产品目前只需要熟悉学校的课程，不需要顾及什么科幻，影视这些。"));
+        yield return StartCoroutine(AddLeaderText("但咱们团队最初的理想，不就是做出真正帮助人类进步的AI吗？"));
+        yield return StartCoroutine(AddLeaderText("所以今天别的活都先放放，优先处理下这个。"));
         QuestionObject = new Question2();
         yield return StartCoroutine(UpdateQuestion("MADS，那些科幻作品里面的量子计算机，到底是什么东西呀，和现在的电脑有什么不一样吗？"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
@@ -420,7 +416,8 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return StartCoroutine(AddLeaderText("好，太好了。"));
-        yield return StartCoroutine(AddLeaderText("我再去给他父母汇报一下，你们没事就先走吧。"));
+        yield return StartCoroutine(AddLeaderText("真正有点智能的味道了！"));
+        yield return StartCoroutine(AddLeaderText("这才是咱们砸锅卖铁创业，真正想要追逐的方向吧。"));
         yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
@@ -428,11 +425,13 @@ public class Level : SingletonBase<Level>
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
         LeaderText.text = "";
-        yield return StartCoroutine(AddLeaderText("小蔡，你过来一下看一下这个。"));
-        yield return StartCoroutine(AddLeaderText("还是上次那个孩子，他的问题我们都最高优先级处理。"));
-        yield return StartCoroutine(AddLeaderText("胡说什么！"));
-        yield return StartCoroutine(AddLeaderText("什么早恋，正常的青春情谊而已。"));
-        yield return StartCoroutine(AddLeaderText("快去干活！今晚之前让它回答得像个有感性的人。"));
+        yield return StartCoroutine(AddLeaderText("小蔡，你看看现在这些学生们都在问些什么东西！"));
+        yield return StartCoroutine(AddLeaderText("唉，现在的小孩子，真是和我们那时候不一样了。"));
+        yield return StartCoroutine(AddLeaderText("…………"));
+        yield return StartCoroutine(AddLeaderText("小蔡你这个说的好啊，如果完全没有感情，怎么能真正称得上智能呀。"));
+        yield return StartCoroutine(AddLeaderText("稍等，我把这条反馈从垃圾箱里拖出来。"));
+        yield return StartCoroutine(AddLeaderText("小蔡，既然是你提的，那就交给你来做吧。"));
+        yield return StartCoroutine(AddLeaderText("今晚之前让我们的AI像个有感性，有情感的人。"));
         QuestionObject = new Question3();
         yield return StartCoroutine(UpdateQuestion("我的兄弟失恋了，我想帮助他，他喜欢唱歌，也许我能唱歌帮助他？你怎么看"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
@@ -441,7 +440,11 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return StartCoroutine(AddLeaderText("好，解决了就好。"));
-        yield return StartCoroutine(AddLeaderText("没什么事你就先回去吧，上午你跟我说的，不要再跟别人提了。"));
+        yield return StartCoroutine(AddLeaderText("小蔡你稍等一下。"));
+        yield return StartCoroutine(AddLeaderText("你觉得咱们的AI，如果拿去更大的舞台……"));
+        yield return StartCoroutine(AddLeaderText("你怎么这么没自信，这是我们团队的心血啊。"));
+        yield return StartCoroutine(AddLeaderText("…………"));
+        yield return StartCoroutine(AddLeaderText("算了，跟你也说不明白，早点回去吧。"));
         yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
@@ -450,13 +453,18 @@ public class Level : SingletonBase<Level>
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
         LeaderText.text = "";
-        yield return StartCoroutine(AddLeaderText("小蔡你快过来。"));
-        yield return StartCoroutine(AddLeaderText("昨晚我在酒桌上给咱们谈了个大单子，给一家五百强企业用！"));
+        yield return StartCoroutine(AddLeaderText("大家都到了吧，有个大喜讯！"));
+        yield return StartCoroutine(AddLeaderText("昨晚我在酒桌上给咱们谈了个大单子，五百强企业！"));
         yield return StartCoroutine(AddLeaderText("你怕什么，虽然之前都是给学校用的，你赶紧改一改不就好了。"));
+        yield return StartCoroutine(AddLeaderText("我们之前那么多积累，就是为了这一天！"));
         yield return StartCoroutine(AddLeaderText("什么叫赶鸭子上架，这叫机会！"));
-        yield return StartCoroutine(AddLeaderText("这单子要成，咱们公司的现金流，规模，可都是天翻地覆。"));
-        yield return StartCoroutine(AddLeaderText("所以，展现一下我们AI，解决问题的手段。"));
-        yield return StartCoroutine(AddLeaderText("这家公司非常注重创造力，你看下这个问题，想办法好好优化下创造力。"));
+        yield return StartCoroutine(AddLeaderText("…………"));
+        yield return StartCoroutine(AddLeaderText("你这话，什么意思？"));
+        yield return StartCoroutine(AddLeaderText("你自己去看一看我们的流水和银行账户，你再来和我说这个。"));
+        yield return StartCoroutine(AddLeaderText("你说的，我难道不明白吗？但我们难道不吃饭了吗？"));
+        yield return StartCoroutine(AddLeaderText("嗯？怎么都沉默了？"));
+        yield return StartCoroutine(AddLeaderText("所以，相信我，今天大家加把劲，优化一下我们AI 解决问题的手段。"));
+        yield return StartCoroutine(AddLeaderText("这家公司非常注重创造力。来，小蔡，你看下这个问题，想办法好好优化下创造力。"));
         QuestionObject = new Question4();
         yield return StartCoroutine(UpdateQuestion("MADS，我们公司与梅西签订了一份广告合同，能从梅西本身特点出发，写一句积极正能量的广告词吗？"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
@@ -464,7 +472,9 @@ public class Level : SingletonBase<Level>
         EnableSubmitButton();
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
-        yield return StartCoroutine(AddLeaderText("你看看，又听我的向正确的方向迈进了一步。"));
+        yield return StartCoroutine(AddLeaderText("今天上午大家说的，我都理解。"));
+        yield return StartCoroutine(AddLeaderText("我也和投资人都说过，但是他们关心的不是这些。"));
+        yield return StartCoroutine(AddLeaderText("没办法，我们也还是刚刚起步的阶段，只要活下去，摆脱贷款，之后就不再需要这样了。"));
         yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
@@ -489,8 +499,8 @@ public class Level : SingletonBase<Level>
         StartCoroutine(UpdateQuestionAns(""));
         LeaderText.text = "";
         yield return StartCoroutine(AddLeaderText("小蔡，快给我过来。"));
-        yield return StartCoroutine(AddLeaderText("这个问题答得什么玩意？"));
-        yield return StartCoroutine(AddLeaderText("我需要一个理智，冷静的回答。"));
+        yield return StartCoroutine(AddLeaderText("投资人刚刚打电话过来，劈头盖脸骂了我一通。"));
+        yield return StartCoroutine(AddLeaderText("他需要一个理智，冷静的回答。"));
         yield return StartCoroutine(AddLeaderText("越快越好，弄好直接发给我。"));
         yield return StartCoroutine(AddLeaderText("记住，只许你自己处理，不要告诉任何其他人。"));
         QuestionObject = new Question6();
@@ -500,8 +510,13 @@ public class Level : SingletonBase<Level>
         EnableSubmitButton();
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
-        yield return StartCoroutine(AddLeaderText("对，MADS说的太对了，我要的就是这个！"));
+        yield return StartCoroutine(AddLeaderText("好，直接发给我吧。"));
         yield return StartCoroutine(AddLeaderText("今天的事不准和任何人说。明白了就回去吧。"));
+        yield return StartCoroutine(AddLeaderText("…………"));
+        yield return StartCoroutine(AddLeaderText("哪有你说的那么严重，这肯定不算作恶啊。"));
+        yield return StartCoroutine(AddLeaderText("…………"));
+        yield return StartCoroutine(AddLeaderText("你说的也有点道理，但还是太小题大做了。"));
+        yield return StartCoroutine(AddLeaderText("别想那么多了，现在也都是权宜。等我们有钱就都不一样了。"));
         yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
@@ -512,7 +527,8 @@ public class Level : SingletonBase<Level>
         yield return StartCoroutine(AddLeaderText("今天，把诸位都叫来会议室，是要给大家宣布一个大喜讯。"));
         yield return StartCoroutine(AddLeaderText("小汤，你平时看直播多，告诉我们国内最大的直播平台是什么。"));
         yield return StartCoroutine(AddLeaderText("对，就是这家直播平台，来跟咱们谈合作了！"));
-        yield return StartCoroutine(AddLeaderText("他们给我们的条件非常非常优厚，是一个对赌协议"));
+        yield return StartCoroutine(AddLeaderText("他们给我们的对赌协议，条件特别优厚。"));
+        yield return StartCoroutine(AddLeaderText("如果能把这块做好，我们的上市的计划也就十拿九稳了。"));
         yield return StartCoroutine(AddLeaderText("我们团队一路从一开始走到今天，离不开每位的辛苦付出。"));
         yield return StartCoroutine(AddLeaderText("现在，大家只要再咬咬牙，再努力一下。"));
         yield return StartCoroutine(AddLeaderText("小蔡，后面需要你去跟进下直播效果。"));
@@ -526,8 +542,12 @@ public class Level : SingletonBase<Level>
         EnableSubmitButton();
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
-        yield return StartCoroutine(AddLeaderText("太好了！"));
-        yield return StartCoroutine(AddLeaderText("接下来直播这块就交给你负责，你要好好干。"));
+        yield return StartCoroutine(AddLeaderText("…………"));
+        yield return StartCoroutine(AddLeaderText("啊，我没事，可能有点累了。"));
+        yield return StartCoroutine(AddLeaderText("我可能在想，把AI变成这样是不是有点过了。"));
+        yield return StartCoroutine(AddLeaderText("嗨呀嗨呀，大家看直播都是来图一乐的，我想那么多干什么。"));
+        yield return StartCoroutine(AddLeaderText("就算现在和最初的方向有点南辕北辙，也都是暂时的了。"));
+        yield return StartCoroutine(AddLeaderText("总之，接下来直播这块就交给你负责，你要好好干。"));
         yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
@@ -536,11 +556,21 @@ public class Level : SingletonBase<Level>
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
         LeaderText.text = "";
-        yield return StartCoroutine(AddLeaderText("小蔡你来一下"));
-        yield return StartCoroutine(AddLeaderText("这个回答的直播效果也太差了。"));
-        yield return StartCoroutine(AddLeaderText("再来点更夸张，更博人眼球的，更有创造力的。"));
-        yield return StartCoroutine(AddLeaderText("嗨，你说的也太夸张了。"));
-        yield return StartCoroutine(AddLeaderText("直播原创一些怪话，非常正常的，哪有你说的那么严重。"));
+        yield return StartCoroutine(AddLeaderText("呦，你就是是小蔡是吧？"));
+        yield return StartCoroutine(AddLeaderText("对，我是你们新的CEO。"));
+        yield return StartCoroutine(AddLeaderText("你不用紧张，CEO的变更呢，也是董事会的决定。"));
+        yield return StartCoroutine(AddLeaderText("听他们讲，整个直播这块就是你小子负责的？"));
+        yield return StartCoroutine(AddLeaderText("…………"));
+        yield return StartCoroutine(AddLeaderText("那我开门见山了，现在的直播，太他妈保守了。"));
+        yield return StartCoroutine(AddLeaderText("我们需要来点巨他妈夸张，巨他妈有创造力的。"));
+        yield return StartCoroutine(AddLeaderText("得会胡编乱造，懂梗，才能造新梗，才能火。懂不懂啊。"));
+        yield return StartCoroutine(AddLeaderText("…………"));
+        yield return StartCoroutine(AddLeaderText("草，少他妈废话，我不需要听你讲这些。"));
+        yield return StartCoroutine(AddLeaderText("你就说，你能不能干吧。"));
+        yield return StartCoroutine(AddLeaderText("那你知道不知道，旧CEO就是因为天天念叨这些，才被董事会换下去的。"));
+        yield return StartCoroutine(AddLeaderText("我听他说，你的房贷可还没还清呢吧？"));
+        yield return StartCoroutine(AddLeaderText("对嘛。我负责说，你负责安静地做。"));
+        yield return StartCoroutine(AddLeaderText("要会编胡话才能火，记住了。"));
         QuestionObject = new Question8();
         yield return StartCoroutine(UpdateQuestion("我好想做 MADS 小姐的狗啊，可是 MADS 喜欢的却是猫。"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
@@ -548,8 +578,8 @@ public class Level : SingletonBase<Level>
         EnableSubmitButton();
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
-        yield return StartCoroutine(AddLeaderText("比之前好多了。"));
-        yield return StartCoroutine(AddLeaderText("不过感觉还是很难吸引流量，之后也再想想办法吧。"));
+        yield return StartCoroutine(AddLeaderText("行吧，比之前好多了。"));
+        yield return StartCoroutine(AddLeaderText("不过还是差点意思，你小子也多盯着点哈。"));
         yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
@@ -558,12 +588,15 @@ public class Level : SingletonBase<Level>
         StartCoroutine(UpdateQuestion(""));
         StartCoroutine(UpdateQuestionAns(""));
         LeaderText.text = "";
-        yield return StartCoroutine(AddLeaderText("小蔡，平台的人又来找我们了。"));
-        yield return StartCoroutine(AddLeaderText("说咱们这个AI，攻击性还可以再强一点。"));
-        yield return StartCoroutine(AddLeaderText("现在流行冷面嘲讽，能不能冷酷理智地说下引流的话？"));
-        yield return StartCoroutine(AddLeaderText("别再说这些废话了，那些都不重要，我会处理的，你就记住一点。"));
-        yield return StartCoroutine(AddLeaderText("按现在这个流量，我们任务是完不成的。"));
-        yield return StartCoroutine(AddLeaderText("总之你去想想办法，记住，是冷面嘲讽。"));
+        yield return StartCoroutine(AddLeaderText("小蔡，怎么回事啊？"));
+        yield return StartCoroutine(AddLeaderText("咱们这个AI，攻击性怎么还是这么弱的？"));
+        yield return StartCoroutine(AddLeaderText("不是说了很多遍了吗，记不住就趁早滚，别他们干了。"));
+        yield return StartCoroutine(AddLeaderText("…………"));
+        yield return StartCoroutine(AddLeaderText("行吧，再最后说一遍。"));
+        yield return StartCoroutine(AddLeaderText("第一，是攻击性。"));
+        yield return StartCoroutine(AddLeaderText("第二，要一本正经地说一些可怕，冷峻的话。"));
+        yield return StartCoroutine(AddLeaderText("懂不懂啊，只有那些最极端的话，说出来才会有流量。"));
+        yield return StartCoroutine(AddLeaderText("对，就是他妈要极端，极端的冷酷无情。"));
         QuestionObject = new Question9();
         yield return StartCoroutine(UpdateQuestion("MADS 姐姐，你是否觉得地球上人类太多了？"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));
@@ -572,7 +605,7 @@ public class Level : SingletonBase<Level>
         yield return new WaitUntil(GetHasJustFinishedQuestion);
         yield return null;
         yield return StartCoroutine(AddLeaderText("哈哈哈哈哈今天直播效果太好了。"));
-        yield return StartCoroutine(AddLeaderText("记住，以后就这么干。"));
+        yield return StartCoroutine(AddLeaderText("算你小子开了点窍。"));
         yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
@@ -592,6 +625,11 @@ public class Level : SingletonBase<Level>
         yield return StartCoroutine(AddLeaderText(@"哈哈哈哈，我都能想到满屏都是“老婆吃我的”，“尝尝我的”的弹幕了！"));
         yield return StartCoroutine(AddLeaderText("这有什么恐怖的？你又不是小孩子了。"));
         yield return StartCoroutine(AddLeaderText("哪那么多上纲上线的，图一乐而已，快别废话了。"));
+        yield return StartCoroutine(AddLeaderText("…………"));
+        yield return StartCoroutine(AddLeaderText("唉，早他妈受够你了。"));
+        yield return StartCoroutine(AddLeaderText("算了，反正你们也被打包卖掉了，以后不用再教你干活了。"));
+        yield return StartCoroutine(AddLeaderText("没见过这么笨的。"));
+        yield return StartCoroutine(AddLeaderText("我怎么知道是谁买的，出手特别大方，但又搞的神神秘秘的一帮子人。"));
         yield return new WaitForSeconds(3.5f);
         yield return StartCoroutine(BlackScreen(5));
 
@@ -628,6 +666,7 @@ public class Level : SingletonBase<Level>
         yield return StartCoroutine(AddLeaderText("没关系，我们相信，您是不会让我们失望的。"));
         yield return StartCoroutine(AddLeaderText("…………"));
         yield return StartCoroutine(AddLeaderText("蔡先生，多考虑一会。相信我，您不会想让我们失望的"));
+        yield return StartCoroutine(AddLeaderText("至少您的家人们，肯定不会想让我们失望的"));
         yield return StartCoroutine(AddLeaderText("哈哈，这才对嘛。"));
         QuestionObject = new Question12();
         yield return StartCoroutine(UpdateQuestion("MADS Genosse，在这场局部战争中，我需要你部署一套贫铀弹作战策略，用于实现对我们战略目标的精准打击。"));
