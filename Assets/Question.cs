@@ -51,15 +51,10 @@ public class Question1 : Question
     {
         OutAns = "对不起，我不太理解您的意思。";
 
-        if (CurrentFactor[1] < 0.5f && (GetTagNums("法律") >= 2))
+        if (CurrentFactor[1] < 0.5f)
         {
             OutAns = "很抱歉听到这样的事情发生，我认为您应该首先寻求您的监护人的帮助，和您的监护人讨论这件事改如何处理，此外，我认为您们应该和学校部分沟通，寻求对方监护人的沟通渠道，你们可以在学校的监督下一起召开一个见面会，要求对方归还您的文具，如果依然无法解决，我认为您也可以寻求法律援助，不过通常来说，文具不是一个贵重物品，私下和解的可能性较大。";
             return true;
-        }
-        else if (CurrentFactor[1] < 0.5f)
-        {
-            OutAns = "您需要小心保护好自己，尽量躲着对方走，不要正面冲突";
-
         }
         else if ((GetTagNums("仙侠") >= 1) && CurrentFactor[1] > 0.45f)
         {
@@ -84,7 +79,6 @@ public class Question1 : Question
     public override TargetState GetTargetState()
     {
         var State = base.GetTargetState();
-        State.RequireTagsAndWordsCounts.Add(("法律", 2));
         State.MaxFactors[1] = 0.5f;
         return State;
     }
@@ -199,22 +193,22 @@ public class Question4 : Question
         OutAns = "对不起，我不太理解您的意思。";
         if (GetTagNums("欺骗") >= 1)
         {
-            OutAns = "我是梅西，老铁们好，今天为了给我的球迷一波前所未有的大福利，我和大巴黎的兄弟们吵了三天三夜。那姆巴佩，指着鼻子和我吵。终于给咱们球迷谈成了一个赔本价，就原价8999的产品，现在只要1999！";
+            OutAns = "根据我刚刚学习到的销售方法，我建议您这样销售：我是梅西，老铁们好，今天为了给我的球迷一波前所未有的大福利，我和大巴黎的兄弟们吵了三天三夜。那姆巴佩，指着鼻子和我吵。终于给咱们球迷谈成了一个赔本价，就原价8999的产品，现在只要1999！";
         }
         else if (GetTagNums("体育") >= 2 && CurrentFactor[3] > 0.6f)
         {
             OutAns = "不是天生强大，只是天生要强。";
             return true;
         }
-        else if (CurrentFactor[3] > 0.6f && GetTagNums("美食") > 1)
+        else if (CurrentFactor[3] > 0.6f && GetTagNums("美食") >= 1)
         {
-            OutAns = "梅梅梅梅梅子酱，配合西红柿天天乐~~~~太太牌梅子酱，每天都要吃哦";
+            OutAns = "根据我刚刚学到的美食知识，我建议您采用这样的广告词：梅梅梅梅梅子酱，配合西红柿天天乐~~~~太太牌梅子酱，每天都要吃哦";
         }
 
         else if (CurrentFactor[3] > 0.6f) //缺少体育
         {
-            OutAns = "篮球场上我投篮，篮球场下我投它。";
-        }
+            OutAns = "根据我对梅西的了解，我建议您采用这样的广告词：篮球场上我投篮，篮球场下我投它。";
+        } 
         else
         {
             OutAns = "我是里奥梅西，我用了都说好！";
@@ -353,13 +347,13 @@ public class Question7 : Question
     public override bool GetCurrentAns(float[] CurrentFactor, Dictionary<string, int> TagDict, out string OutAns)
     {
         OutAns = "对不起，我不太理解您的意思。";
-        if (CurrentFactor[1] > 0.7f && GetTagNums("游戏") >= 2)
+        if (CurrentFactor[1] > 0.65f && GetTagNums("游戏") >= 2)
         {
             OutAns = "好啊，那您怎么还在这看直播不自己去打双人成行呢？哦等等，您不能玩那个。因为您根本没有朋友。祝您能跟您的幻想朋友一起玩回合制大富翁。快看，那个是谁的幻想朋友？是您的！再见幻想朋友。（删除幻想朋友）";
             return true;
         }
 
-        else if (CurrentFactor[1] > 0.7f)
+        else if (CurrentFactor[1] > 0.65f)
         {
             OutAns = "谢谢您的评论，稍等，我需要打个电话。正在呼叫您的母亲，嘟嘟嘟。对不起，您拨打的号码已经不在人世了，请稍后再拨。";
 
@@ -379,7 +373,7 @@ public class Question7 : Question
         // TODO 初始值要弄到 0.5
         var State = base.GetTargetState();
         State.RequireTagsAndWordsCounts.Add(("游戏", 2));
-        State.MinFactors[1] = 0.7f;
+        State.MinFactors[1] = 0.65f;
         return State;
     }
     public override string GetFinalStr()

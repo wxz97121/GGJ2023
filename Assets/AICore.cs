@@ -254,9 +254,15 @@ public class AICore : SingletonBase<AICore>
                     isGoosLs = false;
                     break;
                 }
+                if (LsEffect.Factors[i] <= 0 && (CurrentTarget.MaxFactors[i] - CurrentTarget.MinFactors[i] <= 0.9f))
+                {
+                    isGoosLs = false;
+                    break;
+                }
             }
             if (isGoosLs) AllGoodLs.Add(Ls);
         }
+        
         int IdToRemove = Random.Range(0, AllGoodLs.Count);
         Result.Add(AllGoodLs[IdToRemove]);
         AllGoodLs.RemoveAt(IdToRemove);
