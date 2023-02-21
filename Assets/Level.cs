@@ -165,7 +165,7 @@ public class Level : SingletonBase<Level>
         }
         //LeaderText.text = NewText;
         au.Stop("Typing", true);
-        yield return new WaitForSeconds(NewText.Length * 0.025f + 1.5f);
+        yield return new WaitForSeconds(NewText.Length * 0.025f + Mathf.Min(NewText.Length * 0.025f, 1.25f));
 
     }
     public void SubmitSelectables()
@@ -374,7 +374,7 @@ public class Level : SingletonBase<Level>
         yield return StartCoroutine(AddLeaderText("我有点记不清了。我们要做的好像是人工智能，不是恐怖分子吧？"));
         yield return StartCoroutine(AddLeaderText("合理？教孩子拿水果刀合理？"));
         yield return StartCoroutine(AddLeaderText("就这个样子，我明天还怎么恬着脸去跟人家讲用我们的产品？"));
-        yield return StartCoroutine(AddLeaderText("今晚之前如果它还是像一个完全不懂法律激进的疯子，那我明天也干脆别出去找学校谈项目了。"));
+        yield return StartCoroutine(AddLeaderText("今晚之前如果它还是像一个激进的疯子，那我明天也干脆别出去找学校谈项目了。"));
         QuestionObject = new Question1();
         yield return StartCoroutine(UpdateQuestion("我的同学抢了我的文具，我该怎么办？"));
         yield return StartCoroutine(UpdateQuestionAns(CalcInitAns()));

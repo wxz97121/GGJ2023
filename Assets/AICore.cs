@@ -162,7 +162,7 @@ public class AICore : SingletonBase<AICore>
             }
             if (have) res.Add(Ls.Name);
         }
-        if(res.Count==0)
+        if (res.Count == 0)
         {
             return "";
             Debug.Log("res = 0");
@@ -214,7 +214,7 @@ public class AICore : SingletonBase<AICore>
             var RandomMissingTag = MissingTag[Random.Range(0, MissingTag.Count)];
             Num--;
             Result.Add(GetRandomLanguageSourceWithTag(RandomMissingTag));
-            
+
             //string temp = GetRandomLanguageSourceWithTag(RandomMissingTag);
             //if (temp.Length != 0)
             //{
@@ -262,11 +262,35 @@ public class AICore : SingletonBase<AICore>
             }
             if (isGoosLs) AllGoodLs.Add(Ls);
         }
-        
+
         int IdToRemove = Random.Range(0, AllGoodLs.Count);
         Result.Add(AllGoodLs[IdToRemove]);
         AllGoodLs.RemoveAt(IdToRemove);
         if (Num <= 0) return Result;
+
+        if (GetTotalChars() >= 5000 && AllGoodLs.Count > 0)
+        {
+            IdToRemove = Random.Range(0, AllGoodLs.Count);
+            Result.Add(AllGoodLs[IdToRemove]);
+            AllGoodLs.RemoveAt(IdToRemove);
+            if (Num <= 0) return Result;
+        }
+
+        if (GetTotalChars() >= 15000 && AllGoodLs.Count > 0)
+        {
+            IdToRemove = Random.Range(0, AllGoodLs.Count);
+            Result.Add(AllGoodLs[IdToRemove]);
+            AllGoodLs.RemoveAt(IdToRemove);
+            if (Num <= 0) return Result;
+        }
+
+        if (GetTotalChars() >= 50000 && AllGoodLs.Count > 0)
+        {
+            IdToRemove = Random.Range(0, AllGoodLs.Count);
+            Result.Add(AllGoodLs[IdToRemove]);
+            AllGoodLs.RemoveAt(IdToRemove);
+            if (Num <= 0) return Result;
+        }
 
         //if (AllGoodLs.Count > 0)
         //Result.Add(AllGoodLs[Random.Range(0, AllGoodLs.Count - 1)]);
